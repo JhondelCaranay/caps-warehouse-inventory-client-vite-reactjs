@@ -1,0 +1,49 @@
+.chart {
+	-webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+	box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+	padding: 10px;
+	color: gray;
+
+	display: none;
+
+	.title {
+		margin-bottom: 20px;
+	}
+
+	.chartGrid {
+		stroke: rgb(228, 225, 225);
+	}
+}
+
+@media (min-width: 440px) {
+	.chart {
+		display: block;
+	}
+}
+// @media (min-width: 640px) {
+// 	.chart {
+// 		grid-column: span 8 / span 8;
+// 	}
+// }
+
+@media (min-width: 768px) {
+	.chart {
+		grid-column: span 8 / span 8;
+	}
+}
+
+@media (min-width: 1028px) {
+	.chart {
+		grid-column: span 8 / span 8;
+	}
+}
+@media (min-width: 1280px) {
+	.chart {
+		grid-column: span 8 / span 8;
+	}
+}
+@media (min-width: 1536px) {
+	.chart {
+		grid-column: span 8 / span 8;
+	}
+}
