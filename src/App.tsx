@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DashLayout from "./components/dashboard-layout/DashLayout";
-import DashHome from "./pages/dash-home/DashHome";
-import Homepage from "./pages/homepage/Homepage";
-import List from "./pages/list/List";
-import Login from "./pages/login/Login";
-import New from "./pages/new/New";
-import Single from "./pages/single/Single";
+import DashLayout from "./components/layout/dash-layout/DashLayout";
+import PublicLayout from "./components/layout/public-layout/PublicLayout";
+import DashHome from "./pages/dashboard/dash-home/DashHome";
+import Homepage from "./pages/public/homepage/Homepage";
+import List from "./pages/dashboard/list/List";
+import Login from "./pages/public/login/Login";
+import New from "./pages/dashboard/new/New";
+import Single from "./pages/dashboard/single/Single";
 
 function App() {
 	return (
@@ -13,8 +14,10 @@ function App() {
 			<BrowserRouter>
 				<Routes>
 					<Route path="/">
-						<Route index element={<Homepage />} />
-						<Route path="login" element={<Login />} />
+						<Route element={<PublicLayout />}>
+							<Route index element={<Homepage />} />
+							<Route path="login" element={<Login />} />
+						</Route>
 
 						<Route path="/dash" element={<DashLayout />}>
 							<Route index element={<DashHome />} />
