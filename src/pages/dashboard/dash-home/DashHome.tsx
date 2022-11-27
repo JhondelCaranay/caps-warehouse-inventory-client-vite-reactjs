@@ -1,5 +1,5 @@
 import Chart from "../../../components/dashboard/chart/Chart";
-import Featured from "../../../components/featured/Featured";
+import Featured from "../../../components/dashboard/featured/Featured";
 import TransactionTable from "../../../components/dashboard/table/TransactionTable";
 import Widget from "../../../components/dashboard/widget/Widget";
 import "./dashHome.scss";

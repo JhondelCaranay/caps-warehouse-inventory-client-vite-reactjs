@@ -1,36 +1,30 @@
 import { Link } from "react-router-dom";
-import "./login.scss";
+import "./register.scss";
 
-const Login = () => {
+const Register = () => {
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log("submitted");
 	};
 
 	return (
-		<div className="Login">
+		<div className="Register">
 			<div className="wrapper">
 				<form onSubmit={handleSubmit}>
-					<h1 className="title">Login</h1>
+					<h1 className="title">Register</h1>
+					<input type="text" placeholder="First Name" className="input" />
+					<input type="text" placeholder="Last Name" className="input" />
 					<input type="text" placeholder="Email" className="input" />
 					<input type="password" placeholder="Password" className="input" />
 					<button type="submit" className="submit-btn">
-						Log In
+						Register
 					</button>
-					<p
-						className="forgot"
-						onClick={() => {
-							alert("This feature is not yet implemented.");
-						}}
-					>
-						Forgot Password?
-					</p>
 					<p className="register">
-						Don't have an account? <Link to="/register">Register</Link>
+						Have an account? <Link to="/login">Login</Link>
 					</p>
 				</form>
 			</div>
 		</div>
 	);
 };
-export default Login;
+export default Register;
