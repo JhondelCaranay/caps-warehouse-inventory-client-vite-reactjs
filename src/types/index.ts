@@ -1,3 +1,3 @@
-export * from "./component-types";
-export * from "./model-types";
-export * from "./data-types";
+export * from "./component.type";
+export * from "./model.type";
+export * from "./formik.type";

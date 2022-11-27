@@ -1,3 +1,10 @@
+export type WidgetDataTypes = {
+	title: string;
+	isMoney: boolean;
+	link: string;
+	icon: JSX.Element;
+};
+
 export type User = {
 	id: number;
 	name: string;

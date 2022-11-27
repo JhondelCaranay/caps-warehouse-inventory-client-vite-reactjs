@@ -1,7 +1,34 @@
 import "./homepage.scss";
+import { toast } from "react-toastify";
 
 const Homepage = () => {
-	return <div>Homepage</div>;
+	return (
+		<div>
+			<button
+				onClick={() => {
+					toast.warn(
+						<div>
+							<ul>
+								<li>
+									Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+									Necessitatibus
+								</li>
+								<li>
+									Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+									Necessitatibus
+								</li>
+							</ul>
+						</div>
+						// {
+						// 	icon: false,
+						// }
+					);
+				}}
+			>
+				Click
+			</button>
+		</div>
+	);
 };
 export default Homepage;
 

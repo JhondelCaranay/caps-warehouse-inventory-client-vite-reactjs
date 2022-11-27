@@ -8,11 +8,14 @@ import Login from "./pages/public/login/Login";
 import New from "./pages/dashboard/new/New";
 import Single from "./pages/dashboard/single/Single";
 import Register from "./pages/public/register/Register";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 	return (
 		<div className="App">
 			<BrowserRouter>
+				<ToastContainer />
 				<Routes>
 					<Route path="/">
 						<Route element={<PublicLayout />}>

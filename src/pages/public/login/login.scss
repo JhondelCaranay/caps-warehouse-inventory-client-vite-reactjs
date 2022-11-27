@@ -30,10 +30,25 @@
 				text-align: center;
 			}
 
-			.input {
-				font-size: 20px;
-				padding: 5px;
-				outline: none;
+			.formGroup {
+				.input {
+					width: 100%;
+					font-size: 20px;
+					padding: 5px;
+					outline: none;
+				}
+
+				.input.error {
+					border: 1px solid red;
+				}
+
+				.text-error {
+					color: red;
+					// small
+					font-weight: bold;
+					font-size: 0.8rem;
+					letter-spacing: 1px;
+				}
 			}
 
 			.submit-btn {
@@ -48,6 +63,9 @@
 				border-radius: 5px;
 				cursor: pointer;
 
+				// transition
+				transition: all 0.3s ease-in-out;
+
 				&:hover {
 					background-color: white;
 					color: teal;
@@ -58,6 +76,13 @@
 					background-color: teal;
 					color: white;
 					border: 1px solid teal;
+				}
+
+				&:disabled {
+					background-color: gray;
+					color: white;
+					border: 1px solid gray;
+					cursor: not-allowed;
 				}
 			}
 
