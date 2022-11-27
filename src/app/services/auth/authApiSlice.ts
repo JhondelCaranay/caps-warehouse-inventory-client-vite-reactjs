@@ -6,14 +6,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		login: builder.mutation<Tokens, Auth>({
 			query: (credentials) => ({
-				url: "/api/auth/login",
+				url: "/api/auth/signin",
 				method: "POST",
 				body: credentials,
 			}),
 		}),
 		sendLogout: builder.mutation<any, void>({
 			query: () => ({
-				url: "/api/auth/logout",
+				url: "/api/auth/signout",
 				method: "POST",
 			}),
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {

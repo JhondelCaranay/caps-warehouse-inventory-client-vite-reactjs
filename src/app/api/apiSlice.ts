@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: import.meta.env.VITE_BASE_URL,
-	credentials: "include", // credentials: 'same-origin' | 'include' | 'omit'
+	// credentials: "include", // credentials: 'same-origin' | 'include' | 'omit'
 	// credentials: - include: always send cookies, even for cross-origin requests
 	prepareHeaders: (headers, { getState }: { getState: Function }) => {
 		const access_token: string = getState().auth.access_token;
