@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import useTitle from "../../../hooks/useTitle";
 import "./login.scss";
 
 const Login = () => {
+	useTitle("Login");
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log("submitted");
