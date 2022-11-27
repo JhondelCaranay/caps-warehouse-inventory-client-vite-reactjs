@@ -19,7 +19,9 @@ const PublicLayout = () => {
 	return (
 		<div className="publicLayout">
 			<Navbar />
-			<Outlet />
+			<div>
+				<Outlet />
+			</div>
 		</div>
 	);
 };
