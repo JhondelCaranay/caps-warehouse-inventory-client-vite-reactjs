@@ -6,12 +6,14 @@ import { userRows } from "../../../datatableSource";
 import { userColumns } from "./userColumns";
 import { CustomPagination } from "../../datagrid-pagination/CustomPagination";
 import useColumnVisibilityModel from "../../../hooks/useColumnVisibilityModel";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const DataTable = () => {
 	// only get 20 users in userRows
 	const [data, setData] = useState(userRows.slice(0, 20));
-	const { columnVisibilityModel, setColumnVisibilityModel, windowSize } =
-		useColumnVisibilityModel();
+	const { windowSize } = useWindowSize();
+	// const { columnVisibilityModel, setColumnVisibilityModel, windowSize } =
+	// 	useColumnVisibilityModel();
 
 	const handleDelete = (id: number) => {
 		console.log({ id });
