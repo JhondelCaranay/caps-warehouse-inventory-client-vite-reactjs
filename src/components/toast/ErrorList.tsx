@@ -1,4 +1,9 @@
 const ErrorList = ({ messages }: { messages: string[] }) => {
+	if (typeof messages === "string") messages = [messages];
+	else if (!Array.isArray(messages))
+		messages = ["Something went wrong, our team is working on it"];
+		
+
 	return (
 		<div>
 			<ul

@@ -10,6 +10,7 @@ import Single from "./pages/dashboard/single/Single";
 import Register from "./pages/public/register/Register";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TransactionList from "./pages/dashboard/transactions/list/TransactionList";
 
 function App() {
 	return (
@@ -27,6 +28,12 @@ function App() {
 						<Route path="/dash" element={<DashLayout />}>
 							<Route index element={<DashHome />} />
 							<Route path="home" element={<DashHome />} />
+
+							<Route path="transactions">
+								<Route index element={<TransactionList />} />
+								<Route path=":transactionId" element={<Single />} />
+								<Route path="new" element={<New />} />
+							</Route>
 
 							<Route path="users">
 								<Route index element={<List />} />

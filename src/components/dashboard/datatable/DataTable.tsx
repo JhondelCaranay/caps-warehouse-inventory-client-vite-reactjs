@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { userRows } from "../../../datatableSource";
 import { userColumns } from "./userColumns";
 import { CustomPagination } from "../../datagrid-pagination/CustomPagination";
-import useColumnVisibilityModel from "../../../hooks/useColumnVisibilityModel";
 import useWindowSize from "../../../hooks/useWindowSize";
 
 const DataTable = () => {
