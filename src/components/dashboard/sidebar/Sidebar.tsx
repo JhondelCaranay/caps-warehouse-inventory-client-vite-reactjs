@@ -37,6 +37,12 @@ const Sidebar = () => {
 						</li>
 					</NavLink>
 					<p className="title">LISTS</p>
+					<NavLink to="/dash/transactions" className={navLinkStyles}>
+						<li>
+							<PaidOutlined className="icon" />
+							<span>Transactions</span>
+						</li>
+					</NavLink>
 					<NavLink to="/dash/users" className={navLinkStyles}>
 						<li>
 							<PersonOutline className="icon" />
@@ -49,10 +55,6 @@ const Sidebar = () => {
 							<span>Products</span>
 						</li>
 					</NavLink>
-					<li>
-						<PaidOutlined className="icon" />
-						<span>Transactions</span>
-					</li>
 					<li>
 						<CategoryOutlined className="icon" />
 						<span>Categories</span>

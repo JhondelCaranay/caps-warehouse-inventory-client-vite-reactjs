@@ -18,8 +18,11 @@ const initialValues: LoginFormValues = {
 };
 
 const validationSchema = Yup.object({
-	// email: Yup.string().required("Required").email("Invalid email format"),
-	// password: Yup.string().required("Required"),
+	email: Yup.string().required("Required").email("Invalid email format"),
+	// if empty string do not validate else validate
+	password: Yup.string().required("Required"),
+	// .min(6, "Must be at least 6 characters")
+	// .max(20, "Must be at most 20 characters"),
 });
 
 const Login = () => {
@@ -33,8 +36,8 @@ const Login = () => {
 		values: LoginFormValues,
 		submitProps: FormikHelpers<LoginFormValues>
 	) => {
-		//sleep for 2 seconds
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+		//sleep for 1 seconds
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		// alert(JSON.stringify(values, null, 2));
 
 		try {
@@ -45,15 +48,20 @@ const Login = () => {
 			dispatch(setCredentials({ access_token, refresh_token }));
 
 			toast.success("Login successful");
+			submitProps.resetForm();
 			navigate("/dash");
 		} catch (err: any) {
-			// messsage is an array of errors
-			toast.warn(<ErrorList messages={err?.data?.message} />);
-			console.log("🚀 ~ file: Login.jsx ~ line 39 ~ handleSubmit ~ err", err.data.message);
+			console.log("🚀 ~ file: Login.tsx ~ line 50 ~ Login ~ err", err);
+
+			if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
+			else if (err.error) toast.error(err.error);
+			else toast.error("Something went wrong, our team is working on it");
+
+			submitProps.setFieldValue("password", "");
+			submitProps.setFieldTouched("password", false);
 		}
 
 		submitProps.setSubmitting(false);
-		submitProps.resetForm();
 	};
 
 	return (
@@ -66,9 +74,6 @@ const Login = () => {
 					enableReinitialize
 				>
 					{(formik) => {
-						const inputClass =
-							formik.touched.email && formik.errors.email ? "input error" : "input";
-
 						const buttonText =
 							isLoading || formik.isSubmitting ? (
 								<PulseLoader color={"#FFF"} />
@@ -84,7 +89,11 @@ const Login = () => {
 										name="email"
 										type="text"
 										placeholder="Email"
-										className={inputClass}
+										className={
+											formik.touched.email && formik.errors.email
+												? "input error"
+												: "input"
+										}
 										autoComplete="off"
 									/>
 									<ErrorMessage
@@ -97,7 +106,11 @@ const Login = () => {
 										name="password"
 										type="password"
 										placeholder="Password"
-										className={inputClass}
+										className={
+											formik.touched.password && formik.errors.password
+												? "input error"
+												: "input"
+										}
 									/>
 									<ErrorMessage
 										name="password"
