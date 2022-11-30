@@ -11,6 +11,7 @@ import Register from "./pages/public/register/Register";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TransactionList from "./pages/dashboard/transactions/list/TransactionList";
+import TransactionNew from "./pages/dashboard/transactions/new/TransactionNew";
 
 function App() {
 	return (
@@ -32,7 +33,7 @@ function App() {
 							<Route path="transactions">
 								<Route index element={<TransactionList />} />
 								<Route path=":transactionId" element={<Single />} />
-								<Route path="new" element={<New />} />
+								<Route path="new" element={<TransactionNew />} />
 							</Route>
 
 							<Route path="users">

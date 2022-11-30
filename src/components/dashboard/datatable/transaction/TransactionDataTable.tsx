@@ -1,42 +1,74 @@
-import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar } from "@mui/x-data-grid";
-import { useState } from "react";
+import "./transactionDataTable.scss";
+import { DataGrid, GridColumns, GridToolbar } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
 import PulseLoader from "react-spinners/PulseLoader";
-import "./transactionDataTable.scss";
 import { Transaction } from "../../../../types";
-import noImage from "../../../../assets/img/noimage.png";
+import { transactionColumns } from "./TransactionColumn";
+import { Button, Stack } from "@mui/material";
+
 const TransactionDataTable = () => {
 	const { windowSize } = useWindowSize();
 
 	const {
 		data: transactions,
-		error,
 		isLoading,
 		isSuccess,
 		isError,
+		refetch,
 	} = useGetTransactionsQuery("transactionList", {
 		pollingInterval: 60000,
 		refetchOnFocus: true,
 		refetchOnMountOrArgChange: true,
+		refetchOnReconnect: true,
 	});
-	console.log("🚀 ~ file: TransactionDataTable.tsx:27 ~ TransactionDataTable ~ error", error);
 
-	const handleDelete = (id: number) => {
+	const handleEdit = (id: string) => {
 		console.log({ id });
-		// setData(data.filter((item) => item.id !== id));
 	};
+
+	// this column will be use by other data
+	const actionColumn: GridColumns = [
+		{
+			field: "actions",
+			headerName: "Actions",
+			width: 150,
+			renderCell: (params) => {
+				return (
+					<div className="cellAction">
+						<Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
+							<div className="viewButton">View</div>
+						</Link>
+						<div className="editButton" onClick={() => handleEdit(params.row.id)}>
+							Edit
+						</div>
+					</div>
+				);
+			},
+			sortable: false,
+			hideable: false,
+		},
+	];
 
 	let content: JSX.Element | null = null;
 
 	if (isLoading) {
-		content = <PulseLoader color={"#FFF"} />;
+		content = (
+			<div className="loading">
+				<PulseLoader color={"#000000"} />
+			</div>
+		);
 	}
 
 	if (isError) {
-		content = <p className="errmsg">error</p>;
+		content = (
+			<div className="loading">
+				<PulseLoader color={"#000000"} />
+				<h1 className="error">Failed to load data</h1>
+			</div>
+		);
 	}
 
 	if (isSuccess) {
@@ -44,11 +76,21 @@ const TransactionDataTable = () => {
 		const transactionList = ids.map((id) => entities[id] as Transaction);
 
 		content = (
-			<div className="datatable">
+			<>
+				<Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+					<Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
+						<Button size="small" variant="outlined">
+							Create Transaction
+						</Button>
+					</Link>
+					<Button size="small" variant="outlined" onClick={refetch}>
+						Refresh
+					</Button>
+				</Stack>
 				<DataGrid
 					className="datagrid"
 					rows={transactionList}
-					columns={columns} // columns - tabel header columns
+					columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
 					pageSize={10} // pageSize - number of rows per page
 					rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
 					checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
@@ -65,102 +107,10 @@ const TransactionDataTable = () => {
 						},
 					}}
 				/>
-			</div>
+			</>
 		);
 	}
 
-	return content;
+	return <div className="transactionDataTable">{content}</div>;
 };
 export default TransactionDataTable;
-
-const columns: GridColDef[] = [
-	{ field: "id", headerName: "ID", width: 230, type: "string", hide: true },
-	{
-		field: "Item",
-		headerName: "Item Name",
-		hideable: false,
-		width: 230,
-		renderCell: (params) => {
-			return (
-				<div className="cellWithImg">
-					<img
-						className="cellImg"
-						src={params.row.img ? params.row.img : noImage}
-						alt="avatar"
-					/>
-					{params.row.Item.name}
-				</div>
-			);
-		},
-		valueGetter: (params) => {
-			return params.row.Item.name;
-		},
-	},
-	{
-		field: "User",
-		headerName: "Sender Name",
-		hideable: false,
-		width: 230,
-		renderCell: (params: { row: Transaction }) => {
-			const avatar = params.row.User.Profile.avatarUrl
-				? params.row.User.Profile.avatarUrl
-				: noImage;
-
-			return (
-				<div className="cellWithImg">
-					<img className="cellImg" src={avatar} alt="avatar" />
-					{params.row.User.Profile.first_name} {params.row.User.Profile.last_name}
-				</div>
-			);
-		},
-		valueGetter: (params) => {
-			return params.row.User.Profile.first_name + " " + params.row.User.Profile.last_name;
-		},
-	},
-	{
-		field: "Project",
-		headerName: "Project Name",
-		hideable: false,
-		width: 200,
-		renderCell: (params: { row: Transaction }) => {
-			return <div>{params.row.Project.name}</div>;
-		},
-		valueGetter: (params) => {
-			return params.row.Project.name;
-		},
-	},
-	{
-		field: "active",
-		headerName: "Status",
-		hideable: false,
-		width: 200,
-		renderCell: (params: { row: Transaction }) => {
-			return (
-				<div className={`cellWithStatus ${params.row.action}`}>
-					{params.row.action.replace("_", " ")}
-				</div>
-			);
-		},
-	},
-	{ field: "quantity", headerName: "Quantity", width: 120, type: "number" },
-	{ field: "remarks", headerName: "Remarks", width: 150, type: "string" },
-	{
-		field: "actions",
-		headerName: "Action",
-		hideable: false,
-		width: 120,
-		renderCell: (params) => {
-			return (
-				<div className="cellAction">
-					<Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
-						<div className="viewButton">View</div>
-					</Link>
-					{/* <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>
-                        Delete
-                    </div> */}
-				</div>
-			);
-		},
-		sortable: false,
-	},
-];
