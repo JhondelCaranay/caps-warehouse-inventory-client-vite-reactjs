@@ -5,19 +5,72 @@ export type WidgetDataTypes = {
 	icon: JSX.Element;
 };
 
-export type User = {
-	id: number;
-	name: string;
-};
-
 export type Tokens = {
 	access_token: string;
 	refresh_token: string;
 };
 
-export type Auth = {
+// signin use in feature auth redux
+export type Signin = {
 	email: string;
 	password: string;
+};
+
+export type Category = {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	name: string;
+};
+
+export type Brand = {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	name: string;
+};
+
+export type Item = {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	name: string;
+	description: string;
+	model: string;
+	unit: string;
+	quantity: number;
+	price: number;
+	pictureUrl: string;
+	categoryId: string;
+	brandId: string;
+	Category: Category;
+	Brand: Brand;
+};
+
+export type Project = {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+	name: string;
+	address: string;
+	userId: string;
+	User: User;
+};
+
+export type User = {
+	id: string;
+	email: string;
+	role: string;
+	status: string;
+	Profile: {
+		id: string;
+		first_name: string;
+		last_name: string;
+		position: string;
+		address: string;
+		contact: string;
+		avatarUrl: string;
+	};
 };
 
 export type Transaction = {
@@ -25,43 +78,16 @@ export type Transaction = {
 	createdAt: string;
 	updatedAt: string;
 	quantity: number;
+	status: string;
 	remarks: string;
-	action: string;
-	Item: {
-		id: string;
-		name: string;
-		description: string;
-		model: string;
-		unit: string;
-		quantity: number;
-		price: number;
-		pictureUrl: any;
-		Category: {
-			id: string;
-			name: string;
-		};
-		Brand: {
-			id: string;
-			name: string;
-		};
-	};
-	Project: {
-		id: string;
-		name: string;
-		address: string;
-	};
-	User: {
-		id: string;
-		email: string;
-		role: string;
-		status: string;
-		Profile: {
-			first_name: string;
-			last_name: string;
-			position: any;
-			address: any;
-			contact: any;
-			avatarUrl: any;
-		};
-	};
+	release_slip_num: string;
+	materials_issuance_num: string;
+	gate_pass_num: string;
+	return_slip_num: string;
+	userId: string;
+	itemId: string;
+	projectId: string;
+	Item: Item;
+	Project: Project;
+	User: User;
 };

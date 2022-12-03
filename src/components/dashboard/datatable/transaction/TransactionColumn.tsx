@@ -4,7 +4,7 @@ import { Transaction } from "../../../../types";
 import _ from "lodash";
 
 export const transactionColumns: GridColumns = [
-	{ field: "__check__", hide: true, sortable: false, width: 0 },
+	{ field: "__check__", hide: true, sortable: false, filterable: false, width: 0 },
 	{ field: "id", headerName: "ID", width: 230, type: "string", hide: true },
 	{
 		field: "Item",
@@ -70,14 +70,13 @@ export const transactionColumns: GridColumns = [
 	{
 		field: "active",
 		headerName: "Status",
-		hideable: false,
 		width: 180,
 		renderCell: (params: { row: Transaction }) => {
-			const status = _.startCase(_.toLower(params.row.action));
-			return <div className={`cellWithStatus ${params.row.action}`}>{status}</div>;
+			const status = _.startCase(_.toLower(params.row.status));
+			return <div className={`cellWithStatus ${params.row.status}`}>{status}</div>;
 		},
 		valueGetter: (params: { row: Transaction }) => {
-			const status = _.startCase(_.toLower(params.row.action));
+			const status = _.startCase(_.toLower(params.row.status));
 			return status;
 		},
 	},

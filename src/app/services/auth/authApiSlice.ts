@@ -1,10 +1,10 @@
-import { Auth, Tokens } from "../../../types";
+import { Signin, Tokens } from "../../../types";
 import { logOut, setCredentials } from "../../features/auth/authSlice";
 import { apiSlice } from "./../../api/apiSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		login: builder.mutation<Tokens, Auth>({
+		login: builder.mutation<Tokens, Signin>({
 			query: (credentials) => ({
 				url: "/api/auth/signin",
 				method: "POST",
@@ -31,7 +31,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
 					}, 1000);
 					// dispatch(authApiSlice.util.resetApiState());
 				} catch (error) {
-					// console.log("🚀 ~ file: authApiSlice.js ~ line 30 ~ onQueryStarted ~ error", error)
+					console.log(
+						"🚀 ~ file: authApiSlice.js ~ line 30 ~ onQueryStarted ~ error",
+						error
+					);
 					console.log(error);
 				}
 			},
