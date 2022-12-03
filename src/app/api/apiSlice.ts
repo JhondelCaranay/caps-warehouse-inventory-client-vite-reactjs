@@ -20,6 +20,6 @@ export const apiSlice = createApi({
 	// baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_BASE_URL }),
 	baseQuery,
 	// baseQuery: baseQueryWithReauth,
-	tagTypes: ["User", "Transaction"],
+	tagTypes: ["User", "Transaction", "Item", "Category", "Brand", "Project"],
 	endpoints: (builder) => ({}),
 });

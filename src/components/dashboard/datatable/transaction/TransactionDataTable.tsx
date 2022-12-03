@@ -7,7 +7,7 @@ import { CustomPagination } from "../../../datagrid-pagination/CustomPagination"
 import PulseLoader from "react-spinners/PulseLoader";
 import { Transaction } from "../../../../types";
 import { transactionColumns } from "./TransactionColumn";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 
 const TransactionDataTable = () => {
 	const { windowSize } = useWindowSize();
@@ -26,7 +26,8 @@ const TransactionDataTable = () => {
 	});
 
 	const handleEdit = (id: string) => {
-		console.log({ id });
+		console.log(id);
+		console.debug("Edit", id);
 	};
 
 	// this column will be use by other data
@@ -77,15 +78,17 @@ const TransactionDataTable = () => {
 
 		content = (
 			<>
-				<Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-					<Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
-						<Button size="small" variant="outlined">
-							Create Transaction
+				<Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+					<Stack direction="row" spacing={1}>
+						<Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
+							<Button size="small" variant="outlined">
+								Create Transaction
+							</Button>
+						</Link>
+						<Button size="small" variant="outlined" onClick={refetch}>
+							Refresh
 						</Button>
-					</Link>
-					<Button size="small" variant="outlined" onClick={refetch}>
-						Refresh
-					</Button>
+					</Stack>
 				</Stack>
 				<DataGrid
 					className="datagrid"
