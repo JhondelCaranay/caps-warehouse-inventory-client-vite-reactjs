@@ -59,9 +59,12 @@ export type Project = {
 
 export type User = {
 	id: string;
+	createdAt: string;
+	updatedAt: string;
 	email: string;
-	role: string;
 	status: string;
+	role: string;
+	profileId: string;
 	Profile: {
 		id: string;
 		first_name: string;

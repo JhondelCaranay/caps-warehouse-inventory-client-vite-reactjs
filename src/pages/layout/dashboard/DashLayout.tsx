@@ -1,9 +1,9 @@
 import "./dashLayout.scss";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../../dashboard/navbar/Navbar";
-import SidebarMobile from "../../dashboard/sidebar-mobile/SidebarMobile";
-import Sidebar from "../../dashboard/sidebar/Sidebar";
+import Sidebar from "../../../components/dashboard/sidebar/Sidebar";
+import Navbar from "../../../components/dashboard/navbar/Navbar";
+import SidebarMobile from "../../../components/dashboard/sidebar-mobile/SidebarMobile";
 
 const DashLayout = () => {
 	const [toggleSidebar, setToggleSidebar] = useState(false);

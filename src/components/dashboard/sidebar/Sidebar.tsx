@@ -9,9 +9,9 @@ import {
 	InsertChart,
 	LocalShipping,
 	NotificationsNone,
-	PaidOutlined,
 	PersonOutline,
 	Store,
+	Warehouse,
 } from "@mui/icons-material";
 
 const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
@@ -39,8 +39,14 @@ const Sidebar = () => {
 					<p className="title">LISTS</p>
 					<NavLink to="/dash/transactions" className={navLinkStyles}>
 						<li>
-							<PaidOutlined className="icon" />
+							<LocalShipping className="icon" />
 							<span>Transactions</span>
+						</li>
+					</NavLink>
+					<NavLink to="/dash/items" className={navLinkStyles}>
+						<li>
+							<Warehouse className="icon" />
+							<span>Items</span>
 						</li>
 					</NavLink>
 					<NavLink to="/dash/users" className={navLinkStyles}>
@@ -49,12 +55,7 @@ const Sidebar = () => {
 							<span>Users</span>
 						</li>
 					</NavLink>
-					<NavLink to="/dash/products" className={navLinkStyles}>
-						<li>
-							<Store className="icon" />
-							<span>Products</span>
-						</li>
-					</NavLink>
+
 					<li>
 						<CategoryOutlined className="icon" />
 						<span>Categories</span>

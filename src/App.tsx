@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DashLayout from "./components/layout/dashboard/DashLayout";
-import PublicLayout from "./components/layout/public/PublicLayout";
+
 import DashHome from "./pages/dashboard/dash-home/DashHome";
 import Homepage from "./pages/public/homepage/Homepage";
 import List from "./pages/dashboard/list/List";
@@ -12,6 +11,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TransactionList from "./pages/dashboard/transactions/list/TransactionList";
 import TransactionNew from "./pages/dashboard/transactions/new/TransactionNew";
+import ItemList from "./pages/dashboard/items/list/ItemList";
+import PublicLayout from "./pages/layout/public/PublicLayout";
+import DashLayout from "./pages/layout/dashboard/DashLayout";
 
 function App() {
 	return (
@@ -33,6 +35,12 @@ function App() {
 							<Route path="transactions">
 								<Route index element={<TransactionList />} />
 								<Route path=":transactionId" element={<Single />} />
+								<Route path="new" element={<TransactionNew />} />
+							</Route>
+
+							<Route path="items">
+								<Route index element={<ItemList />} />
+								<Route path=":itemId" element={<Single />} />
 								<Route path="new" element={<TransactionNew />} />
 							</Route>
 

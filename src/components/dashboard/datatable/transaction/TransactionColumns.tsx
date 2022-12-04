@@ -1,9 +1,9 @@
-import { GridColumns } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import noImage from "../../../../assets/img/noimage.png";
 import { Transaction } from "../../../../types";
 import _ from "lodash";
 
-export const transactionColumns: GridColumns = [
+export const transactionColumns: GridColDef[] = [
 	{ field: "__check__", hide: true, sortable: false, filterable: false, width: 0 },
 	{ field: "id", headerName: "ID", width: 230, type: "string", hide: true },
 	{
@@ -59,7 +59,7 @@ export const transactionColumns: GridColumns = [
 		field: "Project",
 		headerName: "Project Name",
 		hideable: false,
-		width: 200,
+		width: 230,
 		renderCell: (params: { row: Transaction }) => {
 			return <div>{params.row.Project.name}</div>;
 		},
@@ -68,7 +68,7 @@ export const transactionColumns: GridColumns = [
 		},
 	},
 	{
-		field: "active",
+		field: "status",
 		headerName: "Status",
 		width: 180,
 		renderCell: (params: { row: Transaction }) => {
@@ -80,6 +80,6 @@ export const transactionColumns: GridColumns = [
 			return status;
 		},
 	},
-	{ field: "quantity", headerName: "Quantity", width: 120, type: "number" },
-	{ field: "remarks", headerName: "Remarks", width: 150, type: "string", hide: true },
+	{ field: "quantity", headerName: "Quantity", width: 150, type: "number" },
+	{ field: "remarks", headerName: "Remarks", width: 150, type: "string" },
 ];
