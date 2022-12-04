@@ -18,7 +18,7 @@ const authSlice = createSlice({
 	reducers: {
 		setCredentials: (state, action: PayloadAction<AuthState>) => {
 			const { access_token, refresh_token } = action.payload;
-			console.log("🚀 ~ file: authSlice.ts ~ line 21 ~ action", action.payload);
+			// console.log("🚀 ~ file: authSlice.ts ~ line 21 ~ action", action.payload);
 			state.access_token = access_token;
 			state.refresh_token = refresh_token;
 		},

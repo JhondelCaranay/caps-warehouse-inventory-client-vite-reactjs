@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./publicLayout.scss";
 import { Outlet } from "react-router-dom";
-import Navbar from "../../public/navbar/Navbar";
+import Navbar from "../../../components/public/navbar/Navbar";
 
 const PublicLayout = () => {
 	// watch keyboard events and alert when click ctrl + f12

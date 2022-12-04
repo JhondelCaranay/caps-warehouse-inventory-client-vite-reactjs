@@ -1,24 +1,24 @@
-import "./transactionDataTable.scss";
-import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import useWindowSize from "../../../../hooks/useWindowSize";
-import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import PulseLoader from "react-spinners/PulseLoader";
-import { Transaction } from "../../../../types";
-import { transactionColumns } from "./TransactionColumns";
 import { Button, Stack } from "@mui/material";
+import { DataGrid, GridColDef, GridColumns, GridToolbar } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader";
+import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
+import useWindowSize from "../../../../hooks/useWindowSize";
+import { Item } from "../../../../types";
+import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
+import { itemColumns } from "./ItemColumns";
+import "./itemDataTable.scss";
 
-const TransactionDataTable = () => {
+const ItemDataTable = () => {
 	const { windowSize } = useWindowSize();
 
 	const {
-		data: transactions,
+		data: items,
 		isLoading,
 		isSuccess,
 		isError,
 		refetch,
-	} = useGetTransactionsQuery("transactionList", {
+	} = useGetItemsQuery("itemList", {
 		pollingInterval: 60000,
 		refetchOnFocus: true,
 		refetchOnMountOrArgChange: true,
@@ -39,7 +39,7 @@ const TransactionDataTable = () => {
 			renderCell: (params) => {
 				return (
 					<div className="cellAction">
-						<Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
+						<Link to="/dash/items/1" style={{ textDecoration: "none" }}>
 							<div className="viewButton">View</div>
 						</Link>
 						<div className="editButton" onClick={() => handleEdit(params.row.id)}>
@@ -73,16 +73,16 @@ const TransactionDataTable = () => {
 	}
 
 	if (isSuccess) {
-		const { ids, entities } = transactions;
-		const transactionList = ids.map((id) => entities[id] as Transaction);
+		const { ids, entities } = items;
+		const itemList = ids.map((id) => entities[id] as Item);
 
 		content = (
 			<>
 				<Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
 					<Stack direction="row" spacing={1}>
-						<Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
+						<Link to="/dash/items/new" style={{ textDecoration: "none" }}>
 							<Button size="small" variant="outlined">
-								Create Transaction
+								Create Item
 							</Button>
 						</Link>
 						<Button size="small" variant="outlined" onClick={refetch}>
@@ -92,8 +92,8 @@ const TransactionDataTable = () => {
 				</Stack>
 				<DataGrid
 					className="datagrid"
-					rows={transactionList}
-					columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
+					rows={itemList}
+					columns={itemColumns.concat(actionColumn)} // columns - tabel header columns
 					pageSize={10} // pageSize - number of rows per page
 					rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
 					checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
@@ -114,6 +114,6 @@ const TransactionDataTable = () => {
 		);
 	}
 
-	return <div className="transactionDataTable">{content}</div>;
+	return <div className="itemDataTable">{content}</div>;
 };
-export default TransactionDataTable;
+export default ItemDataTable;

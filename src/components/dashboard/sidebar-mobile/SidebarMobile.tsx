@@ -13,6 +13,7 @@ import {
 	PaidOutlined,
 	PersonOutline,
 	Store,
+	Warehouse,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
@@ -43,20 +44,22 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 							</li>
 						</NavLink>
 						<p className="title">LISTS</p>
+						<NavLink to="/dash/transactions" className={navLinkStyles}>
+							<li>
+								<LocalShipping className="icon" />
+								<span>Transactions</span>
+							</li>
+						</NavLink>
+						<NavLink to="/dash/items" className={navLinkStyles}>
+							<li>
+								<Warehouse className="icon" />
+								<span>Items</span>
+							</li>
+						</NavLink>
 						<NavLink to="/dash/users" className={navLinkStyles} onClick={sideBarToggle}>
 							<li>
 								<PersonOutline className="icon" />
 								<span>Users</span>
-							</li>
-						</NavLink>
-						<NavLink
-							to="/dash/products"
-							className={navLinkStyles}
-							onClick={sideBarToggle}
-						>
-							<li>
-								<Store className="icon" />
-								<span>Products</span>
 							</li>
 						</NavLink>
 						<li>
