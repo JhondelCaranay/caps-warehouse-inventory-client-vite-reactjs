@@ -56,12 +56,12 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 								<span>Items</span>
 							</li>
 						</NavLink>
-						<NavLink to="/dash/users" className={navLinkStyles} onClick={sideBarToggle}>
-							<li>
-								<PersonOutline className="icon" />
-								<span>Users</span>
-							</li>
-						</NavLink>
+						{/* <NavLink to="/dash/users" className={navLinkStyles} onClick={sideBarToggle}> */}
+						<li>
+							<PersonOutline className="icon" />
+							<span>Users</span>
+						</li>
+						{/* </NavLink> */}
 						<li>
 							<PaidOutlined className="icon" />
 							<span>Transactions</span>

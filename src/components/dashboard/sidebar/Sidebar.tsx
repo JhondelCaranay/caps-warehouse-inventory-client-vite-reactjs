@@ -49,12 +49,12 @@ const Sidebar = () => {
 							<span>Items</span>
 						</li>
 					</NavLink>
-					<NavLink to="/dash/users" className={navLinkStyles}>
+					{/* <NavLink to="/dash/users" className={navLinkStyles}> */}
 						<li>
 							<PersonOutline className="icon" />
 							<span>Users</span>
 						</li>
-					</NavLink>
+					{/* </NavLink> */}
 
 					<li>
 						<CategoryOutlined className="icon" />
