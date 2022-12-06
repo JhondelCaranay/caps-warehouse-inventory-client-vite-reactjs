@@ -49,17 +49,19 @@ const Sidebar = () => {
 							<span>Items</span>
 						</li>
 					</NavLink>
-					{/* <NavLink to="/dash/users" className={navLinkStyles}> */}
+					<NavLink to="/dash/category" className={navLinkStyles}>
 						<li>
-							<PersonOutline className="icon" />
-							<span>Users</span>
+							<CategoryOutlined className="icon" />
+							<span>Categories</span>
 						</li>
+					</NavLink>
+					{/* <NavLink to="/dash/users" className={navLinkStyles}> */}
+					<li>
+						<PersonOutline className="icon" />
+						<span>Users</span>
+					</li>
 					{/* </NavLink> */}
 
-					<li>
-						<CategoryOutlined className="icon" />
-						<span>Categories</span>
-					</li>
 					<li>
 						<BrandingWatermarkOutlined className="icon" />
 						<span>Brands</span>

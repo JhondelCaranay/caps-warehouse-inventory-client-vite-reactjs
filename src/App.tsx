@@ -16,6 +16,7 @@ import Prefetch from "./guards/Prefetch";
 import RequireAuth from "./guards/RequireAuth";
 import AuthNotAllowed from "./guards/AuthNotAllowed";
 import { ROLES } from "./types";
+import CategoryList from "./pages/dashboard/category/list/CategoryList";
 
 function App() {
 	return (
@@ -47,6 +48,12 @@ function App() {
 									<Route path="items">
 										<Route index element={<ItemList />} />
 										<Route path=":itemId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} />
+									</Route>
+
+									<Route path="category">
+										<Route index element={<CategoryList />} />
+										<Route path=":categoryId" element={<Single />} />
 										<Route path="new" element={<TransactionNew />} />
 									</Route>
 

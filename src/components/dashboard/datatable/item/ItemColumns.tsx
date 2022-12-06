@@ -3,14 +3,35 @@ import noImage from "../../../../assets/img/noimage.png";
 import { Item } from "../../../../types";
 import _ from "lodash";
 
+export const ITEM_MOBILE_COLUMNS = {
+	__check__: false,
+	id: false,
+	name: true,
+	Category: false,
+	Brand: false,
+	unit: false,
+	quantity: false,
+	description: false,
+};
+
+export const ITEM_ALL_COLUMNS = {
+	__check__: false,
+	id: false,
+	name: true,
+	Category: true,
+	Brand: false,
+	unit: true,
+	quantity: true,
+};
+
 export const itemColumns: GridColDef[] = [
 	{ field: "__check__", hide: true, sortable: false, filterable: false, width: 0 },
-	{ field: "id", headerName: "ID", width: 230, type: "string", hide: true },
+	{ field: "id", headerName: "ID", width: 350, type: "string", hide: true },
 	{
 		field: "name",
 		headerName: "Item Name",
 		hideable: false,
-		width: 230,
+		width: 300,
 		renderCell: (params: { row: Item }) => {
 			return (
 				<div className="cellWithImg">
@@ -23,15 +44,14 @@ export const itemColumns: GridColDef[] = [
 				</div>
 			);
 		},
-		valueGetter: (params) => {
+		valueGetter: (params: { row: Item }) => {
 			return params.row.name;
 		},
 	},
 	{
 		field: "Category",
 		headerName: "Category",
-		hideable: false,
-		width: 230,
+		width: 300,
 		renderCell: (params: { row: Item }) => {
 			const category = _.startCase(_.toLower(params.row.Category.name));
 			return <div>{category}</div>;
@@ -44,8 +64,7 @@ export const itemColumns: GridColDef[] = [
 	{
 		field: "Brand",
 		headerName: "Brand",
-		hideable: false,
-		width: 230,
+		width: 300,
 		renderCell: (params: { row: Item }) => {
 			const brand = _.startCase(_.toLower(params.row.Brand.name));
 			return <div>{brand}</div>;
@@ -57,5 +76,4 @@ export const itemColumns: GridColDef[] = [
 	},
 	{ field: "unit", headerName: "Unit", width: 150, type: "string" },
 	{ field: "quantity", headerName: "Quantity", width: 150, type: "number" },
-	{ field: "description", headerName: "Description", width: 230, type: "string" },
 ];

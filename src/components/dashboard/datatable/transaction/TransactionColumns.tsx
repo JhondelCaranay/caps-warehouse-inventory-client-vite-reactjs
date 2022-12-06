@@ -3,14 +3,36 @@ import noImage from "../../../../assets/img/noimage.png";
 import { Transaction } from "../../../../types";
 import _ from "lodash";
 
+export const TRANSACTION_MOBILE_COLUMNS = {
+	__check__: false,
+	id: false,
+	Item: true,
+	User: true,
+	Project: true,
+	status: false,
+	quantity: false,
+	remarks: false,
+};
+
+export const TRANSACTION_ALL_COLUMNS = {
+	__check__: false,
+	id: false,
+	Item: true,
+	User: true,
+	Project: true,
+	status: true,
+	quantity: true,
+	remarks: true,
+};
+
 export const transactionColumns: GridColDef[] = [
-	{ field: "__check__", hide: true, sortable: false, filterable: false, width: 0 },
-	{ field: "id", headerName: "ID", width: 230, type: "string", hide: true },
+	{ field: "__check__", width: 0, sortable: false, filterable: false },
+	{ field: "id", headerName: "ID", width: 230, type: "string" },
 	{
 		field: "Item",
 		headerName: "Item Name",
-		hideable: false,
 		width: 230,
+		hideable: false,
 		renderCell: (params) => {
 			return (
 				<div className="cellWithImg">
@@ -30,8 +52,8 @@ export const transactionColumns: GridColDef[] = [
 	{
 		field: "User",
 		headerName: "Sender Name",
-		hideable: false,
 		width: 230,
+		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
 			const avatar = params.row.User.Profile.avatarUrl
 				? params.row.User.Profile.avatarUrl
@@ -58,8 +80,8 @@ export const transactionColumns: GridColDef[] = [
 	{
 		field: "Project",
 		headerName: "Project Name",
-		hideable: false,
 		width: 230,
+		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
 			return <div>{params.row.Project.name}</div>;
 		},
