@@ -5,7 +5,7 @@ export const userColumns: GridColDef[] = [
 	{
 		field: "username",
 		headerName: "User",
-		width: 230,
+		width: 350,
 		renderCell: (params) => {
 			return (
 				<div className="cellWithImg">

@@ -1,12 +1,19 @@
 import { Button, Stack } from "@mui/material";
-import { DataGrid, GridColDef, GridColumns, GridToolbar } from "@mui/x-data-grid";
+import {
+	DataGrid,
+	GridColDef,
+	GridColumns,
+	GridColumnVisibilityModel,
+	GridToolbar,
+} from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { Item } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import { itemColumns } from "./ItemColumns";
+import { itemColumns, ITEM_ALL_COLUMNS, ITEM_MOBILE_COLUMNS } from "./ItemColumns";
 import "./itemDataTable.scss";
 
 const ItemDataTable = () => {
@@ -30,6 +37,12 @@ const ItemDataTable = () => {
 		console.debug("Edit", id);
 	};
 
+	const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(ITEM_ALL_COLUMNS);
+	useEffect(() => {
+		const newColumns = windowSize > 640 ? ITEM_ALL_COLUMNS : ITEM_MOBILE_COLUMNS;
+		setColumnVisible(newColumns);
+	}, [windowSize]);
+
 	// this column will be use by other data
 	const actionColumn: GridColDef[] = [
 		{
@@ -49,6 +62,7 @@ const ItemDataTable = () => {
 				);
 			},
 			sortable: false,
+			filterable: false,
 			hideable: false,
 		},
 	];
@@ -94,6 +108,8 @@ const ItemDataTable = () => {
 					className="datagrid"
 					rows={itemList}
 					columns={itemColumns.concat(actionColumn)} // columns - tabel header columns
+					columnVisibilityModel={columnVisible}
+					onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
 					pageSize={10} // pageSize - number of rows per page
 					rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
 					checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection

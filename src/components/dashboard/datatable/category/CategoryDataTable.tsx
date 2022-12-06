@@ -1,29 +1,26 @@
-import "./transactionDataTable.scss";
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import useWindowSize from "../../../../hooks/useWindowSize";
-import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import PulseLoader from "react-spinners/PulseLoader";
-import { Transaction } from "../../../../types";
-import {
-	transactionColumns,
-	TRANSACTION_ALL_COLUMNS,
-	TRANSACTION_MOBILE_COLUMNS,
-} from "./TransactionColumns";
 import { Button, Stack } from "@mui/material";
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader";
+import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import useWindowSize from "../../../../hooks/useWindowSize";
+import { Category } from "../../../../types";
+import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
+import { categoryColumns, CATEGORY_ALL_COLUMNS, CATEGORY_MOBILE_COLUMNS } from "./categoryColumns";
 
-const TransactionDataTable = () => {
+import "./categoryDataTable.scss";
+
+const CategoryDataTable = () => {
 	const { windowSize } = useWindowSize();
 
 	const {
-		data: transactions,
+		data: category,
 		isLoading,
 		isSuccess,
 		isError,
 		refetch,
-	} = useGetTransactionsQuery("transactionList", {
+	} = useGetCategoryQuery("categoryList", {
 		pollingInterval: 60000,
 		refetchOnFocus: true,
 		refetchOnMountOrArgChange: true,
@@ -36,10 +33,9 @@ const TransactionDataTable = () => {
 	};
 
 	const [columnVisible, setColumnVisible] =
-		useState<GridColumnVisibilityModel>(TRANSACTION_ALL_COLUMNS);
-
+		useState<GridColumnVisibilityModel>(CATEGORY_ALL_COLUMNS);
 	useEffect(() => {
-		const newColumns = windowSize > 640 ? TRANSACTION_ALL_COLUMNS : TRANSACTION_MOBILE_COLUMNS;
+		const newColumns = windowSize > 640 ? CATEGORY_ALL_COLUMNS : CATEGORY_MOBILE_COLUMNS;
 		setColumnVisible(newColumns);
 	}, [windowSize]);
 
@@ -49,10 +45,10 @@ const TransactionDataTable = () => {
 			field: "actions",
 			headerName: "Actions",
 			width: 150,
-			renderCell: (params) => {
+			renderCell: (params: { row: Category }) => {
 				return (
 					<div className="cellAction">
-						<Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
+						<Link to="/dash/category/1" style={{ textDecoration: "none" }}>
 							<div className="viewButton">View</div>
 						</Link>
 						<div className="editButton" onClick={() => handleEdit(params.row.id)}>
@@ -87,16 +83,16 @@ const TransactionDataTable = () => {
 	}
 
 	if (isSuccess) {
-		const { ids, entities } = transactions;
-		const transactionList = ids.map((id) => entities[id] as Transaction);
+		const { ids, entities } = category;
+		const categoryList = ids.map((id) => entities[id] as Category);
 
 		content = (
 			<>
 				<Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
 					<Stack direction="row" spacing={1}>
-						<Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
+						<Link to="/dash/category/new" style={{ textDecoration: "none" }}>
 							<Button size="small" variant="outlined">
-								Create Transaction
+								Create Item
 							</Button>
 						</Link>
 						<Button size="small" variant="outlined" onClick={refetch}>
@@ -106,8 +102,8 @@ const TransactionDataTable = () => {
 				</Stack>
 				<DataGrid
 					className="datagrid"
-					rows={transactionList}
-					columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
+					rows={categoryList}
+					columns={categoryColumns.concat(actionColumn)} // columns - tabel header columns
 					columnVisibilityModel={columnVisible}
 					onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
 					pageSize={10} // pageSize - number of rows per page
@@ -130,6 +126,6 @@ const TransactionDataTable = () => {
 		);
 	}
 
-	return <div className="transactionDataTable">{content}</div>;
+	return <div className="categoryDataTable">{content}</div>;
 };
-export default TransactionDataTable;
+export default CategoryDataTable;
