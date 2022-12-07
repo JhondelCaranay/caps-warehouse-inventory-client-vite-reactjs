@@ -28,7 +28,7 @@ export const itemColumns: GridColDef[] = [
 	{ field: "__check__", hide: true, sortable: false, filterable: false, width: 0 },
 	{ field: "id", headerName: "ID", width: 350, type: "string", hide: true },
 	{
-		field: "name",
+		field: "Item",
 		headerName: "Item Name",
 		hideable: false,
 		width: 300,

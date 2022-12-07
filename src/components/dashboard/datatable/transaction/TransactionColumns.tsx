@@ -7,7 +7,9 @@ export const TRANSACTION_MOBILE_COLUMNS = {
 	__check__: false,
 	id: false,
 	Item: true,
-	User: true,
+	// User: true,
+	UserSender: true,
+	UserReciever: true,
 	Project: true,
 	status: false,
 	quantity: false,
@@ -18,20 +20,22 @@ export const TRANSACTION_ALL_COLUMNS = {
 	__check__: false,
 	id: false,
 	Item: true,
-	User: true,
+	// User: true,
+	UserSender: true,
+	UserReciever: true,
 	Project: true,
-	status: true,
-	quantity: true,
-	remarks: true,
+	status: false,
+	quantity: false,
+	remarks: false,
 };
 
 export const transactionColumns: GridColDef[] = [
 	{ field: "__check__", width: 0, sortable: false, filterable: false },
-	{ field: "id", headerName: "ID", width: 230, type: "string" },
+	{ field: "id", headerName: "ID", width: 350, type: "string" },
 	{
 		field: "Item",
 		headerName: "Item Name",
-		width: 230,
+		width: 300,
 		hideable: false,
 		renderCell: (params) => {
 			return (
@@ -50,9 +54,9 @@ export const transactionColumns: GridColDef[] = [
 		},
 	},
 	{
-		field: "User",
+		field: "UserSender",
 		headerName: "Sender Name",
-		width: 230,
+		width: 300,
 		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
 			const avatar = params.row.User.Profile.avatarUrl
@@ -78,9 +82,36 @@ export const transactionColumns: GridColDef[] = [
 		},
 	},
 	{
+		field: "UserReciever",
+		headerName: "Reciever Name",
+		width: 300,
+		renderCell: (params: { row: Transaction }) => {
+			const avatar = params.row.Project.User.Profile.avatarUrl
+				? params.row.Project.User.Profile.avatarUrl
+				: noImage;
+
+			const fullName = _.startCase(
+				`${params.row.Project.User.Profile.first_name} ${params.row.Project.User.Profile.last_name}`
+			);
+
+			return (
+				<div className="cellWithImg">
+					<img className="cellImg" src={avatar} alt="avatar" />
+					{fullName}
+				</div>
+			);
+		},
+		valueGetter: (params: { row: Transaction }) => {
+			const fullName = _.startCase(
+				`${params.row.Project.User.Profile.first_name} ${params.row.Project.User.Profile.last_name}`
+			);
+			return fullName;
+		},
+	},
+	{
 		field: "Project",
 		headerName: "Project Name",
-		width: 230,
+		width: 300,
 		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
 			return <div>{params.row.Project.name}</div>;
@@ -102,6 +133,6 @@ export const transactionColumns: GridColDef[] = [
 			return status;
 		},
 	},
-	{ field: "quantity", headerName: "Quantity", width: 150, type: "number" },
-	{ field: "remarks", headerName: "Remarks", width: 150, type: "string" },
+	{ field: "quantity", headerName: "Quantity", width: 180, type: "number" },
+	{ field: "remarks", headerName: "Remarks", width: 180, type: "string" },
 ];
