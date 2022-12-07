@@ -21,6 +21,7 @@ const ItemDataTable = () => {
 
 	const {
 		data: items,
+		error,
 		isLoading,
 		isSuccess,
 		isError,
@@ -70,6 +71,10 @@ const ItemDataTable = () => {
 	let content: JSX.Element | null = null;
 
 	if (isLoading) {
+		console.log(
+			"🚀 ~ file: TransactionDataTable.tsx:82 ~ TransactionDataTable ~ isError",
+			error
+		);
 		content = (
 			<div className="loading">
 				<PulseLoader color={"#000000"} />

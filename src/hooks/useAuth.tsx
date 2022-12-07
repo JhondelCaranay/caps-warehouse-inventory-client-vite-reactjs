@@ -1,7 +1,4 @@
-import { useSelector } from "react-redux";
-import { selectAccessToken } from "../app/features/auth/authSlice";
 import jwtDecode from "jwt-decode";
-
 import Cookie from "js-cookie";
 
 export type UserAuth = {

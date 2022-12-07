@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 const AuthNotAllowed = () => {
 	const location = useLocation();
-	console.log("🚀 ~ file: AuthNotAllowed.tsx:5 ~ AuthNotAllowed ~ location", location);
+	// console.log("🚀 ~ file: AuthNotAllowed.tsx:5 ~ AuthNotAllowed ~ location", location);
 	const { id } = useAuth();
 
 	if (id) {
