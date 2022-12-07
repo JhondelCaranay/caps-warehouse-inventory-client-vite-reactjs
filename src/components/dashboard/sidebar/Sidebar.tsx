@@ -50,18 +50,19 @@ const Sidebar = () => {
 							<span>Items</span>
 						</li>
 					</NavLink>
-					<NavLink to="/dash/category" className={navLinkStyles}>
-						<li>
-							<CategoryOutlined className="icon" />
-							<span>Categories</span>
-						</li>
-					</NavLink>
 					<NavLink to="/dash/projects" className={navLinkStyles}>
 						<li>
 							<Construction className="icon" />
 							<span>Projects</span>
 						</li>
 					</NavLink>
+					<NavLink to="/dash/category" className={navLinkStyles}>
+						<li>
+							<CategoryOutlined className="icon" />
+							<span>Categories</span>
+						</li>
+					</NavLink>
+
 					{/* <NavLink to="/dash/users" className={navLinkStyles}> */}
 					<li>
 						<PersonOutline className="icon" />

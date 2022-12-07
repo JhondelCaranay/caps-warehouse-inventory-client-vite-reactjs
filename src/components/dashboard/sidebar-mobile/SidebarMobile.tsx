@@ -4,6 +4,7 @@ import {
 	AccountCircleOutlined,
 	BrandingWatermarkOutlined,
 	CategoryOutlined,
+	Construction,
 	Dashboard,
 	ExitToApp,
 	InsertChart,
@@ -11,8 +12,6 @@ import {
 	MenuOutlined,
 	NotificationsNone,
 	PaidOutlined,
-	PersonOutline,
-	Store,
 	Warehouse,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
@@ -44,31 +43,46 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 							</li>
 						</NavLink>
 						<p className="title">LISTS</p>
-						<NavLink to="/dash/transactions" className={navLinkStyles}>
+						<NavLink
+							to="/dash/transactions"
+							className={navLinkStyles}
+							onClick={sideBarToggle}
+						>
 							<li>
 								<LocalShipping className="icon" />
 								<span>Transactions</span>
 							</li>
 						</NavLink>
-						<NavLink to="/dash/items" className={navLinkStyles}>
+						<NavLink to="/dash/items" className={navLinkStyles} onClick={sideBarToggle}>
 							<li>
 								<Warehouse className="icon" />
 								<span>Items</span>
 							</li>
 						</NavLink>
-						{/* <NavLink to="/dash/users" className={navLinkStyles} onClick={sideBarToggle}> */}
-						<li>
-							<PersonOutline className="icon" />
-							<span>Users</span>
-						</li>
-						{/* </NavLink> */}
+						<NavLink
+							to="/dash/projects"
+							className={navLinkStyles}
+							onClick={sideBarToggle}
+						>
+							<li>
+								<Construction className="icon" />
+								<span>Projects</span>
+							</li>
+						</NavLink>
+						<NavLink
+							to="/dash/category"
+							className={navLinkStyles}
+							onClick={sideBarToggle}
+						>
+							<li>
+								<CategoryOutlined className="icon" />
+								<span>Categories</span>
+							</li>
+						</NavLink>
+
 						<li>
 							<PaidOutlined className="icon" />
 							<span>Transactions</span>
-						</li>
-						<li>
-							<CategoryOutlined className="icon" />
-							<span>Categories</span>
 						</li>
 						<li>
 							<BrandingWatermarkOutlined className="icon" />

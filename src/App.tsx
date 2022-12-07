@@ -18,7 +18,7 @@ import AuthNotAllowed from "./guards/AuthNotAllowed";
 import { ROLES } from "./types";
 import CategoryList from "./pages/dashboard/category/list/CategoryList";
 import ProjectList from "./pages/dashboard/project/list/ProjectList";
-
+import "./global.scss";
 function App() {
 	return (
 		<div className="App">
