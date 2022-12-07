@@ -4,6 +4,7 @@ import {
 	AccountCircleOutlined,
 	BrandingWatermarkOutlined,
 	CategoryOutlined,
+	Construction,
 	Dashboard,
 	ExitToApp,
 	InsertChart,
@@ -53,6 +54,12 @@ const Sidebar = () => {
 						<li>
 							<CategoryOutlined className="icon" />
 							<span>Categories</span>
+						</li>
+					</NavLink>
+					<NavLink to="/dash/projects" className={navLinkStyles}>
+						<li>
+							<Construction className="icon" />
+							<span>Projects</span>
 						</li>
 					</NavLink>
 					{/* <NavLink to="/dash/users" className={navLinkStyles}> */}

@@ -36,7 +36,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 		refresh: builder.mutation<Tokens, void>({
 			query: () => ({
 				url: "/api/auth/refresh",
-				method: "GET",
+				method: "POST",
 				headers: {
 					authorization: `Bearer ${Cookie.get("refresh_token")}`,
 				},

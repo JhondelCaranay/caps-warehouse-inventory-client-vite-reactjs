@@ -17,6 +17,7 @@ import RequireAuth from "./guards/RequireAuth";
 import AuthNotAllowed from "./guards/AuthNotAllowed";
 import { ROLES } from "./types";
 import CategoryList from "./pages/dashboard/category/list/CategoryList";
+import ProjectList from "./pages/dashboard/project/list/ProjectList";
 
 function App() {
 	return (
@@ -54,6 +55,12 @@ function App() {
 									<Route path="category">
 										<Route index element={<CategoryList />} />
 										<Route path=":categoryId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} />
+									</Route>
+
+									<Route path="projects">
+										<Route index element={<ProjectList />} />
+										<Route path=":projectsId" element={<Single />} />
 										<Route path="new" element={<TransactionNew />} />
 									</Route>
 

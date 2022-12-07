@@ -1,6 +1,6 @@
 import "./transactionDataTable.scss";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
@@ -16,9 +16,11 @@ import { useEffect, useState } from "react";
 
 const TransactionDataTable = () => {
 	const { windowSize } = useWindowSize();
+	const navigate = useNavigate();
 
 	const {
 		data: transactions,
+		error,
 		isLoading,
 		isSuccess,
 		isError,
@@ -78,6 +80,10 @@ const TransactionDataTable = () => {
 	}
 
 	if (isError) {
+		if (Object.values(error)[0] === 401) {
+			return <Navigate to="/login" replace />;
+		}
+
 		content = (
 			<div className="loading">
 				<PulseLoader color={"#000000"} />
