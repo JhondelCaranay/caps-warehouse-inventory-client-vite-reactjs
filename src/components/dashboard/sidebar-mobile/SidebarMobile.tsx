@@ -12,6 +12,7 @@ import {
 	MenuOutlined,
 	NotificationsNone,
 	PaidOutlined,
+	PeopleOutline,
 	Warehouse,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
@@ -80,18 +81,22 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 							</li>
 						</NavLink>
 
+						<NavLink
+							to="/dash/brands"
+							className={navLinkStyles}
+							onClick={sideBarToggle}
+						>
+							<li>
+								<BrandingWatermarkOutlined className="icon" />
+								<span>Brands</span>
+							</li>
+						</NavLink>
+
 						<li>
-							<PaidOutlined className="icon" />
-							<span>Transactions</span>
+							<PeopleOutline className="icon" />
+							<span>Users</span>
 						</li>
-						<li>
-							<BrandingWatermarkOutlined className="icon" />
-							<span>Brands</span>
-						</li>
-						<li>
-							<LocalShipping className="icon" />
-							<span>Projects</span>
-						</li>
+
 						<p className="title">USEFUL</p>
 						<li>
 							<InsertChart className="icon" />

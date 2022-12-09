@@ -53,7 +53,7 @@ const ItemDataTable = () => {
 			renderCell: (params) => {
 				return (
 					<div className="cellAction">
-						<Link to="/dash/items/1" style={{ textDecoration: "none" }}>
+						<Link to="/dash" style={{ textDecoration: "none" }}>
 							<div className="viewButton">View</div>
 						</Link>
 						<div className="editButton" onClick={() => handleEdit(params.row.id)}>
@@ -99,7 +99,7 @@ const ItemDataTable = () => {
 			<>
 				<Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
 					<Stack direction="row" spacing={1}>
-						<Link to="/dash/items/new" style={{ textDecoration: "none" }}>
+						<Link to="/dash" style={{ textDecoration: "none" }}>
 							<Button size="small" variant="outlined">
 								Create Item
 							</Button>
