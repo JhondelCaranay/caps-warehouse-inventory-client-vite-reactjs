@@ -1,7 +1,7 @@
 import "./login.scss";
 import useTitle from "../../../hooks/useTitle";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginFormValues } from "../../../types";
+import { LoginFormValues, ROLES } from "../../../types";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { FormikHelpers, Formik, Field, ErrorMessage, Form } from "formik";
@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../../app/services/auth/authApiSlice";
 import { setCredentials } from "../../../app/features/auth/authSlice";
 import ErrorList from "../../../components/toast/ErrorList";
+import jwtDecode from "jwt-decode";
+import { UserAuth } from "../../../hooks/useAuth";
 
 const initialValues: LoginFormValues = {
 	email: "",
@@ -49,7 +51,12 @@ const Login = () => {
 
 			toast.success("Login successful");
 			submitProps.resetForm();
-			navigate("/dash");
+
+			const { role } = jwtDecode<UserAuth>(access_token);
+
+			if (role === ROLES.ADMIN || role === ROLES.SUPER_ADMIN) navigate("/dash");
+			else if (role === ROLES.WAREHOUSE_CONTROLLER) navigate("/dash/transactions");
+			else if (role === ROLES.ENGINEER) navigate("/me");
 		} catch (err: any) {
 			console.log("🚀 ~ file: Login.tsx ~ line 50 ~ Login ~ err", err);
 
@@ -94,7 +101,7 @@ const Login = () => {
 												? "input error"
 												: "input"
 										}
-										autoComplete="off"
+										// autoComplete="off"
 									/>
 									<ErrorMessage
 										name="email"

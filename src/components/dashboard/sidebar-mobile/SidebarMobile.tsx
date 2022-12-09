@@ -1,5 +1,5 @@
 import "./sidebarMobile.scss";
-import { SidebarProps } from "../../../types";
+import { ROLES, SidebarProps } from "../../../types";
 import {
 	AccountCircleOutlined,
 	BrandingWatermarkOutlined,
@@ -7,20 +7,40 @@ import {
 	Construction,
 	Dashboard,
 	ExitToApp,
-	InsertChart,
+	Hardware,
 	LocalShipping,
 	MenuOutlined,
-	NotificationsNone,
-	PaidOutlined,
 	PeopleOutline,
 	Warehouse,
 } from "@mui/icons-material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../../app/features/auth/authSlice";
 const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
 	return isActive ? "active" : "";
 };
 
 const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
+	const { role } = useAuth();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const handleLogout = () => {
+		// confirm logout
+		if (!window.confirm("Are you sure you want to logout?")) return;
+		dispatch(logOut());
+		navigate("/login");
+	};
+
+	const ADMIN_AND_CONTROLLER = useMemo(
+		() => [ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.WAREHOUSE_CONTROLLER],
+		[] // only run once
+	);
+	const ADMIN = useMemo(() => [ROLES.ADMIN, ROLES.SUPER_ADMIN], []);
+	const ENGINEER = useMemo(() => [ROLES.ENGINEER], []);
+
 	const sideBarToggle = () => {
 		setToggleSidebar(!toggleSidebar);
 	};
@@ -36,89 +56,106 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 
 				<div className="center">
 					<ul>
-						<p className="title">MAIN</p>
-						<NavLink end to="/dash" className={navLinkStyles} onClick={sideBarToggle}>
-							<li>
-								<Dashboard className="icon" />
-								<span>Dashboard</span>
-							</li>
-						</NavLink>
+						{
+							// if admin or super admin
+							ADMIN.includes(role as ROLES) && (
+								<>
+									<p className="title">MAIN</p>
+									<NavLink
+										end
+										to="/dash"
+										className={navLinkStyles}
+										onClick={sideBarToggle}
+									>
+										<li>
+											<Dashboard className="icon" />
+											<span>Dashboard </span>
+										</li>
+									</NavLink>
+								</>
+							)
+						}
+
 						<p className="title">LISTS</p>
-						<NavLink
-							to="/dash/transactions"
-							className={navLinkStyles}
-							onClick={sideBarToggle}
-						>
-							<li>
-								<LocalShipping className="icon" />
-								<span>Transactions</span>
-							</li>
-						</NavLink>
-						<NavLink to="/dash/items" className={navLinkStyles} onClick={sideBarToggle}>
-							<li>
-								<Warehouse className="icon" />
-								<span>Items</span>
-							</li>
-						</NavLink>
-						<NavLink
-							to="/dash/projects"
-							className={navLinkStyles}
-							onClick={sideBarToggle}
-						>
-							<li>
-								<Construction className="icon" />
-								<span>Projects</span>
-							</li>
-						</NavLink>
-						<NavLink
-							to="/dash/category"
-							className={navLinkStyles}
-							onClick={sideBarToggle}
-						>
-							<li>
-								<CategoryOutlined className="icon" />
-								<span>Categories</span>
-							</li>
-						</NavLink>
+						{
+							// if admin or super admin or warehouse controller
+							ADMIN_AND_CONTROLLER.includes(role as ROLES) && (
+								<>
+									<NavLink to="/dash/transactions" className={navLinkStyles}>
+										<li>
+											<LocalShipping className="icon" />
+											<span>Transactions</span>
+										</li>
+									</NavLink>
+									<NavLink to="/dash/items" className={navLinkStyles}>
+										<li>
+											<Warehouse className="icon" />
+											<span>Items</span>
+										</li>
+									</NavLink>
+									<NavLink to="/dash/projects" className={navLinkStyles}>
+										<li>
+											<Construction className="icon" />
+											<span>Projects</span>
+										</li>
+									</NavLink>
+									<NavLink to="/dash/category" className={navLinkStyles}>
+										<li>
+											<CategoryOutlined className="icon" />
+											<span>Categories</span>
+										</li>
+									</NavLink>
 
-						<NavLink
-							to="/dash/brands"
-							className={navLinkStyles}
-							onClick={sideBarToggle}
-						>
-							<li>
-								<BrandingWatermarkOutlined className="icon" />
-								<span>Brands</span>
-							</li>
-						</NavLink>
+									<NavLink to="/dash/brands" className={navLinkStyles}>
+										<li>
+											<BrandingWatermarkOutlined className="icon" />
+											<span>Brands</span>
+										</li>
+									</NavLink>
+								</>
+							)
+						}
 
-						<li>
-							<PeopleOutline className="icon" />
-							<span>Users</span>
-						</li>
+						{
+							// id admin or super admin
+							ADMIN.includes(role as ROLES) && (
+								<>
+									<li>
+										<PeopleOutline className="icon" />
+										<span>Users</span>
+									</li>
+								</>
+							)
+						}
 
-						<p className="title">USEFUL</p>
-						<li>
-							<InsertChart className="icon" />
-							<span>Stats</span>
-						</li>
-						<li>
-							<NotificationsNone className="icon" />
-							<span>Notifications</span>
-						</li>
-						{/* <p className="title">SERVICE</p>
-					<li>
-						<SettingsSystemDaydreamOutlined className="icon" />
-						<span>System Health</span>
-					</li>
-					<li>
-						<PsychologyOutlined className="icon" />
-						<span>Logs</span>
-					</li>
-					<li>
-						<SettingsApplications className="icon" />
-						<span>Settings</span>
-					</li> */}
+						{
+							// id admin or super admin
+							ENGINEER.includes(role as ROLES) && (
+								<>
+									<NavLink to="/me/items" className={navLinkStyles}>
+										<li>
+											<Hardware className="icon" />
+											<span>Items</span>
+										</li>
+									</NavLink>
+
+									<NavLink to="/me/transactions" className={navLinkStyles}>
+										<li>
+											<LocalShipping className="icon" />
+											<span>Transactions</span>
+										</li>
+									</NavLink>
+
+									<NavLink to="/me/projects" className={navLinkStyles}>
+										<li>
+											<Construction className="icon" />
+											<span>My Projects</span>
+										</li>
+									</NavLink>
+								</>
+							)
+						}
+
 						<p className="title">USER</p>
 						<li>
 							<AccountCircleOutlined className="icon" />
@@ -131,8 +168,14 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 					</ul>
 				</div>
 				<div className="bottom">
-					{/* <div className="colorOption" onClick={() => dispatch({ type: "LIGHT" })}></div> */}
-					{/* <div className="colorOption" onClick={() => dispatch({ type: "DARK" })}></div> */}
+					<div
+						className="colorOption"
+						// onClick={() => dispatch({ type: "LIGHT" })}
+					></div>
+					<div
+						className="colorOption"
+						// onClick={() => dispatch({ type: "DARK" })}
+					></div>
 				</div>
 			</div>
 

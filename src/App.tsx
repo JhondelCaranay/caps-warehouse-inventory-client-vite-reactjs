@@ -20,6 +20,9 @@ import CategoryList from "./pages/dashboard/category/list/CategoryList";
 import ProjectList from "./pages/dashboard/project/list/ProjectList";
 import "./global.scss";
 import BrandList from "./pages/dashboard/brand/list/BrandList";
+import EngItems from "./pages/engineer/items/EngItems";
+import EngTransactions from "./pages/engineer/transaction/EngTransactions";
+import EngProjects from "./pages/engineer/projects/EngProjects";
 function App() {
 	return (
 		<div className="App">
@@ -38,37 +41,75 @@ function App() {
 						<Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
 							<Route element={<Prefetch />}>
 								<Route path="/dash" element={<DashLayout />}>
-									<Route index element={<DashHome />} />
-									<Route path="home" element={<DashHome />} />
-
-									<Route path="transactions">
-										<Route index element={<TransactionList />} />
-										<Route path=":transactionId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} />
+									<Route
+										element={
+											<RequireAuth
+												allowedRoles={[ROLES.ADMIN, ROLES.SUPER_ADMIN]}
+											/>
+										}
+									>
+										<Route index element={<DashHome />} />
+										<Route path="home" element={<DashHome />} />
 									</Route>
 
-									<Route path="items">
-										<Route index element={<ItemList />} />
-										{/* <Route path=":itemId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} /> */}
-									</Route>
+									<Route
+										element={
+											<RequireAuth
+												allowedRoles={[
+													ROLES.ADMIN,
+													ROLES.SUPER_ADMIN,
+													ROLES.WAREHOUSE_CONTROLLER,
+												]}
+											/>
+										}
+									>
+										<Route path="transactions">
+											<Route index element={<TransactionList />} />
+											<Route path=":transactionId" element={<Single />} />
+											<Route path="new" element={<TransactionNew />} />
+										</Route>
 
-									<Route path="category">
-										<Route index element={<CategoryList />} />
-										{/* <Route path=":categoryId" element={<Single />} />
+										<Route path="items">
+											<Route index element={<ItemList />} />
+											{/* <Route path=":itemId" element={<Single />} />
 										<Route path="new" element={<TransactionNew />} /> */}
-									</Route>
+										</Route>
 
-									<Route path="projects">
-										<Route index element={<ProjectList />} />
-										{/* <Route path=":projectsId" element={<Single />} />
+										<Route path="category">
+											<Route index element={<CategoryList />} />
+											{/* <Route path=":categoryId" element={<Single />} />
 										<Route path="new" element={<TransactionNew />} /> */}
-									</Route>
+										</Route>
 
-									<Route path="brands">
-										<Route index element={<BrandList />} />
-										{/* <Route path=":userId" element={<Single />} />
+										<Route path="projects">
+											<Route index element={<ProjectList />} />
+											{/* <Route path=":projectsId" element={<Single />} />
 										<Route path="new" element={<TransactionNew />} /> */}
+										</Route>
+
+										<Route path="brands">
+											<Route index element={<BrandList />} />
+											{/* <Route path=":userId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} /> */}
+										</Route>
+									</Route>
+								</Route>
+
+								<Route element={<RequireAuth allowedRoles={[ROLES.ENGINEER]} />}>
+									<Route path="/me" element={<DashLayout />}>
+										<Route index element={<EngItems />} />
+
+										<Route path="items">
+											<Route index element={<EngItems />} />
+										</Route>
+
+										<Route path="transactions">
+											<Route index element={<EngTransactions />} />
+										</Route>
+
+										<Route path="projects">
+											<Route index element={<EngProjects />} />
+										</Route>
 									</Route>
 								</Route>
 							</Route>
