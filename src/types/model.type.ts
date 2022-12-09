@@ -87,10 +87,12 @@ export type Transaction = {
 	materials_issuance_num: string;
 	gate_pass_num: string;
 	return_slip_num: string;
-	userId: string;
 	itemId: string;
 	projectId: string;
+	senderId: string;
+	receiverId: string;
 	Item: Item;
 	Project: Project;
-	User: User;
+	Sender: User;
+	Receiver: User;
 };

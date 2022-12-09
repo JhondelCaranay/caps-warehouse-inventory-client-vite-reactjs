@@ -1,14 +1,18 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { ROLES } from "../types";
 const AuthNotAllowed = () => {
 	const location = useLocation();
-	// console.log("🚀 ~ file: AuthNotAllowed.tsx:5 ~ AuthNotAllowed ~ location", location);
-	const { id } = useAuth();
+	const { role } = useAuth();
 
-	if (id) {
-		// if id is null, then the user is not logged in
-		// nabigate back to previous page
-		return <Navigate to={location.state?.from || "/dash/transactions"} replace />;
+	if (role === ROLES.ADMIN || role === ROLES.SUPER_ADMIN) {
+		return <Navigate to="/dash" state={{ from: location }} replace />;
+	}
+	if (role === ROLES.WAREHOUSE_CONTROLLER) {
+		return <Navigate to="/dash/transactions" state={{ from: location }} replace />;
+	}
+	if (role === ROLES.ENGINEER) {
+		return <Navigate to="/me" state={{ from: location }} replace />;
 	} else {
 		return <Outlet />;
 	}

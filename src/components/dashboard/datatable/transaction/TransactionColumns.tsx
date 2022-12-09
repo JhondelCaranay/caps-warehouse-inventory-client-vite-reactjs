@@ -59,12 +59,12 @@ export const transactionColumns: GridColDef[] = [
 		width: 300,
 		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
-			const avatar = params.row.User.Profile.avatarUrl
-				? params.row.User.Profile.avatarUrl
+			const avatar = params.row.Sender.Profile.avatarUrl
+				? params.row.Sender.Profile.avatarUrl
 				: noImage;
 
 			const fullName = _.startCase(
-				`${params.row.User.Profile.first_name} ${params.row.User.Profile.last_name}`
+				`${params.row.Sender.Profile.first_name} ${params.row.Sender.Profile.last_name}`
 			);
 
 			return (
@@ -76,7 +76,7 @@ export const transactionColumns: GridColDef[] = [
 		},
 		valueGetter: (params: { row: Transaction }) => {
 			const fullName = _.startCase(
-				`${params.row.User.Profile.first_name} ${params.row.User.Profile.last_name}`
+				`${params.row.Sender.Profile.first_name} ${params.row.Sender.Profile.last_name}`
 			);
 			return fullName;
 		},
@@ -86,12 +86,12 @@ export const transactionColumns: GridColDef[] = [
 		headerName: "Reciever Name",
 		width: 300,
 		renderCell: (params: { row: Transaction }) => {
-			const avatar = params.row.Project.User.Profile.avatarUrl
-				? params.row.Project.User.Profile.avatarUrl
+			const avatar = params.row.Receiver.Profile.avatarUrl
+				? params.row.Receiver.Profile.avatarUrl
 				: noImage;
 
 			const fullName = _.startCase(
-				`${params.row.Project.User.Profile.first_name} ${params.row.Project.User.Profile.last_name}`
+				`${params.row.Receiver.Profile.first_name} ${params.row.Receiver.Profile.last_name}`
 			);
 
 			return (
@@ -103,7 +103,7 @@ export const transactionColumns: GridColDef[] = [
 		},
 		valueGetter: (params: { row: Transaction }) => {
 			const fullName = _.startCase(
-				`${params.row.Project.User.Profile.first_name} ${params.row.Project.User.Profile.last_name}`
+				`${params.row.Receiver.Profile.first_name} ${params.row.Receiver.Profile.last_name}`
 			);
 			return fullName;
 		},
