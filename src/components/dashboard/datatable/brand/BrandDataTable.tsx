@@ -1,27 +1,26 @@
-import "./projectDataTable.scss";
-import { Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
+import { Stack } from "@mui/system";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PulseLoader from "react-spinners/PulseLoader";
-
+import { PulseLoader } from "react-spinners";
+import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
-import { Project } from "../../../../types";
+import { Brand } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
-import { projectColumns, PROJECT_ALL_COLUMNS, PROJECT_MOBILE_COLUMNS } from "./projectColumns";
+import { brandColumns, BRAND_ALL_COLUMNS, BRAND_MOBILE_COLUMNS } from "./brandColumn";
+import "./brandDataTable.scss";
 
-const ProjectDataTable = () => {
+const BrandDataTable = () => {
 	const { windowSize } = useWindowSize();
 
 	const {
-		data: projects,
-		error,
+		data: brands,
 		isLoading,
 		isSuccess,
 		isError,
 		refetch,
-	} = useGetProjectsQuery("projectList", {
+	} = useGetBrandsQuery("brandList", {
 		pollingInterval: 60000,
 		refetchOnFocus: true,
 		refetchOnMountOrArgChange: true,
@@ -34,10 +33,10 @@ const ProjectDataTable = () => {
 	};
 
 	const [columnVisible, setColumnVisible] =
-		useState<GridColumnVisibilityModel>(PROJECT_ALL_COLUMNS);
+		useState<GridColumnVisibilityModel>(BRAND_ALL_COLUMNS);
 
 	useEffect(() => {
-		const newColumns = windowSize > 640 ? PROJECT_ALL_COLUMNS : PROJECT_MOBILE_COLUMNS;
+		const newColumns = windowSize > 640 ? BRAND_ALL_COLUMNS : BRAND_MOBILE_COLUMNS;
 		setColumnVisible(newColumns);
 	}, [windowSize]);
 
@@ -47,7 +46,7 @@ const ProjectDataTable = () => {
 			field: "actions",
 			headerName: "Actions",
 			width: 150,
-			renderCell: (params) => {
+			renderCell: (params: { row: Brand }) => {
 				return (
 					<div className="cellAction">
 						<Link to="/dash" style={{ textDecoration: "none" }}>
@@ -68,10 +67,6 @@ const ProjectDataTable = () => {
 	let content: JSX.Element | null = null;
 
 	if (isLoading) {
-		console.log(
-			"🚀 ~ file: TransactionDataTable.tsx:82 ~ TransactionDataTable ~ isError",
-			error
-		);
 		content = (
 			<div className="loading">
 				<PulseLoader color={"#000000"} />
@@ -89,8 +84,8 @@ const ProjectDataTable = () => {
 	}
 
 	if (isSuccess) {
-		const { ids, entities } = projects;
-		const projectList = ids.map((id) => entities[id] as Project);
+		const { ids, entities } = brands;
+		const brandList = ids.map((id) => entities[id] as Brand);
 
 		content = (
 			<>
@@ -98,7 +93,7 @@ const ProjectDataTable = () => {
 					<Stack direction="row" spacing={1}>
 						<Link to="/dash" style={{ textDecoration: "none" }}>
 							<Button size="small" variant="outlined">
-								Create Project
+								Create Item
 							</Button>
 						</Link>
 						<Button size="small" variant="outlined" onClick={refetch}>
@@ -108,8 +103,8 @@ const ProjectDataTable = () => {
 				</Stack>
 				<DataGrid
 					className="datagrid"
-					rows={projectList}
-					columns={projectColumns.concat(actionColumn)} // columns - tabel header columns
+					rows={brandList}
+					columns={brandColumns.concat(actionColumn)} // columns - tabel header columns
 					columnVisibilityModel={columnVisible}
 					onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
 					pageSize={10} // pageSize - number of rows per page
@@ -132,6 +127,6 @@ const ProjectDataTable = () => {
 		);
 	}
 
-	return <div className="projectDataTable">{content}</div>;
+	return <div className="brandDataTable">{content}</div>;
 };
-export default ProjectDataTable;
+export default BrandDataTable;

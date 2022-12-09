@@ -19,6 +19,7 @@ import { ROLES } from "./types";
 import CategoryList from "./pages/dashboard/category/list/CategoryList";
 import ProjectList from "./pages/dashboard/project/list/ProjectList";
 import "./global.scss";
+import BrandList from "./pages/dashboard/brand/list/BrandList";
 function App() {
 	return (
 		<div className="App">
@@ -48,33 +49,27 @@ function App() {
 
 									<Route path="items">
 										<Route index element={<ItemList />} />
-										<Route path=":itemId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} />
+										{/* <Route path=":itemId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} /> */}
 									</Route>
 
 									<Route path="category">
 										<Route index element={<CategoryList />} />
-										<Route path=":categoryId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} />
+										{/* <Route path=":categoryId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} /> */}
 									</Route>
 
 									<Route path="projects">
 										<Route index element={<ProjectList />} />
-										<Route path=":projectsId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} />
+										{/* <Route path=":projectsId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} /> */}
 									</Route>
 
-									{/* <Route path="users">
-										<Route index element={<List />} />
-										<Route path=":userId" element={<Single />} />
-										<Route path="new" element={<New />} />
-									</Route> */}
-
-									{/* <Route path="products">
-										<Route index element={<List />} />
-										<Route path=":productId" element={<Single />} />
-										<Route path="new" element={<New />} />
-									</Route> */}
+									<Route path="brands">
+										<Route index element={<BrandList />} />
+										{/* <Route path=":userId" element={<Single />} />
+										<Route path="new" element={<TransactionNew />} /> */}
+									</Route>
 								</Route>
 							</Route>
 						</Route>

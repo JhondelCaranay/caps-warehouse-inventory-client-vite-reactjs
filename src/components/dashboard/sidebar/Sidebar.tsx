@@ -10,6 +10,7 @@ import {
 	InsertChart,
 	LocalShipping,
 	NotificationsNone,
+	PeopleOutline,
 	PersonOutline,
 	Store,
 	Warehouse,
@@ -63,21 +64,20 @@ const Sidebar = () => {
 						</li>
 					</NavLink>
 
+					<NavLink to="/dash/brands" className={navLinkStyles}>
+						<li>
+							<BrandingWatermarkOutlined className="icon" />
+							<span>Brands</span>
+						</li>
+					</NavLink>
+
 					{/* <NavLink to="/dash/users" className={navLinkStyles}> */}
 					<li>
-						<PersonOutline className="icon" />
+						<PeopleOutline className="icon" />
 						<span>Users</span>
 					</li>
 					{/* </NavLink> */}
 
-					<li>
-						<BrandingWatermarkOutlined className="icon" />
-						<span>Brands</span>
-					</li>
-					<li>
-						<LocalShipping className="icon" />
-						<span>Projects</span>
-					</li>
 					<p className="title">USEFUL</p>
 					<li>
 						<InsertChart className="icon" />
