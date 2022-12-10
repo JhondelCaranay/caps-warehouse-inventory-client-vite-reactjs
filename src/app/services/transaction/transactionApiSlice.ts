@@ -1,7 +1,7 @@
 import { RootState } from "./../../store";
 import { apiSlice } from "./../../api/apiSlice";
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Transaction } from "../../../types";
+import { Transaction, TransactionCreateForm } from "../../../types";
 
 const transactionsAdapter = createEntityAdapter<Transaction>({
 	// put completed in buttom
@@ -43,16 +43,16 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
 				} else return [{ type: "Transaction", id: "LIST" }];
 			},
 		}),
-		// addNewTransaction: builder.mutation({
-		// 	query: (data) => ({
-		// 		url: "/api/transactions",
-		// 		method: "POST",
-		// 		body: {
-		// 			...data,
-		// 		},
-		// 	}),
-		// 	invalidateTags: [{ type: "Transaction", id: "LIST" }],
-		// }),
+		addNewTransaction: builder.mutation<Transaction, TransactionCreateForm>({
+			query: (data) => ({
+				url: "/api/transactions",
+				method: "POST",
+				body: {
+					...data,
+				},
+			}),
+			invalidatesTags: [{ type: "Transaction", id: "LIST" }],
+		}),
 		// updateTransaction: builder.mutation({
 		// 	query: (data) => ({
 		// 		url: `/api/transactions/${data.id}`,
@@ -79,7 +79,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetTransactionsQuery,
-	// useAddNewTransactionMutation,
+	useAddNewTransactionMutation,
 	// useUpdateTransactionMutation,
 	// useDeleteTransactionMutation,
 } = transactionsApiSlice;
