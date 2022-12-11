@@ -57,7 +57,7 @@ const TransactionDataTable = () => {
 						<Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
 							<div className="viewButton">View</div>
 						</Link>
-						<div className="editButton" onClick={() => handleEdit(params.row.id)}>
+						<div className="editButton" onClick={() => handleEdit(params.row.id)} >
 							Edit
 						</div>
 					</div>
@@ -105,7 +105,7 @@ const TransactionDataTable = () => {
 								Create Transaction
 							</Button>
 						</Link>
-						<Button size="small" variant="outlined" onClick={refetch}>
+						<Button size="small" variant="outlined" onClick={refetch} >
 							Refresh
 						</Button>
 					</Stack>

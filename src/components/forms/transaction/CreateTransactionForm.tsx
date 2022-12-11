@@ -10,7 +10,7 @@ import { initialValues, validationSchema } from "./CreateTransactionSchema";
 import { toast } from "react-toastify";
 import ErrorList from "../../toast/ErrorList";
 import { PulseLoader } from "react-spinners";
-import TextError from "../TextError";
+import TextError from "../../formik/TextError";
 import { Button } from "@mui/material";
 import { useAddNewTransactionMutation } from "../../../app/services/transaction/transactionApiSlice";
 
@@ -185,7 +185,7 @@ const CreateTransactionForm = () => {
 												type="number"
 												className={
 													formik.touched.quantity &&
-													formik.errors.quantity
+														formik.errors.quantity
 														? "input error"
 														: "input"
 												}
@@ -205,7 +205,7 @@ const CreateTransactionForm = () => {
 												as="select"
 												className={
 													formik.touched.projectId &&
-													formik.errors.projectId
+														formik.errors.projectId
 														? "input error"
 														: "input"
 												}
@@ -255,7 +255,7 @@ const CreateTransactionForm = () => {
 												placeholder=" #"
 												className={
 													formik.touched.release_slip_num &&
-													formik.errors.release_slip_num
+														formik.errors.release_slip_num
 														? "input error"
 														: "input"
 												}
@@ -277,7 +277,7 @@ const CreateTransactionForm = () => {
 												placeholder=" #"
 												className={
 													formik.touched.materials_issuance_num &&
-													formik.errors.materials_issuance_num
+														formik.errors.materials_issuance_num
 														? "input error"
 														: "input"
 												}
@@ -297,7 +297,7 @@ const CreateTransactionForm = () => {
 												placeholder=" #"
 												className={
 													formik.touched.gate_pass_num &&
-													formik.errors.gate_pass_num
+														formik.errors.gate_pass_num
 														? "input error"
 														: "input"
 												}

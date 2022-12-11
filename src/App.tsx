@@ -23,6 +23,7 @@ import BrandList from "./pages/dashboard/brand/list/BrandList";
 import EngItems from "./pages/engineer/items/EngItems";
 import EngTransactions from "./pages/engineer/transaction/EngTransactions";
 import EngProjects from "./pages/engineer/projects/EngProjects";
+import ItemNew from "./pages/dashboard/items/new/ItemNew";
 function App() {
 	return (
 		<div className="App">
@@ -71,8 +72,8 @@ function App() {
 
 										<Route path="items">
 											<Route index element={<ItemList />} />
-											{/* <Route path=":itemId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} /> */}
+											{/* <Route path=":itemId" element={<Single />} /> */}
+											<Route path="new" element={<ItemNew />} />
 										</Route>
 
 										<Route path="category">

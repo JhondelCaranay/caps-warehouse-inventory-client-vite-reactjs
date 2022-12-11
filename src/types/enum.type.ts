@@ -13,3 +13,10 @@ export enum ROLES {
 	WAREHOUSE_CONTROLLER = "WAREHOUSE_CONTROLLER",
 	ENGINEER = "ENGINEER",
 }
+
+export enum UNIT {
+	UNIT = "UNIT",
+	PCS = "PCS",
+	SETS = "SETS",
+	ROLL = "ROLL",
+}

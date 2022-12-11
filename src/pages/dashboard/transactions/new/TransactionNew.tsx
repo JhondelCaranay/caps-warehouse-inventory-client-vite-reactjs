@@ -1,7 +1,7 @@
 import "./transactionNew.scss";
 import useTitle from "../../../../hooks/useTitle";
 
-import CreateTransactionForm from "../../../../components/formik/transaction/CreateTransactionForm";
+import CreateTransactionForm from "../../../../components/forms/transaction/CreateTransactionForm";
 
 const TransactionNew = () => {
 	useTitle("Spedi: Transaction Create");

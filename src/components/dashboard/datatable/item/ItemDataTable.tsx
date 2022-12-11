@@ -71,10 +71,6 @@ const ItemDataTable = () => {
 	let content: JSX.Element | null = null;
 
 	if (isLoading) {
-		console.log(
-			"🚀 ~ file: TransactionDataTable.tsx:82 ~ TransactionDataTable ~ isError",
-			error
-		);
 		content = (
 			<div className="loading">
 				<PulseLoader color={"#000000"} />
@@ -99,7 +95,7 @@ const ItemDataTable = () => {
 			<>
 				<Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
 					<Stack direction="row" spacing={1}>
-						<Link to="/dash" style={{ textDecoration: "none" }}>
+						<Link to="/dash/items/new" style={{ textDecoration: "none" }}>
 							<Button size="small" variant="outlined">
 								Create Item
 							</Button>

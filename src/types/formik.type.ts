@@ -1,4 +1,4 @@
-import { TRANSACTION_STATUS } from "./enum.type";
+import { TRANSACTION_STATUS, UNIT } from "./enum.type";
 
 export type LoginFormValues = {
 	email: string;
@@ -16,4 +16,17 @@ export type TransactionCreateForm = {
 	receiverId: string;
 	itemId: string;
 	projectId: string;
+};
+
+export type ItemCreateForm = {
+	name: string;
+	description: string | null;
+	model: string | null;
+	unit: UNIT | string;
+	quantity: number;
+	price: number;
+	pictureUrl: any;
+	// pictureObj: ;
+	categoryId: string;
+	brandId: string;
 };
