@@ -1,0 +1,147 @@
+.createItemForm {
+	-webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+	box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+	padding: 20px;
+
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		gap: 20px;
+		height: calc(100vh - 90px);
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+
+	.container {
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+
+			.title {
+				font-size: 1rem;
+				font-weight: 900;
+				color: gray;
+				text-align: center;
+			}
+
+			.row {
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+
+				.left {
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+
+				.right {
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					gap: 10px;
+				}
+			}
+
+			@media (min-width: 768px) {
+				.row {
+					flex-direction: row;
+				}
+			}
+
+			.formGroup {
+				.input {
+					width: 100%;
+					font-size: 16px;
+					padding: 3px;
+					outline: none;
+					border: 1px solid gray;
+					border-radius: 5px;
+				}
+
+				select {
+					width: 100%;
+					font-size: 16px;
+					padding: 3px;
+					outline: none;
+					border: 1px solid gray;
+					border-radius: 5px;
+				}
+
+				textarea {
+					resize: none;
+				}
+
+				.add-photo {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					gap: 10px;
+					height: 300px;
+					background-color: rgba(0, 0, 0, 0.1);
+					border: 1px solid gray;
+					border-radius: 5px;
+					cursor: pointer;
+					transition: all 0.3s ease;
+					position: relative;
+
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.3);
+					}
+
+					.controls {
+						position: absolute;
+						top: 0;
+						width: 100%;
+						display: flex;
+						justify-content: flex-end;
+
+						.icons {
+							cursor: pointer;
+							margin: 5px;
+							color: #1976d2;
+
+							&:hover {
+								color: #2190ff;
+							}
+						}
+					}
+
+					.preview {
+						width: 100%;
+						height: 100%;
+
+						img {
+							width: 100%;
+							height: 100%;
+							object-fit: contain;
+						}
+					}
+				}
+
+				.add-photo.error {
+					border: 1px solid red;
+				}
+
+				input[type="file"] {
+					display: none;
+				}
+
+				.input.error {
+					border: 1px solid red;
+				}
+
+				.text-error {
+					color: red;
+					font-weight: bold;
+					font-size: 0.8rem;
+					letter-spacing: 1px;
+				}
+			}
+		}
+	}
+}

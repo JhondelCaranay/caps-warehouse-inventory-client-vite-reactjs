@@ -2,7 +2,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import noImage from "../../../../assets/img/noimage.png";
 import { Transaction } from "../../../../types";
 import _ from "lodash";
-
+import { Capitalize } from "../../../../config/utils/functions";
 export const TRANSACTION_MOBILE_COLUMNS = {
 	__check__: false,
 	id: false,
@@ -37,20 +37,22 @@ export const transactionColumns: GridColDef[] = [
 		headerName: "Item Name",
 		width: 300,
 		hideable: false,
-		renderCell: (params) => {
+		renderCell: (params: { row: Transaction }) => {
+			const { pictureUrl, name } = params.row.Item;
 			return (
 				<div className="cellWithImg">
 					<img
 						className="cellImg"
-						src={params.row.img ? params.row.img : noImage}
+						src={pictureUrl ? pictureUrl : noImage}
 						alt="avatar"
 					/>
-					{params.row.Item.name}
+					{Capitalize(name)}
 				</div>
 			);
 		},
-		valueGetter: (params) => {
-			return params.row.Item.name;
+		valueGetter: (params: { row: Transaction }) => {
+			const { name } = params.row.Item;
+			return Capitalize(name);
 		},
 	},
 	{
@@ -59,14 +61,9 @@ export const transactionColumns: GridColDef[] = [
 		width: 300,
 		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
-			const avatar = params.row.Sender.Profile.avatarUrl
-				? params.row.Sender.Profile.avatarUrl
-				: noImage;
-
-			const fullName = _.startCase(
-				`${params.row.Sender.Profile.first_name} ${params.row.Sender.Profile.last_name}`
-			);
-
+			const { first_name, last_name, avatarUrl } = params.row.Sender.Profile;
+			const avatar = avatarUrl ? avatarUrl : noImage;
+			const fullName = Capitalize(`${first_name} ${last_name}`);
 			return (
 				<div className="cellWithImg">
 					<img className="cellImg" src={avatar} alt="avatar" />
@@ -75,9 +72,8 @@ export const transactionColumns: GridColDef[] = [
 			);
 		},
 		valueGetter: (params: { row: Transaction }) => {
-			const fullName = _.startCase(
-				`${params.row.Sender.Profile.first_name} ${params.row.Sender.Profile.last_name}`
-			);
+			const { first_name, last_name } = params.row.Sender.Profile;
+			const fullName = Capitalize(`${first_name} ${last_name}`);
 			return fullName;
 		},
 	},
@@ -86,13 +82,9 @@ export const transactionColumns: GridColDef[] = [
 		headerName: "Reciever Name",
 		width: 300,
 		renderCell: (params: { row: Transaction }) => {
-			const avatar = params.row.Receiver.Profile.avatarUrl
-				? params.row.Receiver.Profile.avatarUrl
-				: noImage;
-
-			const fullName = _.startCase(
-				`${params.row.Receiver.Profile.first_name} ${params.row.Receiver.Profile.last_name}`
-			);
+			const { first_name, last_name, avatarUrl } = params.row.Receiver.Profile;
+			const avatar = avatarUrl ? avatarUrl : noImage;
+			const fullName = Capitalize(`${first_name} ${last_name}`);
 
 			return (
 				<div className="cellWithImg">
@@ -102,9 +94,8 @@ export const transactionColumns: GridColDef[] = [
 			);
 		},
 		valueGetter: (params: { row: Transaction }) => {
-			const fullName = _.startCase(
-				`${params.row.Receiver.Profile.first_name} ${params.row.Receiver.Profile.last_name}`
-			);
+			const { first_name, last_name } = params.row.Receiver.Profile;
+			const fullName = Capitalize(`${first_name} ${last_name}`);
 			return fullName;
 		},
 	},
@@ -114,10 +105,12 @@ export const transactionColumns: GridColDef[] = [
 		width: 300,
 		hideable: false,
 		renderCell: (params: { row: Transaction }) => {
-			return <div>{params.row.Project.name}</div>;
+			const { name } = params.row.Project;
+			return <div>{Capitalize(name)}</div>;
 		},
 		valueGetter: (params) => {
-			return params.row.Project.name;
+			const { name } = params.row.Project;
+			return Capitalize(name);
 		},
 	},
 	{
@@ -125,12 +118,12 @@ export const transactionColumns: GridColDef[] = [
 		headerName: "Status",
 		width: 180,
 		renderCell: (params: { row: Transaction }) => {
-			const status = _.startCase(_.toLower(params.row.status));
-			return <div className={`cellWithStatus ${params.row.status}`}>{status}</div>;
+			const { status } = params.row;
+			return <div className={`cellWithStatus ${status}`}>{Capitalize(status)}</div>;
 		},
 		valueGetter: (params: { row: Transaction }) => {
-			const status = _.startCase(_.toLower(params.row.status));
-			return status;
+			const { status } = params.row;
+			return Capitalize(status);
 		},
 	},
 	{ field: "quantity", headerName: "Quantity", width: 180, type: "number" },
