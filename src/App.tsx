@@ -25,6 +25,7 @@ import EngTransactions from "./pages/engineer/transaction/EngTransactions";
 import EngProjects from "./pages/engineer/projects/EngProjects";
 import ItemNew from "./pages/dashboard/items/new/ItemNew";
 import ProjectNew from "./pages/dashboard/project/new/ProjectNew";
+import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
 function App() {
 	return (
 		<div className="App">
@@ -86,7 +87,7 @@ function App() {
 										<Route path="category">
 											<Route index element={<CategoryList />} />
 											{/* <Route path=":categoryId" element={<Single />} /> */}
-											{/* <Route path="new" element={<TransactionNew />} /> */}
+											<Route path="new" element={<CategoryNew />} />
 										</Route>
 
 
