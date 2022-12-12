@@ -41,8 +41,8 @@ const CreateProjectForm = () => {
 		submitProps: FormikHelpers<ProjectCreateForm>
 	) => {
 		//sleep for 1 seconds
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-		alert(JSON.stringify(values, null, 2));
+		// await new Promise((resolve) => setTimeout(resolve, 1000));
+		// alert(JSON.stringify(values, null, 2));
 
 		try {
 
