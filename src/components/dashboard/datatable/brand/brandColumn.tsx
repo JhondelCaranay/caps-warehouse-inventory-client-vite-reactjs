@@ -1,5 +1,4 @@
 import { GridColDef, GridValueFormatterParams } from "@mui/x-data-grid";
-import _ from "lodash";
 import moment from "moment";
 
 export const BRAND_MOBILE_COLUMNS = {

@@ -1,7 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
 import noImage from "../../../../assets/img/noimage.png";
 import { Item } from "../../../../types";
-import _ from "lodash";
+import { Capitalize } from "../../../../config/utils/functions";
 
 export const ITEM_MOBILE_COLUMNS = {
 	__check__: false,
@@ -33,19 +33,21 @@ export const itemColumns: GridColDef[] = [
 		hideable: false,
 		width: 300,
 		renderCell: (params: { row: Item }) => {
+			const { name, pictureUrl } = params.row;
 			return (
 				<div className="cellWithImg">
 					<img
 						className="cellImg"
-						src={params.row.pictureUrl ? params.row.pictureUrl : noImage}
+						src={pictureUrl ? pictureUrl : noImage}
 						alt="avatar"
 					/>
-					{params.row.name}
+					{Capitalize(name)}
 				</div>
 			);
 		},
 		valueGetter: (params: { row: Item }) => {
-			return params.row.name;
+			const { name } = params.row;
+			return Capitalize(name);
 		},
 	},
 	{
@@ -53,11 +55,13 @@ export const itemColumns: GridColDef[] = [
 		headerName: "Category",
 		width: 300,
 		renderCell: (params: { row: Item }) => {
-			const category = _.startCase(_.toLower(params.row.Category.name));
+			const { name } = params.row.Category;
+			const category = Capitalize(name);
 			return <div>{category}</div>;
 		},
 		valueGetter: (params: { row: Item }) => {
-			const category = _.startCase(_.toLower(params.row.Category.name));
+			const { name } = params.row.Category;
+			const category = Capitalize(name);
 			return category;
 		},
 	},
@@ -66,11 +70,13 @@ export const itemColumns: GridColDef[] = [
 		headerName: "Brand",
 		width: 300,
 		renderCell: (params: { row: Item }) => {
-			const brand = _.startCase(_.toLower(params.row.Brand.name));
+			const { name } = params.row.Brand;
+			const brand = Capitalize(name);
 			return <div>{brand}</div>;
 		},
 		valueGetter: (params: { row: Item }) => {
-			const brand = _.startCase(_.toLower(params.row.Brand.name));
+			const { name } = params.row.Brand;
+			const brand = Capitalize(name);
 			return brand;
 		},
 	},

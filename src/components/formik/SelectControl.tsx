@@ -11,7 +11,7 @@ type SelectControlProps = {
 export const SelectControl = ({ label, name, isError, children, ...rest }: SelectControlProps) => {
     return (
         <div className="formGroup">
-            <label htmlFor={name}>Assign Engineer</label>
+            <label htmlFor={name}>{label}</label>
             <Field
                 id={name}
                 name={name}
@@ -19,7 +19,7 @@ export const SelectControl = ({ label, name, isError, children, ...rest }: Selec
                 className={isError ? "input error" : "input"}
                 {...rest}
             >
-                <option value="">Select User</option>
+                <option value="">Select {label}</option>
                 {children}
             </Field>
             <ErrorMessage
