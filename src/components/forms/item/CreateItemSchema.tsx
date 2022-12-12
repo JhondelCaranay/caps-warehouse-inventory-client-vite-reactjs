@@ -34,6 +34,6 @@ export const validationSchema = Yup.object({
             }
         }
     ),
-    brandId: Yup.string().required("Required"),
-    categoryId: Yup.string().required("Required"),
+    brandId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+    categoryId: Yup.string().required("Required").uuid("Must be a valid UUID"),
 });
