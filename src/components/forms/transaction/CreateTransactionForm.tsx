@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetItemsQuery } from "../../../app/services/item/itemApiSlice";
@@ -10,7 +10,6 @@ import { initialValues, validationSchema } from "./CreateTransactionSchema";
 import { toast } from "react-toastify";
 import ErrorList from "../../toast/ErrorList";
 import { PulseLoader } from "react-spinners";
-import TextError from "../../formik/TextError";
 import { Button } from "@mui/material";
 import { useAddNewTransactionMutation } from "../../../app/services/transaction/transactionApiSlice";
 import { SelectControl } from "../../formik/SelectControl";

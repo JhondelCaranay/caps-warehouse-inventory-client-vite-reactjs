@@ -43,16 +43,16 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 				} else return [{ type: "Category", id: "LIST" }];
 			},
 		}),
-		// addNewCategory: builder.mutation({
-		// 	query: (data) => ({
-		// 		url: "/api/category",
-		// 		method: "POST",
-		// 		body: {
-		// 			...data,
-		// 		},
-		// 	}),
-		// 	invalidateTags: [{ type: "Category", id: "LIST" }],
-		// }),
+		addNewCategory: builder.mutation({
+			query: (data) => ({
+				url: "/api/category",
+				method: "POST",
+				body: {
+					...data,
+				},
+			}),
+			invalidatesTags: [{ type: "Category", id: "LIST" }],
+		}),
 		// updateCategory: builder.mutation({
 		// 	query: (data) => ({
 		// 		url: `/api/category/${data.id}`,
@@ -79,7 +79,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetCategoryQuery,
-	// useAddNewCategoryMutation,
+	useAddNewCategoryMutation,
 	// useUpdateCategoryMutation,
 	// useDeleteCategoryMutation,
 } = categoryApiSlice;

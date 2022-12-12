@@ -16,7 +16,6 @@ import { useGetBrandsQuery } from "../../../app/services/brand/brandApiSlice";
 import { useGetCategoryQuery } from "../../../app/services/category/categoryApiSlice";
 import { Capitalize } from "../../../config/utils/functions";
 import { useNavigate } from "react-router-dom";
-import DebugControl from "../../formik/DebugControl";
 import InputControl from "../../formik/InputControl";
 import TestAreaControl from "../../formik/TestAreaControl";
 import { SelectControl } from "../../formik/SelectControl";
