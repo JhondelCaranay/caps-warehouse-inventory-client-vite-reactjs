@@ -13,6 +13,9 @@ import { PulseLoader } from "react-spinners";
 import TextError from "../../formik/TextError";
 import { Button } from "@mui/material";
 import { useAddNewTransactionMutation } from "../../../app/services/transaction/transactionApiSlice";
+import { SelectControl } from "../../formik/SelectControl";
+import InputControl from "../../formik/InputControl";
+import TestAreaControl from "../../formik/TestAreaControl";
 
 const CreateTransactionForm = () => {
 	const navigate = useNavigate();
@@ -134,181 +137,82 @@ const CreateTransactionForm = () => {
 						return (
 							<Form>
 								<h1 className="title">Create Transaction</h1>
-								{/* <div className="formGroup">
-									<pre
-										style={{
-											// vs code theme night owl
-											backgroundColor: "#011627",
-											color: "#d6deeb",
-											padding: "4px",
-											borderRadius: "5px",
-											fontSize: "14px",
-											whiteSpace: "pre-wrap",
-										}}
-									>
-										{JSON.stringify(formik.values, null, 2)}
-									</pre>
-								</div> */}
+								{/* <DebugControl values={formik.values} /> */}
 
 								<div className="row">
 									<div className="left">
 
-										<div className="formGroup">
-											<label htmlFor="itemId">Item</label>
-											<Field
-												name="itemId"
-												as="select"
-												placeholder="ItemId"
-												className={
-													formik.touched.itemId && formik.errors.itemId
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-											>
-												<option value="">Select Item</option>
+										<SelectControl
+											label="Item"
+											name="itemId"
+											isError={Boolean(formik.touched.itemId && formik.errors.itemId)}
+										>
+											<>
 												{items?.map((item) => (
 													<option key={item.id} value={item.id}>
 														{item.name}
 													</option>
 												))}
-											</Field>
-											<ErrorMessage
-												name="itemId"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
+											</>
+										</SelectControl>
 
-										<div className="formGroup">
-											<label htmlFor="quantity">Quantity</label>
-											<Field
-												name="quantity"
-												type="number"
-												className={
-													formik.touched.quantity &&
-														formik.errors.quantity
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-												min="1"
-											/>
-											<ErrorMessage
-												name="quantity"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
+										<InputControl
+											label="Quantity"
+											name="quantity"
+											type="number"
+											min="1"
+											isError={Boolean(formik.touched.quantity && formik.errors.quantity)}
+										/>
 
-										<div className="formGroup">
-											<label htmlFor="projectId">Projects</label>
-											<Field
-												name="projectId"
-												as="select"
-												className={
-													formik.touched.projectId &&
-														formik.errors.projectId
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-												onChange={handleProjectChange}
-											>
-												<option value="">Select Project</option>
+										<SelectControl
+											label="Project"
+											name="projectId"
+											isError={Boolean(formik.touched.projectId && formik.errors.projectId)}
+										>
+											<>
 												{projects?.map((project) => (
 													<option key={project.id} value={project.id}>
 														{project.name}
 													</option>
 												))}
-											</Field>
-											<ErrorMessage
-												name="projectId"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
+											</>
+										</SelectControl>
 
-										<div className="formGroup">
-											<label htmlFor="remarks">Remarks</label>
-											<Field
-												name="remarks"
-												as="textarea"
-												rows="4"
-												placeholder="Remarks"
-												className={
-													formik.touched.remarks && formik.errors.remarks
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-											/>
-											<ErrorMessage
-												name="remarks"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
+										<TestAreaControl
+											label="Remarks"
+											name="remarks"
+											type="text"
+											placeholder="Remarks"
+											isError={Boolean(formik.touched.remarks && formik.errors.remarks)}
+										/>
 									</div>
 
 									<div className="right">
-										<div className="formGroup">
-											<label htmlFor="release_slip_num">Release Slip #</label>
-											<Field
-												name="release_slip_num"
-												type="text"
-												placeholder=" #"
-												className={
-													formik.touched.release_slip_num &&
-														formik.errors.release_slip_num
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-											/>
-											<ErrorMessage
-												name="release_slip_num"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
 
-										<div className="formGroup">
-											<label htmlFor="materials_issuance_num">
-												Materials Issuance #
-											</label>
-											<Field
-												name="materials_issuance_num"
-												type="text"
-												placeholder=" #"
-												className={
-													formik.touched.materials_issuance_num &&
-														formik.errors.materials_issuance_num
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-											/>
-											<ErrorMessage
-												name="materials_issuance_num"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
+										<InputControl
+											label="Release Slip #"
+											name="release_slip_num"
+											type="text"
+											placeholder="#"
+											isError={Boolean(formik.touched.release_slip_num && formik.errors.release_slip_num)}
+										/>
 
-										<div className="formGroup">
-											<label htmlFor="gate_pass_num">Gate Pass #</label>
-											<Field
-												name="gate_pass_num"
-												type="text"
-												placeholder=" #"
-												className={
-													formik.touched.gate_pass_num &&
-														formik.errors.gate_pass_num
-														? "input error"
-														: "input"
-												}
-												autoComplete="off"
-											/>
-											<ErrorMessage
-												name="gate_pass_num"
-												component={(props) => <TextError {...props} />}
-											/>
-										</div>
+										<InputControl
+											label="Materials Issuance #"
+											name="materials_issuance_num"
+											type="text"
+											placeholder="#"
+											isError={Boolean(formik.touched.materials_issuance_num && formik.errors.materials_issuance_num)}
+										/>
+
+										<InputControl
+											label="Gate Pass #"
+											name="gate_pass_num"
+											type="text"
+											placeholder="#"
+											isError={Boolean(formik.touched.gate_pass_num && formik.errors.gate_pass_num)}
+										/>
+
 									</div>
 								</div>
 

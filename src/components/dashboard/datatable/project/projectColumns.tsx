@@ -1,8 +1,9 @@
 import { GridColDef, GridValueFormatterParams } from "@mui/x-data-grid";
 import noImage from "../../../../assets/img/noimage.png";
-import _ from "lodash";
 import moment from "moment";
-import { Project, User } from "../../../../types";
+
+import { Project } from "../../../../types";
+import { Capitalize } from "../../../../config/utils/functions";
 
 export const PROJECT_MOBILE_COLUMNS = {
 	__check__: false,
@@ -34,25 +35,22 @@ export const projectColumns: GridColDef[] = [
 		headerName: "Assigned Engineer",
 		width: 300,
 		renderCell: (params: { row: Project }) => {
+			const { first_name, last_name, avatarUrl } = params.row.User.Profile;
+			const fullName = Capitalize(`${first_name} ${last_name}`);
 			return (
 				<div className="cellWithImg">
 					<img
 						className="cellImg"
-						src={
-							params.row.User.Profile.avatarUrl
-								? params.row.User.Profile.avatarUrl
-								: noImage
-						}
+						src={avatarUrl ? avatarUrl : noImage}
 						alt="avatar"
 					/>
-					{params.row.User.Profile.first_name + " " + params.row.User.Profile.last_name}
+					{fullName}
 				</div>
 			);
 		},
 		valueGetter: (params: { row: Project }) => {
-			const fullName = _.startCase(
-				`${params.row.User.Profile.first_name} ${params.row.User.Profile.last_name}`
-			);
+			const { first_name, last_name } = params.row.User.Profile;
+			const fullName = Capitalize(`${first_name} ${last_name}`);
 			return fullName;
 		},
 	},

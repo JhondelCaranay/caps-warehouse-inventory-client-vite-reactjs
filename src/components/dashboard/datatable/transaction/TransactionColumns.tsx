@@ -1,8 +1,8 @@
 import { GridColDef } from "@mui/x-data-grid";
 import noImage from "../../../../assets/img/noimage.png";
 import { Transaction } from "../../../../types";
-import _ from "lodash";
 import { Capitalize } from "../../../../config/utils/functions";
+
 export const TRANSACTION_MOBILE_COLUMNS = {
 	__check__: false,
 	id: false,

@@ -4,19 +4,20 @@ import TextError from "./TextError";
 type InputProps = {
     label: string;
     name: string;
+    type: string;
     placeholder?: string;
     isError: boolean;
     [x: string]: any;
 };
 
-const InputControl = ({ label, name, placeholder, isError, ...rest }: InputProps) => {
+const InputControl = ({ label, name, placeholder, type, isError, ...rest }: InputProps) => {
     return (
         <div className="formGroup">
             <label htmlFor={name}>{label}</label>
             <Field
                 id={name}
                 name={name}
-                type="text"
+                type={type}
                 placeholder={placeholder}
                 className={isError ? "input error" : "input"}
                 autoComplete="off"
