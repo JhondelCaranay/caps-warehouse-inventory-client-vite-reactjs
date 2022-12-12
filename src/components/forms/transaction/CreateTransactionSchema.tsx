@@ -21,8 +21,8 @@ export const validationSchema = Yup.object().shape({
 	release_slip_num: Yup.string().required("Required"),
 	materials_issuance_num: Yup.string().required("Required"),
 	gate_pass_num: Yup.string().required("Required"),
-	senderId: Yup.string().required("Required").uuid(),
-	receiverId: Yup.string().required("Required").uuid(),
-	itemId: Yup.string().required("Required").uuid(),
-	projectId: Yup.string().required("Required").uuid(),
+	senderId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+	receiverId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+	itemId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+	projectId: Yup.string().required("Required").uuid("Must be a valid UUID"),
 });

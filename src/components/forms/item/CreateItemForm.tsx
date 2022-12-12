@@ -136,6 +136,7 @@ const CreateItemForm = () => {
 											whiteSpace: "pre-wrap",
 										}}
 									>
+										<p>Display only for Development</p>
 										{JSON.stringify(formik.values, null, 2)}
 									</pre>
 								</div>

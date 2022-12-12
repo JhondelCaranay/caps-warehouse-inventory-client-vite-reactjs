@@ -152,6 +152,7 @@ const CreateTransactionForm = () => {
 
 								<div className="row">
 									<div className="left">
+
 										<div className="formGroup">
 											<label htmlFor="itemId">Item</label>
 											<Field

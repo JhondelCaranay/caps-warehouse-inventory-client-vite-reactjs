@@ -30,3 +30,9 @@ export type ItemCreateForm = {
 	categoryId: string;
 	brandId: string;
 };
+
+export type ProjectCreateForm = {
+	name: string;
+	address: string;
+	userId: string;
+};

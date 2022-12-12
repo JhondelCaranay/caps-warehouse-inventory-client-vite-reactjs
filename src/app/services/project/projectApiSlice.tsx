@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Project } from "../../../types";
+import { Project, ProjectCreateForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,16 +43,16 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
 				} else return [{ type: "Project", id: "LIST" }];
 			},
 		}),
-		// addNewProject: builder.mutation({
-		// 	query: (data) => ({
-		// 		url: "/api/projects",
-		// 		method: "POST",
-		// 		body: {
-		// 			...data,
-		// 		},
-		// 	}),
-		// 	invalidateTags: [{ type: "Project", id: "LIST" }],
-		// }),
+		addNewProject: builder.mutation<Project ,ProjectCreateForm>({
+			query: (data) => ({
+				url: "/api/projects",
+				method: "POST",
+				body: {
+					...data,
+				},
+			}),
+			invalidatesTags: [{ type: "Project", id: "LIST" }],
+		}),
 		// updateProject: builder.mutation({
 		// 	query: (data) => ({
 		// 		url: `/api/projects/${data.id}`,
@@ -79,7 +79,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetProjectsQuery,
-	// useAddNewProjectMutation,
+	useAddNewProjectMutation,
 	// useUpdateProjectMutation,
 	// useDeleteProjectMutation,
 } = projectsApiSlice;
