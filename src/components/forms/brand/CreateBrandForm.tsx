@@ -3,36 +3,34 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useAddNewCategoryMutation } from "../../../app/services/category/categoryApiSlice";
-import { CategoryCreateForm } from "../../../types";
+import { useAddNewBrandMutation } from "../../../app/services/brand/brandApiSlice";
+import { BrandCreateForm } from "../../../types";
 import InputControl from "../../formik/InputControl";
 import ErrorList from "../../toast/ErrorList";
-import "./createCategoryForm.scss"
-import { initialValues, validationSchema } from "./CreateCategorySchema";
+import "./createBrandForm.scss"
+import { initialValues, validationSchema } from "./CreateBrandSchema";
 
-const CreateCategoryForm = () => {
+const CreateBrandForm = () => {
     const navigate = useNavigate();
-    const [addNewCategory, { isLoading: isCategoryUpdating }] =
-        useAddNewCategoryMutation();
+    const [addNewBrand, { isLoading: isBrandUpdating }] = useAddNewBrandMutation();
 
     const onSubmit = async (
-        values: CategoryCreateForm,
-        submitProps: FormikHelpers<CategoryCreateForm>
+        values: BrandCreateForm,
+        submitProps: FormikHelpers<BrandCreateForm>
     ) => {
         //sleep for 1 seconds
         // await new Promise((resolve) => setTimeout(resolve, 1000));
         // alert(JSON.stringify(values, null, 2));
 
         try {
-
-            const result = await addNewCategory({
+            const result = await addNewBrand({
                 name: values.name,
             }).unwrap();
             console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result)
 
-            toast.success("Category created successfully");
+            toast.success("Brand created successfully");
             submitProps.resetForm();
-            navigate("/dash/category");
+            navigate("/dash/brands");
         } catch (err: any) {
             if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
             else if (err.error) toast.error(err.error);
@@ -53,7 +51,7 @@ const CreateCategoryForm = () => {
                 enableReinitialize
             >
                 {(formik) => {
-                    const buttonText = (isCategoryUpdating || formik.isSubmitting) ? (
+                    const buttonText = (isBrandUpdating || formik.isSubmitting) ? (
                         <PulseLoader color={"black"} />
                     ) : (
                         <span>Create</span>
@@ -61,15 +59,15 @@ const CreateCategoryForm = () => {
 
                     return (
                         <Form>
-                            <h1 className="title">Create Category</h1>
+                            <h1 className="title">Create Brand</h1>
                             {/* <DebugControl values={formik.values} /> */}
                             <div className="row">
                                 <div className="left">
                                     <InputControl
-                                        label="Category Name"
+                                        label="Brand Name"
                                         name="name"
                                         type="text"
-                                        placeholder="Category Name"
+                                        placeholder="Brand Name"
                                         isError={Boolean(formik.touched.name && formik.errors.name)}
                                     />
                                 </div>
@@ -94,6 +92,6 @@ const CreateCategoryForm = () => {
         </div >
     )
 
-    return <div className="createCategoryForm">{content}</div>;
+    return <div className="createBrandForm">{content}</div>;
 }
-export default CreateCategoryForm
+export default CreateBrandForm

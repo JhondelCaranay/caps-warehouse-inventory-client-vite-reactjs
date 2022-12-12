@@ -26,6 +26,7 @@ import EngProjects from "./pages/engineer/projects/EngProjects";
 import ItemNew from "./pages/dashboard/items/new/ItemNew";
 import ProjectNew from "./pages/dashboard/project/new/ProjectNew";
 import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
+import BrandNew from "./pages/dashboard/brand/new/BrandNew";
 function App() {
 	return (
 		<div className="App">
@@ -90,11 +91,10 @@ function App() {
 											<Route path="new" element={<CategoryNew />} />
 										</Route>
 
-
 										<Route path="brands">
 											<Route index element={<BrandList />} />
-											{/* <Route path=":userId" element={<Single />} />
-										<Route path="new" element={<TransactionNew />} /> */}
+											{/* <Route path=":userId" element={<Single />} /> */}
+											<Route path="new" element={<BrandNew />} />
 										</Route>
 									</Route>
 								</Route>

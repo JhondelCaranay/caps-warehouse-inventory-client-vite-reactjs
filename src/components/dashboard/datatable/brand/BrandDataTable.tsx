@@ -91,7 +91,7 @@ const BrandDataTable = () => {
 			<>
 				<Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
 					<Stack direction="row" spacing={1}>
-						<Link to="/dash" style={{ textDecoration: "none" }}>
+						<Link to="/dash/brands/new" style={{ textDecoration: "none" }}>
 							<Button size="small" variant="outlined">
 								Create Item
 							</Button>

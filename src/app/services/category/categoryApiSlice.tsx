@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Category } from "../../../types";
+import { Category, CategoryCreateForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,7 +43,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 				} else return [{ type: "Category", id: "LIST" }];
 			},
 		}),
-		addNewCategory: builder.mutation({
+		addNewCategory: builder.mutation<Category, CategoryCreateForm>({
 			query: (data) => ({
 				url: "/api/category",
 				method: "POST",

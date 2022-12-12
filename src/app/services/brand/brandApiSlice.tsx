@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Brand } from "../../../types";
+import { Brand, BrandCreateForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,16 +43,16 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
 				} else return [{ type: "Brand", id: "LIST" }];
 			},
 		}),
-		// addNewBrand: builder.mutation({
-		// 	query: (data) => ({
-		// 		url: "/api/brands",
-		// 		method: "POST",
-		// 		body: {
-		// 			...data,
-		// 		},
-		// 	}),
-		// 	invalidateTags: [{ type: "Brand", id: "LIST" }],
-		// }),
+		addNewBrand: builder.mutation<Brand, BrandCreateForm>({
+			query: (data) => ({
+				url: "/api/brands",
+				method: "POST",
+				body: {
+					...data,
+				},
+			}),
+			invalidatesTags: [{ type: "Brand", id: "LIST" }],
+		}),
 		// updateBrand: builder.mutation({
 		// 	query: (data) => ({
 		// 		url: `/api/brands/${data.id}`,
@@ -79,7 +79,7 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetBrandsQuery,
-	// useAddNewBrandMutation,
+	useAddNewBrandMutation,
 	// useUpdateBrandMutation,
 	// useDeleteBrandMutation,
 } = brandsApiSlice;

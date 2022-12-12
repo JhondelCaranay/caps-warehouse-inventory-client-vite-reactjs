@@ -39,4 +39,8 @@ export type ProjectCreateForm = {
 
 export type CategoryCreateForm = {
 	name: string;
-}
+};
+
+export type BrandCreateForm = {
+	name: string;
+};
