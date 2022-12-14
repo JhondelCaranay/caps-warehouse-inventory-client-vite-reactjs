@@ -3,13 +3,13 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useAddNewProjectMutation } from "../../../app/services/project/projectApiSlice";
-import { useGetUsersQuery } from "../../../app/services/user/userApiSlice";
-import { ProjectCreateForm, User, ROLES } from "../../../types";
-import InputControl from "../../formik/InputControl";
-import { SelectControl } from "../../formik/SelectControl";
-import TestAreaControl from "../../formik/TestAreaControl";
-import ErrorList from "../../toast/ErrorList";
+import { useAddNewProjectMutation } from "../../../../app/services/project/projectApiSlice";
+import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
+import { ProjectCreateForm, User, ROLES } from "../../../../types";
+import InputControl from "../../../formik/InputControl";
+import { SelectControl } from "../../../formik/SelectControl";
+import TextAreaControl from "../../../formik/TextAreaControl";
+import ErrorList from "../../../toast/ErrorList";
 import "./createProjectForm.scss";
 import { initialValues, validationSchema } from "./CreateProjectSchema";
 
@@ -104,7 +104,7 @@ const CreateProjectForm = () => {
                       isError={Boolean(formik.touched.name && formik.errors.name)}
                     />
 
-                    <TestAreaControl
+                    <TextAreaControl
                       label="Address"
                       name="address"
                       type="text"

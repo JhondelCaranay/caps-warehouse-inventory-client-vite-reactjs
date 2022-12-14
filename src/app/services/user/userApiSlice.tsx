@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { User } from "../../../types";
+import { User, UserCreateForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,16 +43,16 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "User", id: "LIST" }];
       },
     }),
-    // addNewUser: builder.mutation({
-    // 	query: (data) => ({
-    // 		url: "/api/users",
-    // 		method: "POST",
-    // 		body: {
-    // 			...data,
-    // 		},
-    // 	}),
-    // 	invalidateTags: [{ type: "User", id: "LIST" }],
-    // }),
+    addNewUser: builder.mutation<User,UserCreateForm>({
+      query: (data) => ({
+        url: "/api/users",
+        method: "POST",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
+    }),
     // updateUser: builder.mutation({
     // 	query: (data) => ({
     // 		url: `/api/users/${data.id}`,
@@ -79,7 +79,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
-  // useAddNewUserMutation,
+  useAddNewUserMutation,
   // useUpdateUserMutation,
   // useDeleteUserMutation,
 } = usersApiSlice;

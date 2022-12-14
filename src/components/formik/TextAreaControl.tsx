@@ -1,7 +1,7 @@
 import { ErrorMessage, Field } from "formik";
 import TextError from "./TextError";
 
-type TestAreaControlProps = {
+type TextAreaControlProps = {
   label: string;
   name: string;
   placeholder?: string;
@@ -9,7 +9,7 @@ type TestAreaControlProps = {
   [x: string]: any;
 };
 
-const TestAreaControl = ({ label, name, placeholder, isError, ...rest }: TestAreaControlProps) => {
+const TextAreaControl = ({ label, name, placeholder, isError, ...rest }: TextAreaControlProps) => {
   return (
     <div className="formGroup">
       <label htmlFor={name}>{label}</label>
@@ -26,4 +26,4 @@ const TestAreaControl = ({ label, name, placeholder, isError, ...rest }: TestAre
     </div>
   );
 };
-export default TestAreaControl;
+export default TextAreaControl;
