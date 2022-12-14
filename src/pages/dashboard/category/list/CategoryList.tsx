@@ -2,12 +2,12 @@ import CategoryDataTable from "../../../../components/dashboard/datatable/catego
 import useTitle from "../../../../hooks/useTitle";
 
 const CategoryList = () => {
-	useTitle("Spedi: Category List");
+  useTitle("Spedi: Category List");
 
-	return (
-		<div className="categoryList">
-			<CategoryDataTable />
-		</div>
-	);
+  return (
+    <div className="categoryList">
+      <CategoryDataTable />
+    </div>
+  );
 };
 export default CategoryList;

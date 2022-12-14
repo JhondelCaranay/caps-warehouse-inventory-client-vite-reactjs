@@ -2,10 +2,10 @@ import CreateCategoryForm from "../../../../components/forms/category/CreateCate
 import "./categoryNew.scss";
 
 const CategoryNew = () => {
-    return (
-        <div className="categoryNew">
-            <CreateCategoryForm />
-        </div>
-    )
-}
-export default CategoryNew
+  return (
+    <div className="categoryNew">
+      <CreateCategoryForm />
+    </div>
+  );
+};
+export default CategoryNew;

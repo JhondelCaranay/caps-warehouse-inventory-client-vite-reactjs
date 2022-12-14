@@ -6,12 +6,12 @@ import { apiSlice } from "./api/apiSlice";
 const isDevMode = import.meta.env.VITE_NODE_ENV === "production" ? false : true;
 
 export const store = configureStore({
-	reducer: {
-		[apiSlice.reducerPath]: apiSlice.reducer,
-		auth: authReducer,
-	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
-	devTools: isDevMode,
+  reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    auth: authReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: isDevMode,
 });
 
 setupListeners(store.dispatch);

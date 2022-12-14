@@ -27,104 +27,101 @@ import ItemNew from "./pages/dashboard/items/new/ItemNew";
 import ProjectNew from "./pages/dashboard/project/new/ProjectNew";
 import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
 import BrandNew from "./pages/dashboard/brand/new/BrandNew";
+import UserList from "./pages/dashboard/user/list/UserList";
 function App() {
-	return (
-		<div className="App">
-			<BrowserRouter>
-				<ToastContainer />
-				<Routes>
-					<Route path="/">
-						<Route element={<AuthNotAllowed />}>
-							<Route element={<PublicLayout />}>
-								<Route index element={<Homepage />} />
-								<Route path="login" element={<Login />} />
-								<Route path="register" element={<Register />} />
-							</Route>
-						</Route>
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <ToastContainer />
+        <Routes>
+          <Route path="/">
+            <Route element={<AuthNotAllowed />}>
+              <Route element={<PublicLayout />}>
+                <Route index element={<Homepage />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+              </Route>
+            </Route>
 
-						<Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-							<Route element={<Prefetch />}>
-								<Route path="/dash" element={<DashLayout />}>
-									<Route
-										element={
-											<RequireAuth
-												allowedRoles={[ROLES.ADMIN, ROLES.SUPER_ADMIN]}
-											/>
-										}
-									>
-										<Route index element={<DashHome />} />
-										<Route path="home" element={<DashHome />} />
-									</Route>
+            <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
+              <Route element={<Prefetch />}>
+                <Route path="/dash" element={<DashLayout />}>
+                  <Route element={<RequireAuth allowedRoles={[ROLES.ADMIN, ROLES.SUPER_ADMIN]} />}>
+                    <Route index element={<DashHome />} />
+                    <Route path="home" element={<DashHome />} />
+                  </Route>
 
-									<Route
-										element={
-											<RequireAuth
-												allowedRoles={[
-													ROLES.ADMIN,
-													ROLES.SUPER_ADMIN,
-													ROLES.WAREHOUSE_CONTROLLER,
-												]}
-											/>
-										}
-									>
-										<Route path="transactions">
-											<Route index element={<TransactionList />} />
-											<Route path=":transactionId" element={<Single />} />
-											<Route path="new" element={<TransactionNew />} />
-										</Route>
+                  <Route
+                    element={
+                      <RequireAuth
+                        allowedRoles={[ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.WAREHOUSE_CONTROLLER]}
+                      />
+                    }
+                  >
+                    <Route path="transactions">
+                      <Route index element={<TransactionList />} />
+                      <Route path=":transactionId" element={<Single />} />
+                      <Route path="new" element={<TransactionNew />} />
+                    </Route>
 
-										<Route path="items">
-											<Route index element={<ItemList />} />
-											{/* <Route path=":itemId" element={<Single />} /> */}
-											<Route path="new" element={<ItemNew />} />
-										</Route>
+                    <Route path="items">
+                      <Route index element={<ItemList />} />
+                      {/* <Route path=":itemId" element={<Single />} /> */}
+                      <Route path="new" element={<ItemNew />} />
+                    </Route>
 
-										<Route path="projects">
-											<Route index element={<ProjectList />} />
-											{/* <Route path=":projectsId" element={<Single />} /> */}
-											<Route path="new" element={<ProjectNew />} />
-										</Route>
+                    <Route path="projects">
+                      <Route index element={<ProjectList />} />
+                      {/* <Route path=":projectsId" element={<Single />} /> */}
+                      <Route path="new" element={<ProjectNew />} />
+                    </Route>
 
-										<Route path="category">
-											<Route index element={<CategoryList />} />
-											{/* <Route path=":categoryId" element={<Single />} /> */}
-											<Route path="new" element={<CategoryNew />} />
-										</Route>
+                    <Route path="category">
+                      <Route index element={<CategoryList />} />
+                      {/* <Route path=":categoryId" element={<Single />} /> */}
+                      <Route path="new" element={<CategoryNew />} />
+                    </Route>
 
-										<Route path="brands">
-											<Route index element={<BrandList />} />
-											{/* <Route path=":userId" element={<Single />} /> */}
-											<Route path="new" element={<BrandNew />} />
-										</Route>
-									</Route>
-								</Route>
+                    <Route path="brands">
+                      <Route index element={<BrandList />} />
+                      {/* <Route path=":userId" element={<Single />} /> */}
+                      <Route path="new" element={<BrandNew />} />
+                    </Route>
 
-								<Route element={<RequireAuth allowedRoles={[ROLES.ENGINEER]} />}>
-									<Route path="/me" element={<DashLayout />}>
-										<Route index element={<EngItems />} />
+                    <Route path="users">
+                      <Route index element={<UserList />} />
+                      {/* <Route path=":userId" element={<Single />} /> */}
+                      {/* <Route path="new" element={<BrandNew />} /> */}
+                    </Route>
+                  </Route>
+                </Route>
 
-										<Route path="items">
-											<Route index element={<EngItems />} />
-										</Route>
+                <Route element={<RequireAuth allowedRoles={[ROLES.ENGINEER]} />}>
+                  <Route path="/me" element={<DashLayout />}>
+                    <Route index element={<EngItems />} />
 
-										<Route path="transactions">
-											<Route index element={<EngTransactions />} />
-										</Route>
+                    <Route path="items">
+                      <Route index element={<EngItems />} />
+                    </Route>
 
-										<Route path="projects">
-											<Route index element={<EngProjects />} />
-										</Route>
-									</Route>
-								</Route>
-							</Route>
-						</Route>
+                    <Route path="transactions">
+                      <Route index element={<EngTransactions />} />
+                    </Route>
 
-						<Route path="*" element={<div>404</div>} />
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</div>
-	);
+                    <Route path="projects">
+                      <Route index element={<EngProjects />} />
+                    </Route>
+                  </Route>
+                </Route>
+              </Route>
+            </Route>
+
+            <Route path="*" element={<div>404</div>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
