@@ -3,11 +3,11 @@ import useTitle from "../../../../hooks/useTitle";
 import "./transactionList.scss";
 
 const TransactionList = () => {
-	useTitle("Spedi: Transaction List");
-	return (
-		<div className="transactionList">
-			<TransactionDataTable />
-		</div>
-	);
+  useTitle("Spedi: Transaction List");
+  return (
+    <div className="transactionList">
+      <TransactionDataTable />
+    </div>
+  );
 };
 export default TransactionList;

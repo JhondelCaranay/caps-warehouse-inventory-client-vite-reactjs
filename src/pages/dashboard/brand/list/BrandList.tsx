@@ -3,12 +3,12 @@ import useTitle from "../../../../hooks/useTitle";
 import "./brandList.scss";
 
 const BrandList = () => {
-	useTitle("Spedi: Brand List");
+  useTitle("Spedi: Brand List");
 
-	return (
-		<div className="brandList">
-			<BrandDataTable />
-		</div>
-	);
+  return (
+    <div className="brandList">
+      <BrandDataTable />
+    </div>
+  );
 };
 export default BrandList;

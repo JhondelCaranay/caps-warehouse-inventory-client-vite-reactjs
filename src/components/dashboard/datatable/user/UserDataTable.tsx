@@ -1,31 +1,28 @@
-import "./transactionDataTable.scss";
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import useWindowSize from "../../../../hooks/useWindowSize";
-import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import PulseLoader from "react-spinners/PulseLoader";
-import { Transaction } from "../../../../types";
-import {
-  transactionColumns,
-  TRANSACTION_ALL_COLUMNS,
-  TRANSACTION_MOBILE_COLUMNS,
-} from "./TransactionColumns";
 import { Button, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { PulseLoader } from "react-spinners";
+import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
+import useAuth from "../../../../hooks/useAuth";
+import useWindowSize from "../../../../hooks/useWindowSize";
+import { ROLES, User } from "../../../../types";
+import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
+import { userColumns, USER_ALL_COLUMNS, USER_MOBILE_COLUMNS } from "./userColumns";
+import "./userDataTable.scss";
 
-const TransactionDataTable = () => {
+const UserDataTable = () => {
   const { windowSize } = useWindowSize();
-  const navigate = useNavigate();
+  const { role, id } = useAuth();
 
   const {
-    data: transactions,
+    data: users,
     error,
     isLoading,
     isSuccess,
     isError,
     refetch,
-  } = useGetTransactionsQuery("transactionList", {
+  } = useGetUsersQuery("userList", {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -37,14 +34,12 @@ const TransactionDataTable = () => {
     console.debug("Edit", id);
   };
 
-  const [columnVisible, setColumnVisible] =
-    useState<GridColumnVisibilityModel>(TRANSACTION_ALL_COLUMNS);
+  const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(USER_ALL_COLUMNS);
 
   useEffect(() => {
-    const newColumns = windowSize > 640 ? TRANSACTION_ALL_COLUMNS : TRANSACTION_MOBILE_COLUMNS;
+    const newColumns = windowSize > 640 ? USER_ALL_COLUMNS : USER_MOBILE_COLUMNS;
     setColumnVisible(newColumns);
   }, [windowSize]);
-
   // this column will be use by other data
   const actionColumn: GridColDef[] = [
     {
@@ -54,12 +49,19 @@ const TransactionDataTable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
+            <Link to="/dash" style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
-            <div className="editButton" onClick={() => handleEdit(params.row.id)}>
-              Edit
-            </div>
+            {
+              // if user is admin or user is editing his own profile
+              role === ROLES.SUPER_ADMIN ? (
+                <div className="editButton" onClick={() => handleEdit(params.row.id)}>
+                  Edit
+                </div>
+              ) : (
+                <div className="editButton disable">Edit</div>
+              )
+            }
           </div>
         );
       },
@@ -68,6 +70,8 @@ const TransactionDataTable = () => {
       hideable: false,
     },
   ];
+
+  const columns = useMemo(() => [...userColumns, ...actionColumn], [actionColumn]);
 
   let content: JSX.Element | null = null;
 
@@ -80,10 +84,6 @@ const TransactionDataTable = () => {
   }
 
   if (isError) {
-    if (Object.values(error)[0] === 401) {
-      return <Navigate to="/login" replace />;
-    }
-
     content = (
       <div className="loading">
         <PulseLoader color={"#000000"} />
@@ -93,16 +93,19 @@ const TransactionDataTable = () => {
   }
 
   if (isSuccess) {
-    const { ids, entities } = transactions;
-    const transactionList = ids.map((id) => entities[id] as Transaction);
+    const { ids, entities } = users;
+    // const userList = ids.map((id) => entities[id] as User);
+    const userList = ids
+      .filter((id) => entities[id]?.role !== ROLES.SUPER_ADMIN)
+      .map((id) => entities[id] as User);
 
     content = (
       <>
         <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
           <Stack direction="row" spacing={1}>
-            <Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
+            <Link to="/dash/users/new" style={{ textDecoration: "none" }}>
               <Button size="small" variant="outlined">
-                Create Transaction
+                Create User
               </Button>
             </Link>
             <Button size="small" variant="outlined" onClick={refetch}>
@@ -112,8 +115,9 @@ const TransactionDataTable = () => {
         </Stack>
         <DataGrid
           className="datagrid"
-          rows={transactionList}
-          columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
+          rows={userList}
+          // columns={userColumns.concat(actionColumn)} // columns - tabel header columns
+          columns={columns} // columns - tabel header columns
           columnVisibilityModel={columnVisible}
           onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
           pageSize={10} // pageSize - number of rows per page
@@ -136,6 +140,6 @@ const TransactionDataTable = () => {
     );
   }
 
-  return <div className="transactionDataTable">{content}</div>;
+  return <div className="userDataTable">{content}</div>;
 };
-export default TransactionDataTable;
+export default UserDataTable;

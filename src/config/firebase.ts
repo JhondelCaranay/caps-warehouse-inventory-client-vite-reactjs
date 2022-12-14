@@ -7,12 +7,12 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // replace this config with your own firebase account
 const firebaseConfig = {
-	apiKey: "AIzaSyCDQePophIfxvHl-LxoayqVIR36YJ8RTBI",
-	authDomain: "react-upload-file-75466.firebaseapp.com",
-	projectId: "react-upload-file-75466",
-	storageBucket: "react-upload-file-75466.appspot.com",
-	messagingSenderId: "801759095577",
-	appId: "1:801759095577:web:6d40b9f63530552fc57388",
+	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

@@ -3,12 +3,12 @@ import useTitle from "../../../../hooks/useTitle";
 import "./itemList.scss";
 
 const ItemList = () => {
-	useTitle("Spedi: Item List");
+  useTitle("Spedi: Item List");
 
-	return (
-		<div className="itemList">
-			<ItemDataTable />
-		</div>
-	);
+  return (
+    <div className="itemList">
+      <ItemDataTable />
+    </div>
+  );
 };
 export default ItemList;
