@@ -1,7 +1,6 @@
 import "./transactionNew.scss";
 import useTitle from "../../../../hooks/useTitle";
-
-import CreateTransactionForm from "../../../../components/forms/transaction/CreateTransactionForm";
+import CreateTransactionForm from "../../../../components/forms/transaction/create/CreateTransactionForm";
 
 const TransactionNew = () => {
   useTitle("Spedi: Transaction Create");

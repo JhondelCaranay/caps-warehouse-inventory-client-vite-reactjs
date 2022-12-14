@@ -4,21 +4,21 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useAddNewItemMutation } from "../../../app/services/item/itemApiSlice";
-import { Brand, Category, ItemCreateForm, UNIT } from "../../../types";
-import TextError from "../../formik/TextError";
-import ErrorList from "../../toast/ErrorList";
+import { useAddNewItemMutation } from "../../../../app/services/item/itemApiSlice";
+import { Brand, Category, ItemCreateForm, UNIT } from "../../../../types";
+import TextError from "../../../formik/TextError";
+import ErrorList from "../../../toast/ErrorList";
 import "./CreateItemForm.scss";
 import { initialValues, validationSchema } from "./CreateItemSchema";
 import { v4 } from "uuid";
-import { storage } from "../../../config/firebase";
-import { useGetBrandsQuery } from "../../../app/services/brand/brandApiSlice";
-import { useGetCategoryQuery } from "../../../app/services/category/categoryApiSlice";
-import { Capitalize } from "../../../config/utils/functions";
+import { storage } from "../../../../config/firebase";
+import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
+import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import { Capitalize } from "../../../../config/utils/functions";
 import { useNavigate } from "react-router-dom";
-import InputControl from "../../formik/InputControl";
-import TestAreaControl from "../../formik/TestAreaControl";
-import { SelectControl } from "../../formik/SelectControl";
+import InputControl from "../../../formik/InputControl";
+import { SelectControl } from "../../../formik/SelectControl";
+import TextAreaControl from "../../../formik/TextAreaControl";
 
 const CreateItemForm = () => {
   const navigate = useNavigate();
@@ -152,7 +152,7 @@ const CreateItemForm = () => {
                       </div>
                     </div>
 
-                    <TestAreaControl
+                    <TextAreaControl
                       label="Description"
                       name="description"
                       type="text"

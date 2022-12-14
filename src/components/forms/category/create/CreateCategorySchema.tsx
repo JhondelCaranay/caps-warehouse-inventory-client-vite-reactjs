@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { CategoryCreateForm } from "../../../types";
+import { CategoryCreateForm } from "../../../../types";
 
 export const initialValues: CategoryCreateForm = {
     name: "",

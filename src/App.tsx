@@ -28,6 +28,8 @@ import ProjectNew from "./pages/dashboard/project/new/ProjectNew";
 import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
 import BrandNew from "./pages/dashboard/brand/new/BrandNew";
 import UserList from "./pages/dashboard/user/list/UserList";
+import UserNew from "./pages/dashboard/user/new/UserNew";
+
 function App() {
   return (
     <div className="App">
@@ -91,7 +93,7 @@ function App() {
                     <Route path="users">
                       <Route index element={<UserList />} />
                       {/* <Route path=":userId" element={<Single />} /> */}
-                      {/* <Route path="new" element={<BrandNew />} /> */}
+                      <Route path="new" element={<UserNew />} />
                     </Route>
                   </Route>
                 </Route>
