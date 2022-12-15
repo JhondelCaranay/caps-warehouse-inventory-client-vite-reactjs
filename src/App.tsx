@@ -29,6 +29,8 @@ import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
 import BrandNew from "./pages/dashboard/brand/new/BrandNew";
 import UserList from "./pages/dashboard/user/list/UserList";
 import UserNew from "./pages/dashboard/user/new/UserNew";
+import ProjectEdit from "./pages/dashboard/project/edit/ProjectEdit";
+import Page404 from "./pages/public/404/Page404";
 
 function App() {
   return (
@@ -75,6 +77,7 @@ function App() {
                     <Route path="projects">
                       <Route index element={<ProjectList />} />
                       {/* <Route path=":projectsId" element={<Single />} /> */}
+                      <Route path="edit/:projectsId" element={<ProjectEdit />} />
                       <Route path="new" element={<ProjectNew />} />
                     </Route>
 
@@ -118,7 +121,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="*" element={<div>404</div>} />
+            <Route path="*" element={<Page404/>} />
           </Route>
         </Routes>
       </BrowserRouter>

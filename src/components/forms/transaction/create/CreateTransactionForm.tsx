@@ -29,9 +29,10 @@ const CreateTransactionForm = () => {
   } = useGetProjectsQuery("projectList", {
     refetchOnMountOrArgChange: true,
     selectFromResult: (result) => {
+      const { entities, ids } = result.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: result.data?.ids.map((id) => result.data?.entities[id] as Project),
+        data: ids.map((id) => entities[id] as Project),
       };
     },
   });
@@ -43,9 +44,10 @@ const CreateTransactionForm = () => {
   } = useGetItemsQuery("itemList", {
     refetchOnMountOrArgChange: true,
     selectFromResult: (result) => {
+      const { entities, ids } = result.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: result.data?.ids.map((id) => result.data?.entities[id] as Item),
+        data: ids.map((id) => entities[id] as Item),
       };
     },
   });

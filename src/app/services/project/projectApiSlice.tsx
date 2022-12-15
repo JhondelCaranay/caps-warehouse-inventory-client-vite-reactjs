@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Project, ProjectCreateForm } from "../../../types";
+import { Project, ProjectForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,7 +43,18 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Project", id: "LIST" }];
       },
     }),
-    addNewProject: builder.mutation<Project, ProjectCreateForm>({
+    getProject: builder.query<EntityState<Project>, string>({
+      query: (id) => ({
+        url: `/api/projects/${id}`,
+      }),
+      transformResponse: (response: Project, meta, arg) => {
+        return projectsAdapter.upsertOne(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        return [{ type: "Project", id: arg }];
+      },
+    }),
+    addNewProject: builder.mutation<Project, ProjectForm>({
       query: (data) => ({
         url: "/api/projects",
         method: "POST",
@@ -53,18 +64,18 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Project", id: "LIST" }],
     }),
-    // updateProject: builder.mutation({
-    // 	query: (data) => ({
-    // 		url: `/api/projects/${data.id}`,
-    // 		method: "PATCH",
-    // 		body: {
-    // 			...data,
-    // 		},
-    // 	}),
-    // 	invalidateTags: (result, error, arg) => {
-    // 		return [{ type: "Project", id: arg.id }];
-    // 	},
-    // }),
+    updateProject: builder.mutation<Project, ProjectForm>({
+      query: ({ id, ...data }) => ({
+        url: `/api/projects/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "Project", id: arg.id }];
+      },
+    }),
     // deleteProject: builder.mutation({
     // 	query: ({ id }) => ({
     // 		url: `/api/projects/${id}`,
@@ -79,8 +90,9 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetProjectsQuery,
+  useGetProjectQuery,
   useAddNewProjectMutation,
-  // useUpdateProjectMutation,
+  useUpdateProjectMutation,
   // useDeleteProjectMutation,
 } = projectsApiSlice;
 

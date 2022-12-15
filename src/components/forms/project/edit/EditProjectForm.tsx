@@ -1,22 +1,41 @@
 import { Button } from "@mui/material";
 import { Form, Formik, FormikHelpers } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useAddNewProjectMutation } from "../../../../app/services/project/projectApiSlice";
+import {
+  useGetProjectsQuery,
+  useUpdateProjectMutation,
+} from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import { ProjectForm, User, ROLES } from "../../../../types";
+import { ProjectForm, User, ROLES, Project } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import { SelectControl } from "../../../formik/SelectControl";
 import TextAreaControl from "../../../formik/TextAreaControl";
 import ErrorList from "../../../toast/ErrorList";
-import "./createProjectForm.scss";
-import { initialValues, validationSchema } from "./CreateProjectSchema";
-
-const CreateProjectForm = () => {
+import "./editProjectForm.scss";
+import { initialValues, validationSchema } from "./EditProjectSchema";
+import DebugControl from "../../../formik/DebugControl";
+const EditProjectForm = () => {
   const navigate = useNavigate();
+  const { projectsId } = useParams();
+  const [updateProject, { isLoading: isProjectUpdating }] = useUpdateProjectMutation();
 
-  const [addNewProject, { isLoading: isProjectUpdating }] = useAddNewProjectMutation();
+  const {
+    data: project,
+    isLoading: isLoadingProject,
+    isSuccess: isSuccessProject,
+  } = useGetProjectsQuery("projectList", {
+    refetchOnMountOrArgChange: true,
+    selectFromResult: (result) => {
+      const { entities, ids } = result?.data || { entities: {}, ids: [] };
+      return {
+        ...result,
+        data: entities[String(projectsId)],
+      };
+    },
+  });
 
   const {
     data: users,
@@ -29,25 +48,42 @@ const CreateProjectForm = () => {
       return {
         ...result,
         // get only Engineer
+        // data: result.data?.ids
+        //   .filter((id) => result.data?.entities[id]?.role === ROLES.ENGINEER)
+        //   .map((id) => result.data?.entities[id] as User),
         data: ids.map((id) => entities[id] as User).filter((user) => user.role === ROLES.ENGINEER),
       };
     },
   });
 
+  const [formValues, setFormValues] = useState(initialValues);
+
+  useEffect(() => {
+    if (project) {
+      setFormValues((prev) => ({
+        ...prev,
+        name: project.name,
+        address: project.address,
+        userId: project.userId,
+      }));
+    }
+  }, [project]);
+
   const onSubmit = async (values: ProjectForm, submitProps: FormikHelpers<ProjectForm>) => {
     //sleep for 1 seconds
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1s000));
     // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await addNewProject({
+      const result = await updateProject({
+        id: String(projectsId),
         name: values.name,
         address: values.address,
         userId: values.userId,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
-      toast.success("Project created successfully");
+      toast.success("Project edited successfully");
       submitProps.resetForm();
       navigate("/dash/projects");
     } catch (err: any) {
@@ -60,7 +96,7 @@ const CreateProjectForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingUser) {
+  if (isLoadingUser || isLoadingProject) {
     content = (
       <div className="loading">
         <PulseLoader color={"#000000"} />
@@ -68,11 +104,11 @@ const CreateProjectForm = () => {
     );
   }
 
-  if (isSuccessUser) {
+  if (isSuccessUser && isSuccessProject) {
     content = (
       <div className="container">
         <Formik
-          initialValues={initialValues}
+          initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           enableReinitialize
@@ -82,13 +118,13 @@ const CreateProjectForm = () => {
               isProjectUpdating || formik.isSubmitting ? (
                 <PulseLoader color={"black"} />
               ) : (
-                <span>Create</span>
+                <span>Edit</span>
               );
 
             return (
               <Form>
-                <h1 className="title">Create Project</h1>
-                {/* <DebugControl values={formik.values} /> */}
+                <h1 className="title">Edit Project</h1>
+                <DebugControl values={formik.values} />
                 <div className="row">
                   <div className="left">
                     <InputControl
@@ -143,6 +179,6 @@ const CreateProjectForm = () => {
     );
   }
 
-  return <div className="createProjectForm">{content}</div>;
+  return <div className="editProjectForm">{content}</div>;
 };
-export default CreateProjectForm;
+export default EditProjectForm;

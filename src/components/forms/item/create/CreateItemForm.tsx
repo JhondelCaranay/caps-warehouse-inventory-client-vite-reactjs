@@ -32,9 +32,10 @@ const CreateItemForm = () => {
   } = useGetBrandsQuery("brandList", {
     refetchOnMountOrArgChange: true,
     selectFromResult: (result) => {
+      const { entities, ids } = result.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: result.data?.ids.map((id) => result.data?.entities[id] as Brand),
+        data: ids.map((id) => entities[id] as Brand),
       };
     },
   });
@@ -46,9 +47,10 @@ const CreateItemForm = () => {
   } = useGetCategoryQuery("categoryList", {
     refetchOnMountOrArgChange: true,
     selectFromResult: (result) => {
+      const { entities, ids } = result.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: result.data?.ids.map((id) => result.data?.entities[id] as Category),
+        data: ids.map((id) => entities[id] as Category),
       };
     },
   });
