@@ -31,7 +31,8 @@ export type ItemCreateForm = {
   brandId: string;
 };
 
-export type ProjectCreateForm = {
+export type ProjectForm = {
+  id?: string;
   name: string;
   address: string;
   userId: string;
