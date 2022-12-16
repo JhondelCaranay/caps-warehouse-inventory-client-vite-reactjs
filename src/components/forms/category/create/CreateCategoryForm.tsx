@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewCategoryMutation } from "../../../../app/services/category/categoryApiSlice";
-import { CategoryCreateForm } from "../../../../types";
+import { CategoryForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
 import "./createCategoryForm.scss";
@@ -15,8 +15,8 @@ const CreateCategoryForm = () => {
   const [addNewCategory, { isLoading: isCategoryUpdating }] = useAddNewCategoryMutation();
 
   const onSubmit = async (
-    values: CategoryCreateForm,
-    submitProps: FormikHelpers<CategoryCreateForm>
+    values: CategoryForm,
+    submitProps: FormikHelpers<CategoryForm>
   ) => {
     //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -124,7 +124,7 @@ const EditProjectForm = () => {
             return (
               <Form>
                 <h1 className="title">Edit Project</h1>
-                <DebugControl values={formik.values} />
+                {/* <DebugControl values={formik.values} /> */}
                 <div className="row">
                   <div className="left">
                     <InputControl

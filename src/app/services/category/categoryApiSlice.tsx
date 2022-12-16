@@ -1,7 +1,8 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Category, CategoryCreateForm } from "../../../types";
+import { Category } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
+import { CategoryForm } from "../../../types/formik.type";
 
 const categoryAdapter = createEntityAdapter<Category>({
   // put completed in buttom
@@ -43,7 +44,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Category", id: "LIST" }];
       },
     }),
-    addNewCategory: builder.mutation<Category, CategoryCreateForm>({
+    addNewCategory: builder.mutation<Category, CategoryForm>({
       query: (data) => ({
         url: "/api/category",
         method: "POST",
@@ -53,18 +54,18 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Category", id: "LIST" }],
     }),
-    // updateCategory: builder.mutation({
-    // 	query: (data) => ({
-    // 		url: `/api/category/${data.id}`,
-    // 		method: "PATCH",
-    // 		body: {
-    // 			...data,
-    // 		},
-    // 	}),
-    // 	invalidateTags: (result, error, arg) => {
-    // 		return [{ type: "Category", id: arg.id }];
-    // 	},
-    // }),
+    updateCategory: builder.mutation<Category, CategoryForm>({
+      query: ({ id, ...data }) => ({
+        url: `/api/category/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "Category", id: arg.id }];
+      },
+    }),
     // deleteCategory: builder.mutation({
     // 	query: ({ id }) => ({
     // 		url: `/api/category/${id}`,
@@ -80,7 +81,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetCategoryQuery,
   useAddNewCategoryMutation,
-  // useUpdateCategoryMutation,
+  useUpdateCategoryMutation,
   // useDeleteCategoryMutation,
 } = categoryApiSlice;
 

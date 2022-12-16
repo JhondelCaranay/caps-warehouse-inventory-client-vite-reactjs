@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mui/material";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
@@ -13,6 +13,7 @@ import "./categoryDataTable.scss";
 
 const CategoryDataTable = () => {
   const { windowSize } = useWindowSize();
+  const navigate = useNavigate();
 
   const {
     data: category,
@@ -28,8 +29,7 @@ const CategoryDataTable = () => {
   });
 
   const handleEdit = (id: string) => {
-    console.log(id);
-    console.debug("Edit", id);
+    navigate(`/dash/category/edit/${id}`);
   };
 
   const [columnVisible, setColumnVisible] =
