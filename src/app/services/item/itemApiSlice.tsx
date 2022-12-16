@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Item, ItemCreateForm } from "../../../types";
+import { Item, ItemForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,7 +43,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Item", id: "LIST" }];
       },
     }),
-    addNewItem: builder.mutation<Item, ItemCreateForm>({
+    addNewItem: builder.mutation<Item, ItemForm>({
       query: (data) => ({
         url: "/api/items",
         method: "POST",
@@ -53,18 +53,18 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Item", id: "LIST" }],
     }),
-    // updateItem: builder.mutation({
-    // 	query: (data) => ({
-    // 		url: `/api/items/${data.id}`,
-    // 		method: "PATCH",
-    // 		body: {
-    // 			...data,
-    // 		},
-    // 	}),
-    // 	invalidateTags: (result, error, arg) => {
-    // 		return [{ type: "Item", id: arg.id }];
-    // 	},
-    // }),
+    updateItem: builder.mutation<Item, ItemForm>({
+      query: ({ id, ...data }) => ({
+        url: `/api/items/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "Item", id: arg.id }];
+      },
+    }),
     // deleteItem: builder.mutation({
     // 	query: ({ id }) => ({
     // 		url: `/api/items/${id}`,
@@ -80,7 +80,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetItemsQuery,
   useAddNewItemMutation,
-  // useUpdateItemMutation,
+  useUpdateItemMutation,
   // useDeleteItemMutation,
 } = itemsApiSlice;
 

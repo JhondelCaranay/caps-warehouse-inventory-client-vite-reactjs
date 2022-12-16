@@ -1,29 +1,50 @@
-import { AddAPhoto, RemoveCircle } from "@mui/icons-material";
+import { AddAPhoto, Close, RemoveCircle } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { useAddNewItemMutation } from "../../../../app/services/item/itemApiSlice";
-import { Brand, Category, ItemForm, UNIT } from "../../../../types";
-import TextError from "../../../formik/TextError";
-import ErrorList from "../../../toast/ErrorList";
-import "./CreateItemForm.scss";
-import { initialValues, validationSchema } from "./CreateItemSchema";
 import { v4 } from "uuid";
-import { storage } from "../../../../config/firebase";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import {
+  useGetItemsQuery,
+  useUpdateItemMutation,
+} from "../../../../app/services/item/itemApiSlice";
+import { storage } from "../../../../config/firebase";
 import { Capitalize } from "../../../../config/utils/functions";
-import { useNavigate } from "react-router-dom";
+import { Brand, Category, ItemForm, UNIT } from "../../../../types";
+import DebugControl from "../../../formik/DebugControl";
 import InputControl from "../../../formik/InputControl";
 import { SelectControl } from "../../../formik/SelectControl";
 import TextAreaControl from "../../../formik/TextAreaControl";
+import TextError from "../../../formik/TextError";
+import ErrorList from "../../../toast/ErrorList";
+import "./editItemForm.scss";
+import { initialValues, validationSchema } from "./EditItemSchema";
 
-const CreateItemForm = () => {
+const EditItemForm = () => {
+  const { itemId } = useParams();
   const navigate = useNavigate();
 
-  const [addNewItem, { isLoading: isItemUpdating }] = useAddNewItemMutation();
+  const [updateItem, { isLoading: isItemUpdating }] = useUpdateItemMutation();
+
+  const {
+    data: item,
+    isLoading: isLoadingItem,
+    isSuccess: isSuccessItem,
+  } = useGetItemsQuery("itemList", {
+    refetchOnMountOrArgChange: true,
+    selectFromResult: (result) => {
+      const { entities, ids } = result?.data || { entities: {}, ids: [] };
+      return {
+        ...result,
+        data: entities[String(itemId)],
+      };
+    },
+  });
 
   const {
     data: brands,
@@ -55,6 +76,27 @@ const CreateItemForm = () => {
     },
   });
 
+  const [formValues, setFormValues] = useState(initialValues);
+  const [viewImage, setViewImage] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (item) {
+      setFormValues((prev) => ({
+        ...prev,
+        id: item.id,
+        pictureUrlTemp: item.pictureUrl,
+        name: item.name,
+        description: item.description || "",
+        model: item.model || "",
+        unit: item.unit,
+        quantity: item.quantity,
+        price: item.price,
+        brandId: item.brandId,
+        categoryId: item.categoryId,
+      }));
+    }
+  }, [item]);
+
   const onSubmit = async (values: ItemForm, submitProps: FormikHelpers<ItemForm>) => {
     //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -68,7 +110,8 @@ const CreateItemForm = () => {
         const snapshot = await uploadBytes(storageRef, file);
         url = await getDownloadURL(snapshot.ref);
       }
-      const result = await addNewItem({
+      const result = await updateItem({
+        id: values.id,
         name: values.name,
         description: values.description || null,
         model: values.model || null,
@@ -79,9 +122,9 @@ const CreateItemForm = () => {
         brandId: values.brandId,
         categoryId: values.categoryId,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
-      toast.success("Item created successfully");
+      toast.success("Item edited successfully");
       submitProps.resetForm();
       navigate("/dash/items");
     } catch (err: any) {
@@ -94,7 +137,7 @@ const CreateItemForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingBrands || isLoadingCategory) {
+  if (isLoadingItem || isLoadingBrands || isLoadingCategory) {
     content = (
       <div className="loading">
         <PulseLoader color={"#000000"} />
@@ -102,11 +145,11 @@ const CreateItemForm = () => {
     );
   }
 
-  if (isSuccessBrands && isSuccessCategory) {
+  if (isSuccessBrands && isSuccessCategory && isSuccessItem) {
     content = (
       <div className="container">
         <Formik
-          initialValues={initialValues}
+          initialValues={formValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           enableReinitialize
@@ -116,14 +159,14 @@ const CreateItemForm = () => {
               isItemUpdating || formik.isSubmitting ? (
                 <PulseLoader color={"#FFF"} />
               ) : (
-                <span>Create</span>
+                <span>Edit</span>
               );
 
             return (
               <Form>
-                <h1 className="title">Create Item</h1>
+                <h1 className="title">Edit Item</h1>
 
-                {/* <DebugControl values={formik.values} /> */}
+                <DebugControl values={formik.values} />
 
                 <div className="row">
                   <div className="left">
@@ -215,7 +258,12 @@ const CreateItemForm = () => {
 
                   <div className="right">
                     <div className="formGroup">
-                      <p>Picture</p>
+                      <p>
+                        Picture{" "}
+                        {item?.pictureUrl && (
+                          <span onClick={() => setViewImage(true)}>| Current Image</span>
+                        )}
+                      </p>
                       <div
                         className={
                           formik.touched.pictureUrl && formik.errors.pictureUrl
@@ -272,6 +320,13 @@ const CreateItemForm = () => {
                         component={(props) => <TextError {...props} />}
                       />
                     </div>
+
+                    {/* <div className="formGroup">
+                      <p>Current picture</p>
+                      <div className="add-photo">
+                        <div className="preview"></div>
+                      </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -289,10 +344,20 @@ const CreateItemForm = () => {
             );
           }}
         </Formik>
+
+        {viewImage && (
+          <div className="modal-image">
+            <div className="modal-backdrop" onClick={(e) => setViewImage(false)}></div>
+            <div className="wrapper">
+              <img src={item?.pictureUrl} alt="" />
+              <Close fontSize="large" className="modal-close" onClick={() => setViewImage(false)} />
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
-  return <div className="createItemForm">{content}</div>;
+  return <div className="editItemForm">{content}</div>;
 };
-export default CreateItemForm;
+export default EditItemForm;
