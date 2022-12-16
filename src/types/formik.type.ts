@@ -38,7 +38,8 @@ export type ProjectForm = {
   userId: string;
 };
 
-export type CategoryCreateForm = {
+export type CategoryForm = {
+  id?: string;
   name: string;
 };
 

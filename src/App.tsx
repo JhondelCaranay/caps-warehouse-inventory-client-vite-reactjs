@@ -31,6 +31,7 @@ import UserList from "./pages/dashboard/user/list/UserList";
 import UserNew from "./pages/dashboard/user/new/UserNew";
 import ProjectEdit from "./pages/dashboard/project/edit/ProjectEdit";
 import Page404 from "./pages/public/404/Page404";
+import CategoryEdit from "./pages/dashboard/category/edit/CategoryEdit";
 
 function App() {
   return (
@@ -41,7 +42,8 @@ function App() {
           <Route path="/">
             <Route element={<AuthNotAllowed />}>
               <Route element={<PublicLayout />}>
-                <Route index element={<Homepage />} />
+                {/* <Route index element={<Homepage />} /> */}
+                <Route index element={<Login />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
               </Route>
@@ -84,6 +86,7 @@ function App() {
                     <Route path="category">
                       <Route index element={<CategoryList />} />
                       {/* <Route path=":categoryId" element={<Single />} /> */}
+                      <Route path="edit/:categoryId" element={<CategoryEdit />} />
                       <Route path="new" element={<CategoryNew />} />
                     </Route>
 
@@ -121,7 +124,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="*" element={<Page404/>} />
+            <Route path="*" element={<Page404 />} />
           </Route>
         </Routes>
       </BrowserRouter>
