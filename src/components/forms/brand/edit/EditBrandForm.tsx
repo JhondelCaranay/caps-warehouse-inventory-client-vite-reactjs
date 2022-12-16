@@ -1,37 +1,36 @@
 import { Button } from "@mui/material";
 import { Form, Formik, FormikHelpers } from "formik";
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import {
-  useGetCategoryQuery,
-  useUpdateCategoryMutation,
-} from "../../../../app/services/category/categoryApiSlice";
-import { CategoryForm } from "../../../../types/formik.type";
+  useGetBrandsQuery,
+  useUpdateBrandMutation,
+} from "../../../../app/services/brand/brandApiSlice";
+import { BrandForm } from "../../../../types";
+import DebugControl from "../../../formik/DebugControl";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
-import { initialValues, validationSchema } from "./EditCategorySchema";
-import "./editCategoryForm.scss";
-import DebugControl from "../../../formik/DebugControl";
+import { initialValues, validationSchema } from "./EditBrandSchema";
+import "./editBrandForm.scss";
+import { useEffect, useState } from "react";
 
-const EditCategoryForm = () => {
-  const { categoryId } = useParams();
+const EditBrandForm = () => {
+  const { brandId } = useParams();
   const navigate = useNavigate();
-
-  const [updateCategory, { isLoading: isCategoryUpdating }] = useUpdateCategoryMutation();
+  const [updateBrand, { isLoading: isBrandUpdating }] = useUpdateBrandMutation();
 
   const {
-    data: category,
-    isLoading: isLoadingCategory,
-    isSuccess: isSuccessCategory,
-  } = useGetCategoryQuery("categoryList", {
+    data: brands,
+    isLoading: isLoadingBrands,
+    isSuccess: isSuccessBrands,
+  } = useGetBrandsQuery("brandList", {
     refetchOnMountOrArgChange: true,
     selectFromResult: (result) => {
       const { entities, ids } = result?.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: entities[String(categoryId)],
+        data: entities[String(brandId)],
       };
     },
   });
@@ -39,30 +38,30 @@ const EditCategoryForm = () => {
   const [formValues, setFormValues] = useState(initialValues);
 
   useEffect(() => {
-    if (category) {
+    if (brands) {
       setFormValues((prev) => ({
         ...prev,
-        id: category.id,
-        name: category.name,
+        id: brands.id,
+        name: brands.name,
       }));
     }
-  }, [category]);
+  }, [brands]);
 
-  const onSubmit = async (values: CategoryForm, submitProps: FormikHelpers<CategoryForm>) => {
+  const onSubmit = async (values: BrandForm, submitProps: FormikHelpers<BrandForm>) => {
     //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await updateCategory({
+      const result = await updateBrand({
         id: values.id,
         name: values.name,
       }).unwrap();
-      console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
+      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
 
-      toast.success("Category editd successfully");
+      toast.success("Brand created successfully");
       submitProps.resetForm();
-      navigate("/dash/category");
+      navigate("/dash/brands");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
       else if (err.error) toast.error(err.error);
@@ -73,7 +72,7 @@ const EditCategoryForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingCategory) {
+  if (isLoadingBrands) {
     content = (
       <div className="loading">
         <PulseLoader color={"#000000"} />
@@ -81,7 +80,7 @@ const EditCategoryForm = () => {
     );
   }
 
-  if (isSuccessCategory) {
+  if (isSuccessBrands) {
     content = (
       <div className="container">
         <Formik
@@ -92,23 +91,23 @@ const EditCategoryForm = () => {
         >
           {(formik) => {
             const buttonText =
-              isCategoryUpdating || formik.isSubmitting ? (
+              isBrandUpdating || formik.isSubmitting ? (
                 <PulseLoader color={"black"} />
               ) : (
-                <span>Edit</span>
+                <span>Create</span>
               );
 
             return (
               <Form>
-                <h1 className="title">Edit Category</h1>
-                {/* <DebugControl values={formik.values} /> */}
+                <h1 className="title">Edit Brand</h1>
+                <DebugControl values={formik.values} />
                 <div className="row">
                   <div className="left">
                     <InputControl
-                      label="Category Name"
+                      label="Brand Name"
                       name="name"
                       type="text"
-                      placeholder="Category Name"
+                      placeholder="Brand Name"
                       isError={Boolean(formik.touched.name && formik.errors.name)}
                     />
                   </div>
@@ -134,6 +133,6 @@ const EditCategoryForm = () => {
     );
   }
 
-  return <div className="editCategoryForm">{content}</div>;
+  return <div className="editBrandForm">{content}</div>;
 };
-export default EditCategoryForm;
+export default EditBrandForm;

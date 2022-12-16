@@ -235,7 +235,7 @@ const CreateItemForm = () => {
                             className="icons"
                             fontSize="large"
                             onClick={(e) => {
-                              formik.setFieldValue("pictureUrl", null);
+                              formik.setFieldValue("pictureUrl", "");
                             }}
                           />
                         </div>
@@ -261,9 +261,10 @@ const CreateItemForm = () => {
                             ? "input error"
                             : "input"
                         }
-                        value={""}
-                        onChange={(event: any) => {
-                          formik.setFieldValue("pictureUrl", event.currentTarget.files[0]);
+                        value={undefined}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          if (e.currentTarget.files)
+                            formik.setFieldValue("pictureUrl", e.currentTarget.files[0]);
                         }}
                       />
                       <ErrorMessage

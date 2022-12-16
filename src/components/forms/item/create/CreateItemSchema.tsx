@@ -21,7 +21,7 @@ export const validationSchema = Yup.object({
   price: Yup.number().required("Required"),
   pictureUrl: Yup.mixed().test("type", "Only .jpg, .jpeg, .png, files are accepted", (value) => {
     if (value) {
-      // console.log("🚀 ~ file: CreateItemSchema.tsx:29 ~ value", value)
+      console.log("🚀 ~ file: CreateItemSchema.tsx:29 ~ value", value);
       return ["image/jpg", "image/jpeg", "image/png"].includes(value.type);
     } else {
       return true;

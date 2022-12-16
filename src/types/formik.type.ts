@@ -41,9 +41,11 @@ export type ProjectForm = {
 export type CategoryForm = {
   id?: string;
   name: string;
+  // image: any;
 };
 
-export type BrandCreateForm = {
+export type BrandForm = {
+  id?: string;
   name: string;
 };
 

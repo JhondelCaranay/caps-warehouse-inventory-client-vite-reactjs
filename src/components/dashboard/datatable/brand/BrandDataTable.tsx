@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
@@ -12,6 +12,7 @@ import { brandColumns, BRAND_ALL_COLUMNS, BRAND_MOBILE_COLUMNS } from "./brandCo
 import "./brandDataTable.scss";
 
 const BrandDataTable = () => {
+  const navigate = useNavigate();
   const { windowSize } = useWindowSize();
 
   const {
@@ -28,8 +29,7 @@ const BrandDataTable = () => {
   });
 
   const handleEdit = (id: string) => {
-    console.log(id);
-    console.debug("Edit", id);
+    navigate(`/dash/brands/edit/${id}`);
   };
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(BRAND_ALL_COLUMNS);
