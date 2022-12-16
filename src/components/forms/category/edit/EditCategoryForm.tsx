@@ -13,7 +13,6 @@ import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
 import { initialValues, validationSchema } from "./EditCategorySchema";
 import "./editCategoryForm.scss";
-import DebugControl from "../../../formik/DebugControl";
 
 const EditCategoryForm = () => {
   const { categoryId } = useParams();
@@ -60,7 +59,7 @@ const EditCategoryForm = () => {
       }).unwrap();
       console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
-      toast.success("Category editd successfully");
+      toast.success("Category edited successfully");
       submitProps.resetForm();
       navigate("/dash/category");
     } catch (err: any) {

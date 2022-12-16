@@ -18,7 +18,8 @@ export type TransactionCreateForm = {
   projectId: string;
 };
 
-export type ItemCreateForm = {
+export type ItemForm = {
+  id?: string;
   name: string;
   description: string | null;
   model: string | null;
@@ -26,6 +27,7 @@ export type ItemCreateForm = {
   quantity: number;
   price: number;
   pictureUrl: any;
+  pictureUrlTemp?: string;
   // pictureObj: ;
   categoryId: string;
   brandId: string;

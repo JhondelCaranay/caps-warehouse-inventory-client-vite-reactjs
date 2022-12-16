@@ -33,6 +33,7 @@ import ProjectEdit from "./pages/dashboard/project/edit/ProjectEdit";
 import Page404 from "./pages/public/404/Page404";
 import CategoryEdit from "./pages/dashboard/category/edit/CategoryEdit";
 import BrandEdit from "./pages/dashboard/brand/edit/BrandEdit";
+import ItemEdit from "./pages/dashboard/items/edit/ItemEdit";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
                     <Route path="items">
                       <Route index element={<ItemList />} />
                       {/* <Route path=":itemId" element={<Single />} /> */}
+                      <Route path="edit/:itemId" element={<ItemEdit />} />
                       <Route path="new" element={<ItemNew />} />
                     </Route>
 

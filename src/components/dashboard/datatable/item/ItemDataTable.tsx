@@ -7,7 +7,7 @@ import {
   GridToolbar,
 } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
@@ -18,6 +18,7 @@ import "./itemDataTable.scss";
 
 const ItemDataTable = () => {
   const { windowSize } = useWindowSize();
+  const navigate = useNavigate();
 
   const {
     data: items,
@@ -34,8 +35,7 @@ const ItemDataTable = () => {
   });
 
   const handleEdit = (id: string) => {
-    console.log(id);
-    console.debug("Edit", id);
+    navigate(`/dash/items/edit/${id}`);
   };
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(ITEM_ALL_COLUMNS);
