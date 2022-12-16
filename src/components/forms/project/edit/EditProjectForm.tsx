@@ -19,7 +19,7 @@ import { initialValues, validationSchema } from "./EditProjectSchema";
 import DebugControl from "../../../formik/DebugControl";
 const EditProjectForm = () => {
   const navigate = useNavigate();
-  const { projectsId } = useParams();
+  const { projectId } = useParams();
   const [updateProject, { isLoading: isProjectUpdating }] = useUpdateProjectMutation();
 
   const {
@@ -32,7 +32,7 @@ const EditProjectForm = () => {
       const { entities, ids } = result?.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: entities[String(projectsId)],
+        data: entities[String(projectId)],
       };
     },
   });
@@ -76,7 +76,7 @@ const EditProjectForm = () => {
 
     try {
       const result = await updateProject({
-        id: String(projectsId),
+        id: String(projectId),
         name: values.name,
         address: values.address,
         userId: values.userId,

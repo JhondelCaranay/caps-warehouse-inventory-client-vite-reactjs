@@ -32,6 +32,7 @@ import UserNew from "./pages/dashboard/user/new/UserNew";
 import ProjectEdit from "./pages/dashboard/project/edit/ProjectEdit";
 import Page404 from "./pages/public/404/Page404";
 import CategoryEdit from "./pages/dashboard/category/edit/CategoryEdit";
+import BrandEdit from "./pages/dashboard/brand/edit/BrandEdit";
 
 function App() {
   return (
@@ -79,7 +80,7 @@ function App() {
                     <Route path="projects">
                       <Route index element={<ProjectList />} />
                       {/* <Route path=":projectsId" element={<Single />} /> */}
-                      <Route path="edit/:projectsId" element={<ProjectEdit />} />
+                      <Route path="edit/:projectId" element={<ProjectEdit />} />
                       <Route path="new" element={<ProjectNew />} />
                     </Route>
 
@@ -93,6 +94,7 @@ function App() {
                     <Route path="brands">
                       <Route index element={<BrandList />} />
                       {/* <Route path=":userId" element={<Single />} /> */}
+                      <Route path="edit/:brandId" element={<BrandEdit />} />
                       <Route path="new" element={<BrandNew />} />
                     </Route>
 
@@ -123,7 +125,6 @@ function App() {
                 </Route>
               </Route>
             </Route>
-
             <Route path="*" element={<Page404 />} />
           </Route>
         </Routes>

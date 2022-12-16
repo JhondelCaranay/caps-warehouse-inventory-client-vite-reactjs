@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Brand, BrandCreateForm } from "../../../types";
+import { Brand, BrandForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
@@ -43,7 +43,7 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Brand", id: "LIST" }];
       },
     }),
-    addNewBrand: builder.mutation<Brand, BrandCreateForm>({
+    addNewBrand: builder.mutation<Brand, BrandForm>({
       query: (data) => ({
         url: "/api/brands",
         method: "POST",
@@ -53,18 +53,18 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Brand", id: "LIST" }],
     }),
-    // updateBrand: builder.mutation({
-    // 	query: (data) => ({
-    // 		url: `/api/brands/${data.id}`,
-    // 		method: "PATCH",
-    // 		body: {
-    // 			...data,
-    // 		},
-    // 	}),
-    // 	invalidateTags: (result, error, arg) => {
-    // 		return [{ type: "Brand", id: arg.id }];
-    // 	},
-    // }),
+    updateBrand: builder.mutation<Brand, BrandForm>({
+      query: ({ id, ...data }) => ({
+        url: `/api/brands/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "Brand", id: arg.id }];
+      },
+    }),
     // deleteBrand: builder.mutation({
     // 	query: ({ id }) => ({
     // 		url: `/api/brands/${id}`,
@@ -80,7 +80,7 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetBrandsQuery,
   useAddNewBrandMutation,
-  // useUpdateBrandMutation,
+  useUpdateBrandMutation,
   // useDeleteBrandMutation,
 } = brandsApiSlice;
 

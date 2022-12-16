@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewBrandMutation } from "../../../../app/services/brand/brandApiSlice";
-import { BrandCreateForm } from "../../../../types";
+import { BrandForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
 import "./createBrandForm.scss";
@@ -14,7 +14,7 @@ const CreateBrandForm = () => {
   const navigate = useNavigate();
   const [addNewBrand, { isLoading: isBrandUpdating }] = useAddNewBrandMutation();
 
-  const onSubmit = async (values: BrandCreateForm, submitProps: FormikHelpers<BrandCreateForm>) => {
+  const onSubmit = async (values: BrandForm, submitProps: FormikHelpers<BrandForm>) => {
     //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     // alert(JSON.stringify(values, null, 2));

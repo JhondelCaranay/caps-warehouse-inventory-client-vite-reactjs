@@ -1,11 +1,12 @@
 import { Button } from "@mui/material";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewCategoryMutation } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
+import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
 import "./createCategoryForm.scss";
 import { initialValues, validationSchema } from "./CreateCategorySchema";
@@ -14,23 +15,20 @@ const CreateCategoryForm = () => {
   const navigate = useNavigate();
   const [addNewCategory, { isLoading: isCategoryUpdating }] = useAddNewCategoryMutation();
 
-  const onSubmit = async (
-    values: CategoryForm,
-    submitProps: FormikHelpers<CategoryForm>
-  ) => {
+  const onSubmit = async (values: CategoryForm, submitProps: FormikHelpers<CategoryForm>) => {
     //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await addNewCategory({
-        name: values.name,
-      }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      // const result = await addNewCategory({
+      //   name: values.name,
+      // }).unwrap();
+      // console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
 
       toast.success("Category created successfully");
       submitProps.resetForm();
-      navigate("/dash/category");
+      // navigate("/dash/category");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
       else if (err.error) toast.error(err.error);
@@ -72,7 +70,22 @@ const CreateCategoryForm = () => {
                   />
                 </div>
 
-                <div className="right"></div>
+                <div className="right">
+                  {/* <Field
+                    name="image"
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg"
+                    value={undefined}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      console.log(
+                        "🚀 ~ file: CreateCategoryForm.tsx:80 ~ CreateCategoryForm ~ event",
+                        event
+                      );
+                      formik.setFieldValue("image", event.currentTarget.files![0]);
+                    }}
+                  />
+                  <ErrorMessage name="image" component={(props) => <TextError {...props} />} /> */}
+                </div>
               </div>
 
               <div className="formGroup">
@@ -94,4 +107,5 @@ const CreateCategoryForm = () => {
 
   return <div className="createCategoryForm">{content}</div>;
 };
+
 export default CreateCategoryForm;
