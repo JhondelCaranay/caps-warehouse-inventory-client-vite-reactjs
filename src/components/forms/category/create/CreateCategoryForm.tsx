@@ -1,12 +1,11 @@
 import { Button } from "@mui/material";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewCategoryMutation } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
-import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
 import "./createCategoryForm.scss";
 import { initialValues, validationSchema } from "./CreateCategorySchema";
