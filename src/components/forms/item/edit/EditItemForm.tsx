@@ -166,7 +166,7 @@ const EditItemForm = () => {
               <Form>
                 <h1 className="title">Edit Item</h1>
 
-                <DebugControl values={formik.values} />
+                {/* <DebugControl values={formik.values} /> */}
 
                 <div className="row">
                   <div className="left">

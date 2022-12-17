@@ -76,32 +76,36 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
               // if admin or super admin or warehouse controller
               ADMIN_AND_CONTROLLER.includes(role as ROLES) && (
                 <>
-                  <NavLink to="/dash/transactions" className={navLinkStyles}>
+                  <NavLink
+                    to="/dash/transactions"
+                    className={navLinkStyles}
+                    onClick={sideBarToggle}
+                  >
                     <li>
                       <LocalShipping className="icon" />
                       <span>Transactions</span>
                     </li>
                   </NavLink>
-                  <NavLink to="/dash/items" className={navLinkStyles}>
+                  <NavLink to="/dash/items" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <Warehouse className="icon" />
                       <span>Items</span>
                     </li>
                   </NavLink>
-                  <NavLink to="/dash/projects" className={navLinkStyles}>
+                  <NavLink to="/dash/projects" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <Construction className="icon" />
                       <span>Projects</span>
                     </li>
                   </NavLink>
-                  <NavLink to="/dash/category" className={navLinkStyles}>
+                  <NavLink to="/dash/category" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <CategoryOutlined className="icon" />
                       <span>Categories</span>
                     </li>
                   </NavLink>
 
-                  <NavLink to="/dash/brands" className={navLinkStyles}>
+                  <NavLink to="/dash/brands" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <BrandingWatermarkOutlined className="icon" />
                       <span>Brands</span>
@@ -115,7 +119,7 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
               // id admin or super admin
               ADMIN.includes(role as ROLES) && (
                 <>
-                  <NavLink to="/dash/users" className={navLinkStyles}>
+                  <NavLink to="/dash/users" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <PeopleOutline className="icon" />
                       <span>Users</span>
@@ -129,21 +133,21 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
               // id admin or super admin
               ENGINEER.includes(role as ROLES) && (
                 <>
-                  <NavLink to="/me/items" className={navLinkStyles}>
+                  <NavLink to="/me/items" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <Hardware className="icon" />
                       <span>Items</span>
                     </li>
                   </NavLink>
 
-                  <NavLink to="/me/transactions" className={navLinkStyles}>
+                  <NavLink to="/me/transactions" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <LocalShipping className="icon" />
                       <span>Transactions</span>
                     </li>
                   </NavLink>
 
-                  <NavLink to="/me/projects" className={navLinkStyles}>
+                  <NavLink to="/me/projects" className={navLinkStyles} onClick={sideBarToggle}>
                     <li>
                       <Construction className="icon" />
                       <span>My Projects</span>
