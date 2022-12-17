@@ -1,4 +1,3 @@
-import { Tokens } from "./../../../../server/src/auth/types/tokens.type";
 import {
   BaseQueryFn,
   createApi,
@@ -7,6 +6,7 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import Cookie from "js-cookie";
+import { Tokens } from "../../types";
 import { logOut, setCredentials } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
