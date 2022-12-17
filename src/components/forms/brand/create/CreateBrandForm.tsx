@@ -1,3 +1,4 @@
+import "./createBrandForm.scss";
 import { Button } from "@mui/material";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,6 @@ import { useAddNewBrandMutation } from "../../../../app/services/brand/brandApiS
 import { BrandForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
-import "./createBrandForm.scss";
 import { initialValues, validationSchema } from "./CreateBrandSchema";
 
 const CreateBrandForm = () => {
