@@ -20,14 +20,14 @@ const CreateCategoryForm = () => {
     // alert(JSON.stringify(values, null, 2));
 
     try {
-      // const result = await addNewCategory({
-      //   name: values.name,
-      // }).unwrap();
-      // console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      const result = await addNewCategory({
+        name: values.name,
+      }).unwrap();
+      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
 
       toast.success("Category created successfully");
       submitProps.resetForm();
-      // navigate("/dash/category");
+      navigate("/dash/category");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
       else if (err.error) toast.error(err.error);

@@ -15,6 +15,7 @@ import { useAddNewTransactionMutation } from "../../../../app/services/transacti
 import { SelectControl } from "../../../formik/SelectControl";
 import InputControl from "../../../formik/InputControl";
 import TextAreaControl from "../../../formik/TextAreaControl";
+import DebugControl from "../../../formik/DebugControl";
 
 const CreateTransactionForm = () => {
   const navigate = useNavigate();
@@ -83,6 +84,10 @@ const CreateTransactionForm = () => {
         itemId: values.itemId,
         projectId: values.projectId,
       }).unwrap();
+      console.log(
+        "🚀 ~ file: CreateTransactionForm.tsx:86 ~ CreateTransactionForm ~ result",
+        result
+      );
 
       toast.success("Transaction created successfully");
       submitProps.resetForm();
@@ -117,7 +122,7 @@ const CreateTransactionForm = () => {
           {(formik) => {
             const buttonText =
               isTransactionUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"#FFF"} />
+                <PulseLoader color={"black"} />
               ) : (
                 <span>Create</span>
               );
@@ -162,6 +167,7 @@ const CreateTransactionForm = () => {
                       label="Project"
                       name="projectId"
                       isError={Boolean(formik.touched.projectId && formik.errors.projectId)}
+                      onChange={handleProjectChange}
                     >
                       <>
                         {projects?.map((project) => (
