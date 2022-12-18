@@ -157,7 +157,7 @@ const EditItemForm = () => {
           {(formik) => {
             const buttonText =
               isItemUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"#FFF"} />
+                <PulseLoader color={"black"} />
               ) : (
                 <span>Edit</span>
               );

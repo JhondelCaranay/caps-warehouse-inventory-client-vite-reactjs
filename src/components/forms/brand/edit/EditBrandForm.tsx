@@ -100,7 +100,7 @@ const EditBrandForm = () => {
             return (
               <Form>
                 <h1 className="title">Edit Brand</h1>
-                <DebugControl values={formik.values} />
+                {/* <DebugControl values={formik.values} /> */}
                 <div className="row">
                   <div className="left">
                     <InputControl

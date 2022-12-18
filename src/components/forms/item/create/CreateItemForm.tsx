@@ -114,7 +114,7 @@ const CreateItemForm = () => {
           {(formik) => {
             const buttonText =
               isItemUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"#FFF"} />
+                <PulseLoader color={"black"} />
               ) : (
                 <span>Create</span>
               );
