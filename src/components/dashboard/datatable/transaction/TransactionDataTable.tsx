@@ -33,8 +33,9 @@ const TransactionDataTable = () => {
   });
 
   const handleEdit = (id: string) => {
-    console.log(id);
-    console.debug("Edit", id);
+    // console.log(id);
+    // console.debug("Edit", id);
+    navigate(`/dash/transactions/edit/${id}`);
   };
 
   const [columnVisible, setColumnVisible] =
@@ -54,9 +55,9 @@ const TransactionDataTable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
+            {/* <Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
-            </Link>
+            </Link> */}
             <div className="editButton" onClick={() => handleEdit(params.row.id)}>
               Edit
             </div>

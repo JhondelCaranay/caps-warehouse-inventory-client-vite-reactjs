@@ -19,10 +19,10 @@ const DashHome = () => {
         <Featured />
         {windowSize > 645 && <Chart title="Last 6 Months Data Chart" aspect={2 / 1} />}
       </div>
-      <div className="listContainer">
+      {/* <div className="listContainer">
         <div className="listTitle">Latest Transactions</div>
         <TransactionTable />
-      </div>
+      </div> */}
     </div>
   );
 };

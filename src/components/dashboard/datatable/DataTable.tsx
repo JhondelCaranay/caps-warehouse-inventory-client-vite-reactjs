@@ -28,9 +28,9 @@ const DataTable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/dash/users/1" style={{ textDecoration: "none" }}>
+            {/* <Link to="/dash/users/1" style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
-            </Link>
+            </Link> */}
             <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>
               Delete
             </div>
