@@ -1,27 +1,49 @@
+import { Button } from "@mui/material";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { PulseLoader } from "react-spinners";
+import { toast } from "react-toastify";
 import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
-import useAuth from "../../../../hooks/useAuth";
-import { Item, Project, TransactionForm } from "../../../../types";
-import "./CreateTransactionForm.scss";
-import { initialValues, validationSchema } from "./CreateTransactionSchema";
-import { toast } from "react-toastify";
-import ErrorList from "../../../toast/ErrorList";
-import { PulseLoader } from "react-spinners";
-import { Button } from "@mui/material";
-import { useAddNewTransactionMutation } from "../../../../app/services/transaction/transactionApiSlice";
-import { SelectControl } from "../../../formik/SelectControl";
-import InputControl from "../../../formik/InputControl";
-import TextAreaControl from "../../../formik/TextAreaControl";
+import {
+  useGetTransactionsQuery,
+  useUpdateTransactionMutation,
+} from "../../../../app/services/transaction/transactionApiSlice";
+import { Capitalize } from "../../../../config/utils/functions";
+import { Item, Project, TransactionForm, TRANSACTION_STATUS } from "../../../../types";
 import DebugControl from "../../../formik/DebugControl";
-
-const CreateTransactionForm = () => {
+import InputControl from "../../../formik/InputControl";
+import { SelectControl } from "../../../formik/SelectControl";
+import TextAreaControl from "../../../formik/TextAreaControl";
+import ErrorList from "../../../toast/ErrorList";
+import "./editTransactionForm.scss";
+import { initialValues, validationSchema } from "./EditTransactionSchema";
+const EditTransactionForm = () => {
+  const { transactionId } = useParams();
   const navigate = useNavigate();
-  const { id } = useAuth();
+  // const { id } = useAuth();
 
-  const [addNewTransaction, { isLoading: isTransactionUpdating }] = useAddNewTransactionMutation();
+  const [updateTransaction, { isLoading: isTransactionUpdating }] = useUpdateTransactionMutation();
+
+  const {
+    data: transaction,
+    isLoading: isLoadingTransaction,
+    isSuccess: isSuccessTransaction,
+  } = useGetTransactionsQuery("transactionList", {
+    refetchOnMountOrArgChange: true,
+    selectFromResult: (result) => {
+      const { entities, ids } = result?.data || { entities: {}, ids: [] };
+      return {
+        ...result,
+        data: entities[String(transactionId)],
+      };
+    },
+  });
+  // console.log(
+  // "🚀 ~ file: EditTransactionForm.tsx:43 ~ EditTransactionForm ~ transaction",
+  // transaction
+  // );
 
   const {
     data: projects,
@@ -56,20 +78,33 @@ const CreateTransactionForm = () => {
   const [formValues, setFormValues] = useState(initialValues);
 
   useEffect(() => {
-    setFormValues((prev) => ({
-      ...prev,
-      senderId: id,
-    }));
-  }, []);
+    if (transaction) {
+      setFormValues((prev) => ({
+        ...prev,
+        id: transaction.id,
+        quantity: transaction.quantity,
+        remarks: transaction.remarks,
+        status: transaction.status as TRANSACTION_STATUS,
+        release_slip_num: transaction.release_slip_num,
+        materials_issuance_num: transaction.materials_issuance_num,
+        gate_pass_num: transaction.gate_pass_num,
+        senderId: transaction.senderId,
+        receiverId: transaction.receiverId,
+        itemId: transaction.itemId,
+        projectId: transaction.projectId,
+      }));
+    }
+  }, [transaction]);
 
   const onSubmit = async (values: TransactionForm, submitProps: FormikHelpers<TransactionForm>) => {
-    console.log("🚀 ~ file: CreateTransactionForm.tsx:65 ~ CreateTransactionForm ~ values", values);
+    // console.log("🚀 ~ file: CreateTransactionForm.tsx:65 ~ CreateTransactionForm ~ values", values);
     //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await addNewTransaction({
+      const result = await updateTransaction({
+        id: values.id,
         quantity: values.quantity,
         remarks: values.remarks || null,
         status: values.status,
@@ -81,10 +116,7 @@ const CreateTransactionForm = () => {
         itemId: values.itemId,
         projectId: values.projectId,
       }).unwrap();
-      console.log(
-        "🚀 ~ file: CreateTransactionForm.tsx:86 ~ CreateTransactionForm ~ result",
-        result
-      );
+      console.log("🚀 ~ file: EditTransactionForm.tsx:119 ~ onSubmit ~ result", result);
 
       toast.success("Transaction created successfully");
       submitProps.resetForm();
@@ -99,7 +131,7 @@ const CreateTransactionForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingItems || isLoadingProjects) {
+  if (isLoadingItems || isLoadingProjects || isLoadingTransaction) {
     content = (
       <div className="loading">
         <PulseLoader color={"#000000"} />
@@ -107,7 +139,7 @@ const CreateTransactionForm = () => {
     );
   }
 
-  if (isSuccessItems && isSuccessProjects) {
+  if (isSuccessItems && isSuccessProjects && isSuccessTransaction) {
     content = (
       <div className="container">
         <Formik
@@ -134,12 +166,13 @@ const CreateTransactionForm = () => {
 
             return (
               <Form>
-                <h1 className="title">Create Transaction</h1>
+                <h1 className="title">Edit Transaction</h1>
                 {/* <DebugControl values={formik.values} /> */}
 
                 <div className="row">
                   <div className="left">
                     <SelectControl
+                      disabled
                       label="Item"
                       name="itemId"
                       isError={Boolean(formik.touched.itemId && formik.errors.itemId)}
@@ -154,6 +187,7 @@ const CreateTransactionForm = () => {
                     </SelectControl>
 
                     <InputControl
+                      disabled
                       label="Quantity"
                       name="quantity"
                       type="number"
@@ -162,6 +196,7 @@ const CreateTransactionForm = () => {
                     />
 
                     <SelectControl
+                      disabled
                       label="Project"
                       name="projectId"
                       isError={Boolean(formik.touched.projectId && formik.errors.projectId)}
@@ -214,6 +249,21 @@ const CreateTransactionForm = () => {
                       placeholder="#"
                       isError={Boolean(formik.touched.gate_pass_num && formik.errors.gate_pass_num)}
                     />
+
+                    <SelectControl
+                      label="Status"
+                      name="status"
+                      isError={Boolean(formik.touched.itemId && formik.errors.itemId)}
+                    >
+                      <>
+                        {" "}
+                        {Object.keys(TRANSACTION_STATUS).map((key) => (
+                          <option key={key} value={key}>
+                            {Capitalize(key)}
+                          </option>
+                        ))}
+                      </>
+                    </SelectControl>
                   </div>
                 </div>
 
@@ -235,6 +285,6 @@ const CreateTransactionForm = () => {
     );
   }
 
-  return <div className="createTransactionForm">{content}</div>;
+  return <div className="editTransactionForm">{content}</div>;
 };
-export default CreateTransactionForm;
+export default EditTransactionForm;

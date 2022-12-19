@@ -12,12 +12,12 @@ import {
 import { ChartProps } from "../../../types";
 
 const data = [
-  { name: "January", users: 1200, products: 700, transactions: 333 },
-  { name: "February", users: 2100, products: 200, transactions: 666 },
-  { name: "March", users: 800, products: 500, transactions: 777 },
-  { name: "April", users: 1600, products: 300, transactions: 444 },
-  { name: "May", users: 900, products: 722, transactions: 555 },
-  { name: "June", users: 1700, products: 955, transactions: 666 },
+  { name: "January", users: 10, products: 50, transactions: 100 },
+  { name: "February", users: 20, products: 55, transactions: 60 },
+  { name: "March", users: 30, products: 70, transactions: 90 },
+  { name: "April", users: 40, products: 100, transactions: 100 },
+  { name: "May", users: 30, products: 50, transactions: 50 },
+  { name: "June", users: 20, products: 90, transactions: 80 },
 ];
 
 const Chart = ({ aspect, title }: ChartProps) => {

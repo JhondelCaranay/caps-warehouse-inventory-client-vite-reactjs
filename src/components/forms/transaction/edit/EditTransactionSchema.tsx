@@ -2,9 +2,9 @@ import * as Yup from "yup";
 import { TransactionForm, TRANSACTION_STATUS } from "../../../../types";
 
 export const initialValues: TransactionForm = {
-  quantity: 1,
+  quantity: 0,
   remarks: "",
-  status: TRANSACTION_STATUS.ON_DELIVERY,
+  status: "",
   release_slip_num: "",
   materials_issuance_num: "",
   gate_pass_num: "",
@@ -17,7 +17,7 @@ export const initialValues: TransactionForm = {
 export const validationSchema = Yup.object().shape({
   quantity: Yup.number().required("Required").positive().integer(),
   remarks: Yup.string(),
-  status: Yup.string(),
+  status: Yup.string().required("Required"),
   release_slip_num: Yup.string().required("Required"),
   materials_issuance_num: Yup.string().required("Required"),
   gate_pass_num: Yup.string().required("Required"),

@@ -34,6 +34,7 @@ import Page404 from "./pages/public/404/Page404";
 import CategoryEdit from "./pages/dashboard/category/edit/CategoryEdit";
 import BrandEdit from "./pages/dashboard/brand/edit/BrandEdit";
 import ItemEdit from "./pages/dashboard/items/edit/ItemEdit";
+import TransactionEdit from "./pages/dashboard/transactions/edit/TransactionEdit";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
                     <Route path="transactions">
                       <Route index element={<TransactionList />} />
                       <Route path=":transactionId" element={<Single />} />
+                      <Route path="edit/:transactionId" element={<TransactionEdit />} />
                       <Route path="new" element={<TransactionNew />} />
                     </Route>
 

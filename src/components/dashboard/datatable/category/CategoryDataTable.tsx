@@ -48,9 +48,9 @@ const CategoryDataTable = () => {
       renderCell: (params: { row: Category }) => {
         return (
           <div className="cellAction">
-            <Link to="/dash" style={{ textDecoration: "none" }}>
+            {/* <Link to="/dash" style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
-            </Link>
+            </Link> */}
             <div className="editButton" onClick={() => handleEdit(params.row.id)}>
               Edit
             </div>

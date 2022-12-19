@@ -1,7 +1,7 @@
 import { RootState } from "./../../store";
 import { apiSlice } from "./../../api/apiSlice";
 import { createEntityAdapter, createSelector, EntityState } from "@reduxjs/toolkit";
-import { Transaction, TransactionCreateForm } from "../../../types";
+import { Transaction, TransactionForm } from "../../../types";
 
 const transactionsAdapter = createEntityAdapter<Transaction>({
   // put completed in buttom
@@ -43,7 +43,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Transaction", id: "LIST" }];
       },
     }),
-    addNewTransaction: builder.mutation<Transaction, TransactionCreateForm>({
+    addNewTransaction: builder.mutation<Transaction, TransactionForm>({
       query: (data) => ({
         url: "/api/transactions",
         method: "POST",
@@ -53,18 +53,18 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Transaction", id: "LIST" }],
     }),
-    // updateTransaction: builder.mutation({
-    // 	query: (data) => ({
-    // 		url: `/api/transactions/${data.id}`,
-    // 		method: "PATCH",
-    // 		body: {
-    // 			...data,
-    // 		},
-    // 	}),
-    // 	invalidateTags: (result, error, arg) => {
-    // 		return [{ type: "Transaction", id: arg.id }];
-    // 	},
-    // }),
+    updateTransaction: builder.mutation<Transaction, TransactionForm>({
+      query: ({ id, ...data }) => ({
+        url: `/api/transactions/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "Transaction", id: arg.id }];
+      },
+    }),
     // deleteTransaction: builder.mutation({
     // 	query: ({ id }) => ({
     // 		url: `/api/transactions/${id}`,
@@ -80,7 +80,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetTransactionsQuery,
   useAddNewTransactionMutation,
-  // useUpdateTransactionMutation,
+  useUpdateTransactionMutation,
   // useDeleteTransactionMutation,
 } = transactionsApiSlice;
 
