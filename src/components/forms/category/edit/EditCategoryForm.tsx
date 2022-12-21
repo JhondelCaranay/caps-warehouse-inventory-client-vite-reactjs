@@ -1,39 +1,27 @@
 import { Button } from "@mui/material";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import {
-  useGetCategoryQuery,
-  useUpdateCategoryMutation,
-} from "../../../../app/services/category/categoryApiSlice";
+import { useUpdateCategoryMutation } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryForm } from "../../../../types/formik.type";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
 import { initialValues, validationSchema } from "./EditCategorySchema";
 import "./editCategoryForm.scss";
+import { Category } from "../../../../types";
 
-const EditCategoryForm = () => {
-  const { categoryId } = useParams();
+type EditCategoryFormProps = {
+  category: Category | undefined;
+  isLoading: boolean;
+  isSuccess: boolean;
+};
+
+const EditCategoryForm = ({ category, isLoading, isSuccess }: EditCategoryFormProps) => {
   const navigate = useNavigate();
 
   const [updateCategory, { isLoading: isCategoryUpdating }] = useUpdateCategoryMutation();
-
-  const {
-    data: category,
-    isLoading: isLoadingCategory,
-    isSuccess: isSuccessCategory,
-  } = useGetCategoryQuery("categoryList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result?.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: entities[String(categoryId)],
-      };
-    },
-  });
 
   const [formValues, setFormValues] = useState(initialValues);
 
@@ -57,7 +45,7 @@ const EditCategoryForm = () => {
         id: values.id,
         name: values.name,
       }).unwrap();
-      console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
+      // console.log("🚀 ~ file: EditCategoryForm.tsx:51 ~ onSubmit ~ result", result)
 
       toast.success("Category edited successfully");
       submitProps.resetForm();
@@ -72,15 +60,15 @@ const EditCategoryForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingCategory) {
+  if (isLoading) {
     content = (
       <div className="loading">
-        <PulseLoader color={"#000000"} />
+        <PulseLoader color={"#1976d2"} />
       </div>
     );
   }
 
-  if (isSuccessCategory) {
+  if (isSuccess && category) {
     content = (
       <div className="container">
         <Formik
@@ -92,7 +80,7 @@ const EditCategoryForm = () => {
           {(formik) => {
             const buttonText =
               isCategoryUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"black"} />
+                <PulseLoader color={"#1976d2"} />
               ) : (
                 <span>Edit</span>
               );
@@ -111,8 +99,6 @@ const EditCategoryForm = () => {
                       isError={Boolean(formik.touched.name && formik.errors.name)}
                     />
                   </div>
-
-                  <div className="right"></div>
                 </div>
 
                 <div className="formGroup">

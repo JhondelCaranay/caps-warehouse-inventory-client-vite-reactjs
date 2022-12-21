@@ -49,7 +49,7 @@ const CreateCategoryForm = () => {
         {(formik) => {
           const buttonText =
             isCategoryUpdating || formik.isSubmitting ? (
-              <PulseLoader color={"black"} />
+              <PulseLoader color={"#1976d2"} />
             ) : (
               <span>Create</span>
             );
@@ -69,8 +69,9 @@ const CreateCategoryForm = () => {
                   />
                 </div>
 
-                <div className="right">
-                  {/* <Field
+                {/* <div className="right"></div> */}
+
+                {/* <Field
                     name="image"
                     type="file"
                     accept="image/png, image/jpeg, image/jpg"
@@ -84,7 +85,6 @@ const CreateCategoryForm = () => {
                     }}
                   />
                   <ErrorMessage name="image" component={(props) => <TextError {...props} />} /> */}
-                </div>
               </div>
 
               <div className="formGroup">

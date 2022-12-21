@@ -47,9 +47,9 @@ const BrandList = () => {
       </Stack>
       <BrandDataTable
         brands={brandList}
-        isLoadingData={isLoadingData}
-        isSuccessData={isSuccessData}
-        isErrorData={isErrorData}
+        isLoading={isLoadingData}
+        isSuccess={isSuccessData}
+        isError={isErrorData}
       />
     </div>
   );
