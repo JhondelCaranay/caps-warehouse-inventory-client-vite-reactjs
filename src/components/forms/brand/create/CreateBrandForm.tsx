@@ -23,7 +23,7 @@ const CreateBrandForm = () => {
       const result = await addNewBrand({
         name: values.name,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      // console.log("🚀 ~ file: CreateBrandForm.tsx:26 ~ onSubmit ~ result", result)
 
       toast.success("Brand created successfully");
       submitProps.resetForm();
@@ -49,7 +49,7 @@ const CreateBrandForm = () => {
         {(formik) => {
           const buttonText =
             isBrandUpdating || formik.isSubmitting ? (
-              <PulseLoader color={"black"} />
+              <PulseLoader color={"#1976d2"} />
             ) : (
               <span>Create</span>
             );
@@ -69,7 +69,7 @@ const CreateBrandForm = () => {
                   />
                 </div>
 
-                <div className="right"></div>
+                {/* <div className="right"></div> */}
               </div>
 
               <div className="formGroup">

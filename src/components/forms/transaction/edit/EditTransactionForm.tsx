@@ -153,7 +153,7 @@ const EditTransactionForm = () => {
               isTransactionUpdating || formik.isSubmitting ? (
                 <PulseLoader color={"black"} />
               ) : (
-                <span>Create</span>
+                <span>Edit</span>
               );
 
             const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
