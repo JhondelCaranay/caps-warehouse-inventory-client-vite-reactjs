@@ -10,17 +10,12 @@ import "./brandDataTable.scss";
 
 type BrandDataTableProps = {
   brands: Brand[];
-  isLoadingData: boolean;
-  isSuccessData: boolean;
-  isErrorData: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
 };
 
-const BrandDataTable = ({
-  brands,
-  isLoadingData,
-  isSuccessData,
-  isErrorData,
-}: BrandDataTableProps) => {
+const BrandDataTable = ({ brands, isLoading, isSuccess, isError }: BrandDataTableProps) => {
   const { windowSize } = useWindowSize();
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(BRAND_ALL_COLUMNS);
@@ -59,7 +54,7 @@ const BrandDataTable = ({
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingData) {
+  if (isLoading) {
     content = (
       <div className="loading">
         <PulseLoader color={"#1976d2"} />
@@ -67,7 +62,7 @@ const BrandDataTable = ({
     );
   }
 
-  if (isErrorData) {
+  if (isError) {
     content = (
       <div className="loading">
         <PulseLoader color={"#1976d2"} />
@@ -76,7 +71,7 @@ const BrandDataTable = ({
     );
   }
 
-  if (isSuccessData) {
+  if (isSuccess) {
     content = (
       <DataGrid
         className="datagrid"
