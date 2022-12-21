@@ -1,51 +1,38 @@
 import { Button } from "@mui/material";
 import { Form, Formik, FormikHelpers } from "formik";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import {
-  useGetBrandsQuery,
-  useUpdateBrandMutation,
-} from "../../../../app/services/brand/brandApiSlice";
-import { BrandForm } from "../../../../types";
-import DebugControl from "../../../formik/DebugControl";
+import { useUpdateBrandMutation } from "../../../../app/services/brand/brandApiSlice";
+import { Brand, BrandForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
 import { initialValues, validationSchema } from "./EditBrandSchema";
 import "./editBrandForm.scss";
 import { useEffect, useState } from "react";
 
-const EditBrandForm = () => {
-  const { brandId } = useParams();
-  const navigate = useNavigate();
-  const [updateBrand, { isLoading: isBrandUpdating }] = useUpdateBrandMutation();
+type EditBrandFormProps = {
+  brand: Brand | undefined;
+  isLoading: boolean;
+  isSuccess: boolean;
+};
 
-  const {
-    data: brands,
-    isLoading: isLoadingBrands,
-    isSuccess: isSuccessBrands,
-  } = useGetBrandsQuery("brandList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result?.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: entities[String(brandId)],
-      };
-    },
-  });
+const EditBrandForm = ({ brand, isLoading, isSuccess }: EditBrandFormProps) => {
+  const navigate = useNavigate();
+
+  const [updateBrand, { isLoading: isBrandUpdating }] = useUpdateBrandMutation();
 
   const [formValues, setFormValues] = useState(initialValues);
 
   useEffect(() => {
-    if (brands) {
+    if (brand) {
       setFormValues((prev) => ({
         ...prev,
-        id: brands.id,
-        name: brands.name,
+        id: brand.id,
+        name: brand.name,
       }));
     }
-  }, [brands]);
+  }, [brand]);
 
   const onSubmit = async (values: BrandForm, submitProps: FormikHelpers<BrandForm>) => {
     //sleep for 1 seconds
@@ -57,7 +44,7 @@ const EditBrandForm = () => {
         id: values.id,
         name: values.name,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      // console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
 
       toast.success("Brand created successfully");
       submitProps.resetForm();
@@ -72,15 +59,15 @@ const EditBrandForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingBrands) {
+  if (isLoading) {
     content = (
       <div className="loading">
-        <PulseLoader color={"#000000"} />
+        <PulseLoader color={"#1976d2"} />
       </div>
     );
   }
 
-  if (isSuccessBrands) {
+  if (isSuccess && brand) {
     content = (
       <div className="container">
         <Formik
@@ -92,9 +79,9 @@ const EditBrandForm = () => {
           {(formik) => {
             const buttonText =
               isBrandUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"black"} />
+                <PulseLoader color={"#1976d2"} />
               ) : (
-                <span>Create</span>
+                <span>Edit</span>
               );
 
             return (
@@ -112,7 +99,7 @@ const EditBrandForm = () => {
                     />
                   </div>
 
-                  <div className="right"></div>
+                  {/* <div className="right"></div> */}
                 </div>
 
                 <div className="formGroup">
