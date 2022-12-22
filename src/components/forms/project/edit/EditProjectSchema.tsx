@@ -7,7 +7,7 @@ export const initialValues: ProjectForm = {
   userId: "",
 };
 
-export const validationSchema = Yup.object({
+export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   address: Yup.string().required("Required"),
   userId: Yup.string().required("Required").uuid("Must be a valid UUID"),

@@ -5,6 +5,6 @@ export const initialValues: BrandForm = {
   name: "",
 };
 
-export const validationSchema = Yup.object({
+export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
 });

@@ -16,7 +16,7 @@ const CategoryEdit = () => {
       const { entities, ids } = result?.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: entities[String(categoryId)],
+        data: entities[String(categoryId)] || null,
       };
     },
   });

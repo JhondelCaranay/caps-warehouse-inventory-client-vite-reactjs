@@ -12,7 +12,7 @@ import "./editBrandForm.scss";
 import { useEffect, useState } from "react";
 
 type EditBrandFormProps = {
-  brand: Brand | undefined;
+  brand: Brand | null;
   isLoading: boolean;
   isSuccess: boolean;
 };

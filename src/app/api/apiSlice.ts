@@ -67,8 +67,9 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     } else {
       api.dispatch(logOut());
 
-      if (refreshResult?.error?.status === 401) {
-      }
+      // if (refreshResult?.error?.status === 401) {
+
+      // }
       return refreshResult;
     }
   }

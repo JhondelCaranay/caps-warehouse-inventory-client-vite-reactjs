@@ -71,7 +71,7 @@ const BrandDataTable = ({ brands, isLoading, isSuccess, isError }: BrandDataTabl
     );
   }
 
-  if (isSuccess) {
+  if (isSuccess && Boolean(brands.length)) {
     content = (
       <DataGrid
         className="datagrid"

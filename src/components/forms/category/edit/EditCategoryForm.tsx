@@ -13,7 +13,7 @@ import "./editCategoryForm.scss";
 import { Category } from "../../../../types";
 
 type EditCategoryFormProps = {
-  category: Category | undefined;
+  category: Category | null;
   isLoading: boolean;
   isSuccess: boolean;
 };

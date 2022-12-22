@@ -1,7 +1,9 @@
 .createProjectForm {
+  flex: 1;
   -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   padding: 20px;
+  height: auto;
 
   .loading {
     display: flex;
@@ -9,7 +11,8 @@
     align-items: center;
     flex-direction: column;
     gap: 20px;
-    height: calc(100vh - 90px);
+    height: 50px;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.1);
   }
 
@@ -53,9 +56,15 @@
       }
 
       .formGroup {
+        label {
+          font-size: 0.8rem;
+          font-weight: bold;
+          color: gray;
+        }
         .input {
           width: 100%;
           font-size: 16px;
+          font-weight: 300;
           padding: 3px;
           outline: none;
           border: 1px solid gray;

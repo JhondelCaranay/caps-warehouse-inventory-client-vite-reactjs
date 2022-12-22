@@ -16,7 +16,7 @@ const BrandEdit = () => {
       const { entities, ids } = result?.data || { entities: {}, ids: [] };
       return {
         ...result,
-        data: entities[String(brandId)],
+        data: entities[String(brandId)] || null,
       };
     },
   });
@@ -26,7 +26,7 @@ const BrandEdit = () => {
 
   return (
     <div className="brandEdit">
-      <EditBrandForm brand={brand!} isLoading={isLoading} isSuccess={isSuccess} />
+      <EditBrandForm brand={brand} isLoading={isLoading} isSuccess={isSuccess} />
     </div>
   );
 };

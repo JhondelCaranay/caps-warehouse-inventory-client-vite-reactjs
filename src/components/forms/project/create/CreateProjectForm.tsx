@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewProjectMutation } from "../../../../app/services/project/projectApiSlice";
-import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import { ProjectForm, User, ROLES } from "../../../../types";
+import { ProjectForm, User } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import { SelectControl } from "../../../formik/SelectControl";
 import TextAreaControl from "../../../formik/TextAreaControl";
@@ -13,26 +12,22 @@ import ErrorList from "../../../toast/ErrorList";
 import "./createProjectForm.scss";
 import { initialValues, validationSchema } from "./CreateProjectSchema";
 
-const CreateProjectForm = () => {
+type CreateProjectFormProps = {
+  users: User[];
+  isLoading: boolean;
+  isSuccess: boolean;
+  setSelectedId: React.Dispatch<React.SetStateAction<string | null>>;
+};
+
+const CreateProjectForm = ({
+  users,
+  isLoading,
+  isSuccess,
+  setSelectedId,
+}: CreateProjectFormProps) => {
   const navigate = useNavigate();
 
   const [addNewProject, { isLoading: isProjectUpdating }] = useAddNewProjectMutation();
-
-  const {
-    data: users,
-    isLoading: isLoadingUser,
-    isSuccess: isSuccessUser,
-  } = useGetUsersQuery("userList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result?.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        // get only Engineer
-        data: ids.map((id) => entities[id] as User).filter((user) => user.role === ROLES.ENGINEER),
-      };
-    },
-  });
 
   const onSubmit = async (values: ProjectForm, submitProps: FormikHelpers<ProjectForm>) => {
     //sleep for 1 seconds
@@ -45,7 +40,7 @@ const CreateProjectForm = () => {
         address: values.address,
         userId: values.userId,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      console.log("🚀 ~ file: CreateProjectForm.tsx:48 ~ onSubmit ~ result", result);
 
       toast.success("Project created successfully");
       submitProps.resetForm();
@@ -60,15 +55,15 @@ const CreateProjectForm = () => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoadingUser) {
+  if (isLoading) {
     content = (
       <div className="loading">
-        <PulseLoader color={"#000000"} />
+        <PulseLoader color={"#1976d2"} />
       </div>
     );
   }
 
-  if (isSuccessUser) {
+  if (isSuccess && Boolean(users.length)) {
     content = (
       <div className="container">
         <Formik
@@ -111,6 +106,15 @@ const CreateProjectForm = () => {
                       label="Assign Engineer"
                       name="userId"
                       isError={Boolean(formik.touched.userId && formik.errors.userId)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        formik.setFieldValue("userId", e.target.value);
+
+                        if (e.target.value !== "") {
+                          setSelectedId(e.target.value);
+                        } else {
+                          setSelectedId(null);
+                        }
+                      }}
                     >
                       <>
                         {users?.map((user) => (
@@ -122,7 +126,7 @@ const CreateProjectForm = () => {
                     </SelectControl>
                   </div>
 
-                  <div className="right"></div>
+                  {/* <div className="right"></div> */}
                 </div>
 
                 <div className="formGroup">
