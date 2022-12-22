@@ -1,0 +1,73 @@
+.projectTable {
+  // width: 100%;
+  // overflow-x: scroll;
+
+  .tableCell {
+    word-wrap: break-word;
+    min-width: 150px;
+  }
+
+  @media (max-width: 768px) {
+    .tableCell {
+      &.md {
+        display: none;
+      }
+    }
+  }
+
+  .cellWrapper {
+    display: flex;
+    align-items: center;
+
+    .image {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+  }
+
+  .status {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.Approved {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+    &.Pending {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+
+    // START FROM RED TO GREEN, make color readable
+    &.PLANNING_AND_DESIGN {
+      background-color: rgba(255, 0, 0, 0.151);
+      color: red;
+    }
+
+    &.IMPLEMENTATION {
+      background-color: rgba(255, 128, 0, 0.151);
+      color: orange;
+    }
+
+    &.TESTING_AND_EVAULATION {
+      background-color: rgba(255, 255, 0, 0.151);
+      color: goldenrod;
+    }
+
+    &.COMPLETED {
+      background-color: rgba(0, 255, 0, 0.151);
+      color: green;
+    }
+  }
+
+  .viewButton {
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: darkblue;
+    border: 1px solid rgba(0, 0, 139, 0.596);
+    cursor: pointer;
+  }
+}

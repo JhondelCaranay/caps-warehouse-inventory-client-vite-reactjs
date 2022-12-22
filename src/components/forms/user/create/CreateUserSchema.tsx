@@ -12,13 +12,15 @@ export const initialValues: UserCreateForm = {
   role: "",
 };
 
-export const validationSchema = Yup.object({
+export const validationSchema = Yup.object().shape({
   first_name: Yup.string().required("Required"),
   last_name: Yup.string().required("Required"),
   email: Yup.string().required("Required").email("Invalid email address"),
   position: Yup.string().required("Required"),
   address: Yup.string(),
-  contact: Yup.string().matches(/^[0-9]+$/, "Must be only digits"),
+
+  contact: Yup.string().matches(/^(?:\+63|0)\d{10}$/, "Must be only digits"),
+  // contact: Yup.string().matches(/^[0-9]+$/, "Must be only digits"),
   avatarUrl: Yup.mixed().test("type", "Only .jpg, .jpeg, .png, files are accepted", (value) => {
     if (value) {
       return ["image/jpg", "image/jpeg", "image/png"].includes(value.type);

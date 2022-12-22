@@ -147,6 +147,7 @@ const CreateUserForm = () => {
                       label="Contact"
                       name="contact"
                       type="text"
+                      placeholder="+631234567890"
                       isError={Boolean(formik.touched.contact && formik.errors.contact)}
                     />
                   </div>

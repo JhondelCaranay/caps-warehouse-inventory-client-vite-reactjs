@@ -73,7 +73,7 @@ const CategoryDataTable = ({ categories, isLoading, isSuccess, isError }: BrandD
     );
   }
 
-  if (isSuccess && categories) {
+  if (isSuccess && Boolean(categories.length)) {
     content = (
       <DataGrid
         className="datagrid"

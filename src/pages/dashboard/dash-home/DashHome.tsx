@@ -1,6 +1,6 @@
 import Chart from "../../../components/dashboard/chart/Chart";
 import Featured from "../../../components/dashboard/featured/Featured";
-import TransactionTable from "../../../components/dashboard/table/TransactionTable";
+import TransactionTable from "../../../components/dashboard/transaction-table/TransactionTable";
 import Widget from "../../../components/dashboard/widget/Widget";
 import "./dashHome.scss";
 import useWindowSize from "../../../hooks/useWindowSize";

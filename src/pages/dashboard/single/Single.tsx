@@ -1,5 +1,5 @@
 import Chart from "../../../components/dashboard/chart/Chart";
-import TransactionTable from "../../../components/dashboard/table/TransactionTable";
+import TransactionTable from "../../../components/dashboard/transaction-table/TransactionTable";
 import "./single.scss";
 const Single = () => {
   return (
