@@ -3,7 +3,7 @@ import { User } from "../../../types";
 import noImage from "./../../../assets/img/noimage.png";
 import useWindowSize from "../../../hooks/useWindowSize";
 type EngineerProfileProps = {
-  user: User | null;
+  user: User | undefined;
 };
 const EngineerProfile = ({ user }: EngineerProfileProps) => {
   const { windowSize } = useWindowSize();
@@ -40,19 +40,19 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
             <div className="detailItem">
               <span className="itemKey">Position:</span>
               <span className="itemValue">
-                {user.Profile.position ? user.Profile.position : "Not available"}
+                {user.Profile.position ? user.Profile.position : "N/A"}
               </span>
             </div>
             <div className="detailItem">
               <span className="itemKey">Phone:</span>
               <span className="itemValue">
-                {user.Profile.contact ? "+" + user.Profile.contact : "Not available"}
+                {user.Profile.contact ? "+" + user.Profile.contact : "N/A"}
               </span>
             </div>
             <div className="detailItem">
               <span className="itemKey">Address:</span>
               <span className="itemValue">
-                {user.Profile.address ? "+" + user.Profile.address : "Not available"}
+                {user.Profile.address ? "+" + user.Profile.address : "N/A"}
               </span>
             </div>
             <div className="detailItem">

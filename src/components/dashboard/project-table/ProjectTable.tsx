@@ -33,9 +33,9 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
           <TableRow>
             <TableCell className="tableCell">Project Name</TableCell>
             <TableCell className="tableCell md">Address</TableCell>
-            <TableCell className="tableCell">Stage</TableCell>
-            <TableCell className="tableCell">estimated cost</TableCell>
-            <TableCell className="tableCell">amount spend</TableCell>
+            <TableCell className="tableCell">Phase</TableCell>
+            <TableCell className="tableCell">Estimated material cost</TableCell>
+            <TableCell className="tableCell">Amount spend</TableCell>
             <TableCell className="tableCell">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -47,10 +47,10 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
                 {row.address} Lorem ipsum dolor sit amet.
               </TableCell>
               <TableCell className="tableCell">
-                <span className={`status PLANNING_AND_DESIGN`}>PLANING</span>
+                <span className={`status PLANNING`}>Planning</span>
               </TableCell>
-              <TableCell className="tableCell">&#8369; 100,000,000</TableCell>
-              <TableCell className="tableCell">&#8369; 100,000,000</TableCell>
+              <TableCell className="tableCell">&#8369; 1,000,000</TableCell>
+              <TableCell className="tableCell">&#8369; 1,000,000</TableCell>
 
               <TableCell className="tableCell">
                 <a className={`viewButton`}>View</a>

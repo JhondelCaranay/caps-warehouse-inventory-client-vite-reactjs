@@ -75,7 +75,7 @@ const CreateProjectForm = ({
           {(formik) => {
             const buttonText =
               isProjectUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"black"} />
+                <PulseLoader color={"#1976d2"} />
               ) : (
                 <span>Create</span>
               );

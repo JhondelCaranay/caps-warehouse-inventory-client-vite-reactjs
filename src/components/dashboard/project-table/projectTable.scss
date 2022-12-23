@@ -4,10 +4,11 @@
 
   .tableCell {
     word-wrap: break-word;
+    max-width: 250px;
     min-width: 150px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .tableCell {
       &.md {
         display: none;
@@ -41,25 +42,30 @@
       background-color: rgba(189, 189, 3, 0.103);
     }
 
-    // START FROM RED TO GREEN, make color readable
-    &.PLANNING_AND_DESIGN {
-      background-color: rgba(255, 0, 0, 0.151);
+    // status bar from red to green
+    &.PLANNING {
       color: red;
+      background-color: rgba(255, 0, 0, 0.151);
     }
 
-    &.IMPLEMENTATION {
-      background-color: rgba(255, 128, 0, 0.151);
+    &.DESIGN {
+      color: orangered;
+      background-color: rgba(255, 69, 0, 0.151);
+    }
+
+    &.CONSTRUCTION {
       color: orange;
+      background-color: rgba(255, 165, 0, 0.151);
     }
 
-    &.TESTING_AND_EVAULATION {
-      background-color: rgba(255, 255, 0, 0.151);
+    &.COMMISSIONING {
       color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
     }
 
     &.COMPLETED {
-      background-color: rgba(0, 255, 0, 0.151);
       color: green;
+      background-color: rgba(0, 128, 0, 0.151);
     }
   }
 

@@ -19,7 +19,7 @@ const InputControl = ({ label, name, placeholder, type, isError, ...rest }: Inpu
         name={name}
         type={type}
         placeholder={placeholder}
-        className={isError ? "input error" : "input"}
+        className={isError ? "input" : "input"}
         autoComplete="off"
         {...rest}
       />

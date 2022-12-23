@@ -12,7 +12,7 @@ const ProjectList = () => {
   useTitle("Spedi: Project List");
 
   const {
-    data: projects,
+    data: projects = { entities: {}, ids: [] },
     error,
     isLoading,
     isSuccess,
