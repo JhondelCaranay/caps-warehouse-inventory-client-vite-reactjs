@@ -19,7 +19,7 @@ const TextAreaControl = ({ label, name, placeholder, isError, ...rest }: TextAre
         as="textarea"
         rows="4"
         placeholder={placeholder}
-        className={isError ? "input error" : "input"}
+        className={isError ? "input" : "input"}
         {...rest}
       />
       <ErrorMessage name={name} component={(props) => <TextError {...props} />} />

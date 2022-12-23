@@ -31,7 +31,8 @@ const ProjectNew = () => {
         ...result,
         data: ids
           .map((id) => entities[id] as Project)
-          .filter((project) => project.userId === selectedId),
+          .filter((project) => project.userId === selectedId)
+          .slice(0, 5),
       };
     },
   });
@@ -57,7 +58,7 @@ const ProjectNew = () => {
   });
 
   const selectedEngineer = useMemo(() => {
-    return users?.find((user) => user.id === selectedId) || null;
+    return users?.find((user) => user.id === selectedId);
   }, [users, selectedId]);
 
   const isLoading = isLoadingUser || isLoadingProject;
