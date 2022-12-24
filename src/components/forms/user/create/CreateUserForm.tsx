@@ -68,175 +68,165 @@ const CreateUserForm = () => {
 
   let content: JSX.Element | null = null;
 
-  //   if (false) {
-  //     content = (
-  //       <div className="loading">
-  //         <PulseLoader color={"#000000"} />
-  //       </div>
-  //     );
-  //   }
+  content = (
+    <div className="container">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        enableReinitialize
+      >
+        {(formik) => {
+          const buttonText =
+            isUserUpdating || formik.isSubmitting ? (
+              <PulseLoader color={"black"} />
+            ) : (
+              <span>Create</span>
+            );
 
-  if (true) {
-    content = (
-      <div className="container">
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          enableReinitialize
-        >
-          {(formik) => {
-            const buttonText =
-              isUserUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"black"} />
-              ) : (
-                <span>Create</span>
-              );
+          return (
+            <Form>
+              <h1 className="title">Create User</h1>
+              {/* <DebugControl values={formik.values} /> */}
+              <div className="row">
+                <div className="left">
+                  <InputControl
+                    label="First Name"
+                    name="first_name"
+                    type="text"
+                    isError={Boolean(formik.touched.first_name && formik.errors.first_name)}
+                  />
 
-            return (
-              <Form>
-                <h1 className="title">Create User</h1>
-                <DebugControl values={formik.values} />
-                <div className="row">
-                  <div className="left">
-                    <InputControl
-                      label="First Name"
-                      name="first_name"
-                      type="text"
-                      isError={Boolean(formik.touched.first_name && formik.errors.first_name)}
-                    />
+                  <InputControl
+                    label="Last Name"
+                    name="last_name"
+                    type="text"
+                    isError={Boolean(formik.touched.last_name && formik.errors.last_name)}
+                  />
 
-                    <InputControl
-                      label="Last Name"
-                      name="last_name"
-                      type="text"
-                      isError={Boolean(formik.touched.last_name && formik.errors.last_name)}
-                    />
+                  <InputControl
+                    label="Email"
+                    name="email"
+                    type="text"
+                    isError={Boolean(formik.touched.email && formik.errors.email)}
+                  />
 
-                    <InputControl
-                      label="Email"
-                      name="email"
-                      type="text"
-                      isError={Boolean(formik.touched.email && formik.errors.email)}
-                    />
+                  <InputControl
+                    label="Position"
+                    name="position"
+                    type="text"
+                    isError={Boolean(formik.touched.position && formik.errors.position)}
+                  />
 
-                    <InputControl
-                      label="Position"
-                      name="position"
-                      type="text"
-                      isError={Boolean(formik.touched.position && formik.errors.position)}
-                    />
+                  <SelectControl
+                    label="Role"
+                    name="role"
+                    isError={Boolean(formik.touched.role && formik.errors.role)}
+                  >
+                    <>
+                      {Object.keys(ROLES)
+                        .filter((key) => key !== ROLES.SUPER_ADMIN)
+                        .map((key) => (
+                          <option key={key} value={key}>
+                            {Capitalize(key)}
+                          </option>
+                        ))}
+                    </>
+                  </SelectControl>
 
-                    <SelectControl
-                      label="Role"
-                      name="role"
-                      isError={Boolean(formik.touched.role && formik.errors.role)}
+                  <InputControl
+                    label="Contact"
+                    name="contact"
+                    type="text"
+                    placeholder="+631234567890"
+                    isError={Boolean(formik.touched.contact && formik.errors.contact)}
+                  />
+                </div>
+
+                <div className="right">
+                  <TextAreaControl
+                    label="Address"
+                    name="address"
+                    type="text"
+                    isError={Boolean(formik.touched.address && formik.errors.address)}
+                  />
+
+                  <div className="formGroup">
+                    <p>Picture</p>
+                    <div
+                      className={
+                        formik.touched.avatarUrl && formik.errors.avatarUrl
+                          ? "add-photo error"
+                          : "add-photo"
+                      }
                     >
-                      <>
-                        {Object.keys(ROLES)
-                          .filter((key) => key !== ROLES.SUPER_ADMIN)
-                          .map((key) => (
-                            <option key={key} value={key}>
-                              {Capitalize(key)}
-                            </option>
-                          ))}
-                      </>
-                    </SelectControl>
-
-                    <InputControl
-                      label="Contact"
-                      name="contact"
-                      type="text"
-                      placeholder="+631234567890"
-                      isError={Boolean(formik.touched.contact && formik.errors.contact)}
-                    />
-                  </div>
-
-                  <div className="right">
-                    <TextAreaControl
-                      label="Address"
-                      name="address"
-                      type="text"
-                      isError={Boolean(formik.touched.address && formik.errors.address)}
-                    />
-
-                    <div className="formGroup">
-                      <p>Picture</p>
-                      <div
-                        className={
-                          formik.touched.avatarUrl && formik.errors.avatarUrl
-                            ? "add-photo error"
-                            : "add-photo"
-                        }
-                      >
-                        <div className="controls">
-                          <label htmlFor="avatarUrl">
-                            <AddAPhoto
-                              className="icons"
-                              fontSize="large"
-                              onClick={(e) => formik.setFieldTouched("avatarUrl", true)}
-                            />
-                          </label>
-                          <RemoveCircle
+                      <div className="controls">
+                        <label htmlFor="avatarUrl">
+                          <AddAPhoto
                             className="icons"
                             fontSize="large"
-                            onClick={(e) => {
-                              formik.setFieldValue("avatarUrl", null);
+                            onClick={(e) => formik.setFieldTouched("avatarUrl", true)}
+                          />
+                        </label>
+                        <RemoveCircle
+                          className="icons"
+                          fontSize="large"
+                          onClick={(e) => {
+                            formik.setFieldValue("avatarUrl", null);
+                          }}
+                        />
+                      </div>
+                      {formik.values.avatarUrl && (
+                        <div className="preview">
+                          <img
+                            style={{
+                              display: formik.errors.avatarUrl ? "none" : "block",
                             }}
+                            src={URL.createObjectURL(formik.values.avatarUrl)}
+                            alt="preview"
                           />
                         </div>
-                        {formik.values.avatarUrl && (
-                          <div className="preview">
-                            <img
-                              style={{
-                                display: formik.errors.avatarUrl ? "none" : "block",
-                              }}
-                              src={URL.createObjectURL(formik.values.avatarUrl)}
-                              alt="preview"
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <Field
-                        name="avatarUrl"
-                        id="avatarUrl"
-                        type="file"
-                        accept="image/png, image/gif, image/jpeg"
-                        className={
-                          formik.touched.avatarUrl && formik.errors.avatarUrl
-                            ? "input error"
-                            : "input"
-                        }
-                        value={""}
-                        onChange={(event: any) => {
-                          formik.setFieldValue("avatarUrl", event.currentTarget.files[0]);
-                        }}
-                      />
-                      <ErrorMessage
-                        name="avatarUrl"
-                        component={(props) => <TextError {...props} />}
-                      />
+                      )}
                     </div>
+                    <Field
+                      name="avatarUrl"
+                      id="avatarUrl"
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg"
+                      className={
+                        formik.touched.avatarUrl && formik.errors.avatarUrl
+                          ? "input error"
+                          : "input"
+                      }
+                      value={""}
+                      onChange={(event: any) => {
+                        formik.setFieldValue("avatarUrl", event.currentTarget.files[0]);
+                      }}
+                    />
+                    <ErrorMessage
+                      name="avatarUrl"
+                      component={(props) => <TextError {...props} />}
+                    />
                   </div>
                 </div>
+              </div>
 
-                <div className="formGroup">
-                  <Button
-                    type="submit"
-                    size="small"
-                    variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
-                  >
-                    {buttonText}
-                  </Button>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
-    );
-  }
+              <div className="formGroup">
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="outlined"
+                  disabled={!formik.isValid || formik.isSubmitting}
+                >
+                  {buttonText}
+                </Button>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  );
 
   return <div className="createUserForm">{content}</div>;
 };

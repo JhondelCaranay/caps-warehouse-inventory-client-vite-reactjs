@@ -13,12 +13,10 @@ import "./editCategoryForm.scss";
 import { Category } from "../../../../types";
 
 type EditCategoryFormProps = {
-  category: Category | null;
-  isLoading: boolean;
-  isSuccess: boolean;
+  category: Category;
 };
 
-const EditCategoryForm = ({ category, isLoading, isSuccess }: EditCategoryFormProps) => {
+const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
   const navigate = useNavigate();
 
   const [updateCategory, { isLoading: isCategoryUpdating }] = useUpdateCategoryMutation();
@@ -60,15 +58,7 @@ const EditCategoryForm = ({ category, isLoading, isSuccess }: EditCategoryFormPr
 
   let content: JSX.Element | null = null;
 
-  if (isLoading) {
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isSuccess && category) {
+  if (category) {
     content = (
       <div className="container">
         <Formik

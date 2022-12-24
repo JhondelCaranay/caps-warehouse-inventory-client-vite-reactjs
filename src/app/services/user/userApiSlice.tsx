@@ -4,6 +4,7 @@ import { apiSlice } from "../../api/apiSlice";
 import { RootState } from "../../store";
 
 const usersAdapter = createEntityAdapter<User>({
+  // selectId: (user) => user.id,
   // put completed in buttom
   // sortComparer: (a, b) => (a.completed === b.completed ? 0 : a.completed ? 1 : -1),
   // sort by completed and createdAt
@@ -43,7 +44,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "User", id: "LIST" }];
       },
     }),
-    addNewUser: builder.mutation<User,UserCreateForm>({
+    getUser: builder.query<EntityState<User>, string>({
+      query: (id) => ({
+        url: `/api/users/${id}`,
+      }),
+      transformResponse: (response: User, meta, arg) => {
+        return usersAdapter.upsertOne(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        return [{ type: "User", id: arg }];
+      },
+    }),
+    addNewUser: builder.mutation<User, UserCreateForm>({
       query: (data) => ({
         url: "/api/users",
         method: "POST",
@@ -79,6 +91,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetUsersQuery,
+  useGetUserQuery,
   useAddNewUserMutation,
   // useUpdateUserMutation,
   // useDeleteUserMutation,

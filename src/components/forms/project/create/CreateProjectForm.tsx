@@ -16,7 +16,7 @@ type CreateProjectFormProps = {
   users: User[];
   isLoading: boolean;
   isSuccess: boolean;
-  setSelectedId: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const CreateProjectForm = ({
@@ -84,50 +84,45 @@ const CreateProjectForm = ({
               <Form>
                 <h1 className="title">Create Project</h1>
                 {/* <DebugControl values={formik.values} /> */}
-                <div className="row">
-                  <div className="left">
-                    <InputControl
-                      label="Project Name"
-                      name="name"
-                      type="text"
-                      placeholder="Project Name"
-                      isError={Boolean(formik.touched.name && formik.errors.name)}
-                    />
 
-                    <TextAreaControl
-                      label="Address"
-                      name="address"
-                      type="text"
-                      placeholder="Address"
-                      isError={Boolean(formik.touched.address && formik.errors.address)}
-                    />
+                <InputControl
+                  label="Project Name"
+                  name="name"
+                  type="text"
+                  placeholder="Project Name"
+                  isError={Boolean(formik.touched.name && formik.errors.name)}
+                />
 
-                    <SelectControl
-                      label="Assign Engineer"
-                      name="userId"
-                      isError={Boolean(formik.touched.userId && formik.errors.userId)}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        formik.setFieldValue("userId", e.target.value);
+                <TextAreaControl
+                  label="Address"
+                  name="address"
+                  type="text"
+                  placeholder="Address"
+                  isError={Boolean(formik.touched.address && formik.errors.address)}
+                />
 
-                        if (e.target.value !== "") {
-                          setSelectedId(e.target.value);
-                        } else {
-                          setSelectedId(null);
-                        }
-                      }}
-                    >
-                      <>
-                        {users?.map((user) => (
-                          <option key={user.id} value={user.id}>
-                            {user.Profile.first_name + " " + user.Profile.last_name}
-                          </option>
-                        ))}
-                      </>
-                    </SelectControl>
-                  </div>
+                <SelectControl
+                  label="Assign Engineer"
+                  name="userId"
+                  isError={Boolean(formik.touched.userId && formik.errors.userId)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    formik.setFieldValue("userId", e.target.value);
 
-                  {/* <div className="right"></div> */}
-                </div>
+                    if (e.target.value !== "") {
+                      setSelectedId(e.target.value);
+                    } else {
+                      setSelectedId("");
+                    }
+                  }}
+                >
+                  <>
+                    {users?.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.Profile.first_name + " " + user.Profile.last_name}
+                      </option>
+                    ))}
+                  </>
+                </SelectControl>
 
                 <div className="formGroup">
                   <Button

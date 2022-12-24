@@ -1,6 +1,5 @@
 .userDataTable {
   height: 710px;
-  padding: 20px;
 
   .loading {
     display: flex;
@@ -36,13 +35,13 @@
     font-weight: 600;
 
     &.ACTIVE {
-      background-color: #dcfce7;
-      color: #000;
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
     }
 
     &.IN_ACTIVE {
-      background-color: #f7c1bb;
-      color: #000;
+      color: red;
+      background-color: rgba(255, 0, 0, 0.151);
     }
   }
 
@@ -57,6 +56,11 @@
       color: darkblue;
       border: 1px solid rgba(0, 0, 139, 0.596);
       cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 139, 0.596);
+        color: #fff;
+      }
     }
 
     .editButton {
@@ -65,12 +69,17 @@
       color: darkgreen;
       border: 1px solid rgba(0, 139, 0, 0.596);
       cursor: pointer;
-    }
 
-    .editButton.disable {
-      color: rgba(0, 139, 0, 0.496);
-      border: 1px solid rgba(0, 139, 0, 0.496);
-      cursor: not-allowed;
+      &:hover {
+        background-color: rgba(0, 139, 0, 0.596);
+        color: #fff;
+      }
+
+      &.disable {
+        color: rgba(0, 139, 0, 0.496);
+        border: 1px solid rgba(0, 139, 0, 0.496);
+        cursor: not-allowed;
+      }
     }
   }
 }

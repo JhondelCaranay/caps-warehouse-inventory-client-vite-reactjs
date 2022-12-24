@@ -19,9 +19,9 @@ const InputControl = ({ label, name, placeholder, type, isError, ...rest }: Inpu
         name={name}
         type={type}
         placeholder={placeholder}
-        className={isError ? "input" : "input"}
         autoComplete="off"
         {...rest}
+        className={isError ? "input error" : "input"}
       />
       <ErrorMessage name={name} component={(props) => <TextError {...props} />} />
     </div>

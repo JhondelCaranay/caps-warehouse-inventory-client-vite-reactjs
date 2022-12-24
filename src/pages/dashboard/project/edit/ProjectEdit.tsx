@@ -71,14 +71,14 @@ const ProjectEdit = () => {
   if (isLoading) {
     content = (
       <div className="loading">
-        <PulseLoader color={"#1976d2"} />
+        <PulseLoader color={"#4e90d2"} />
       </div>
     );
   }
 
   if (isError) {
-    console.log(errorProjects || errorUsers);
-    content = <div className="error">Something went wrong, please try again</div>;
+    console.error(errorProjects || errorUsers);
+    content = <div className="errorMsg">Something went wrong, please try again</div>;
   }
 
   if (isSuccess) {

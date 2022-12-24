@@ -11,10 +11,11 @@ const CategoryList = () => {
   useTitle("Spedi: Category List");
 
   const {
-    data: categories,
+    data: categories = { entities: {}, ids: [] },
     isLoading,
     isSuccess,
     isError,
+    error,
     refetch,
   } = useGetCategoryQuery("categoryList", {
     pollingInterval: 60000,
@@ -22,10 +23,6 @@ const CategoryList = () => {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-
-  const isLoadingData = isLoading;
-  const isSuccessData = isSuccess;
-  const isErrorData = isError;
 
   const categoryList = useMemo(() => {
     return categories ? categories.ids.map((id) => categories.entities[id] as Category) : [];
@@ -47,9 +44,10 @@ const CategoryList = () => {
       </Stack>
       <CategoryDataTable
         categories={categoryList}
-        isLoading={isLoadingData}
-        isSuccess={isSuccessData}
-        isError={isErrorData}
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        isError={isError}
+        error={error}
       />
     </div>
   );
