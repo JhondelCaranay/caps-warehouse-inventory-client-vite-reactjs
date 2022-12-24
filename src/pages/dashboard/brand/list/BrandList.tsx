@@ -15,6 +15,7 @@ const BrandList = () => {
     isLoading,
     isSuccess,
     isError,
+    error,
     refetch,
   } = useGetBrandsQuery("brandList", {
     pollingInterval: 60000,
@@ -22,10 +23,6 @@ const BrandList = () => {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
-
-  const isLoadingData = isLoading;
-  const isSuccessData = isSuccess;
-  const isErrorData = isError;
 
   const brandList = useMemo(() => {
     return brands ? brands.ids.map((id) => brands.entities[id] as Brand) : [];
@@ -47,9 +44,10 @@ const BrandList = () => {
       </Stack>
       <BrandDataTable
         brands={brandList}
-        isLoading={isLoadingData}
-        isSuccess={isSuccessData}
-        isError={isErrorData}
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        isError={isError}
+        error={error}
       />
     </div>
   );

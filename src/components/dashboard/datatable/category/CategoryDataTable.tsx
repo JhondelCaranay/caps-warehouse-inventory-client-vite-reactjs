@@ -13,9 +13,16 @@ type BrandDataTableProps = {
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
+  error: any;
 };
 
-const CategoryDataTable = ({ categories, isLoading, isSuccess, isError }: BrandDataTableProps) => {
+const CategoryDataTable = ({
+  categories,
+  isLoading,
+  isSuccess,
+  isError,
+  error,
+}: BrandDataTableProps) => {
   const { windowSize } = useWindowSize();
 
   const [columnVisible, setColumnVisible] =
@@ -65,6 +72,7 @@ const CategoryDataTable = ({ categories, isLoading, isSuccess, isError }: BrandD
   }
 
   if (isError) {
+    console.error(error);
     content = (
       <div className="loading">
         <PulseLoader color={"#1976d2"} />

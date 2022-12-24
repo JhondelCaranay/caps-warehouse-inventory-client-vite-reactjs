@@ -4,9 +4,12 @@ import "./brandNew.scss";
 
 const BrandNew = () => {
   useTitle("Spedi: Brand Create");
+
   return (
     <div className="brandNew">
-      <CreateBrandForm />
+      <div className="section-1">
+        <CreateBrandForm />
+      </div>
     </div>
   );
 };

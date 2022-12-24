@@ -1,11 +1,8 @@
+import { createSelector } from "@reduxjs/toolkit";
+import { result } from "lodash";
 import { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import {
-  selectProjectById,
-  useGetProjectsQuery,
-} from "../../../../app/services/project/projectApiSlice";
+import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import { RootState } from "../../../../app/store";
 import EngineerProfile from "../../../../components/dashboard/engineer-profile/EngineerProfile";
 import ProjectTable from "../../../../components/dashboard/project-table/ProjectTable";
 import CreateProjectForm from "../../../../components/forms/project/create/CreateProjectForm";
@@ -15,50 +12,53 @@ import "./projectNew.scss";
 
 const ProjectNew = () => {
   useTitle("Spedi: Project Create");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string>("");
 
   const {
-    data: projects,
+    data: projects = { entities: {}, ids: [] },
     isLoading: isLoadingProject,
     isSuccess: isSuccessProject,
     isError: isErrorProject,
     error: errorProject,
   } = useGetProjectsQuery("projectList", {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result?.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids
-          .map((id) => entities[id] as Project)
-          .filter((project) => project.userId === selectedId)
-          .slice(0, 5),
-      };
-    },
+    refetchOnReconnect: true,
   });
 
   const {
-    data: users,
+    data: users = { entities: {}, ids: [] },
     isLoading: isLoadingUser,
     isSuccess: isSuccessUser,
     isError: isErrorUser,
     error: errorUser,
   } = useGetUsersQuery("userList", {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result?.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        // get only Engineer and active user
-        data: ids
-          .map((id) => entities[id] as User)
-          .filter((user) => user.role === ROLES.ENGINEER && user.status === USER_STATUS.ACTIVE),
-      };
-    },
+    refetchOnReconnect: true,
   });
 
+  const userList = useMemo(
+    () =>
+      users?.ids
+        .map((id) => users?.entities[id] as User)
+        .filter((user) => user.role === ROLES.ENGINEER && user.status === USER_STATUS.ACTIVE),
+    [users]
+  );
+
+  const projectList = useMemo(
+    () =>
+      projects?.ids
+        .map((id) => projects?.entities[id] as Project)
+        .filter((project) => project.userId === selectedId)
+        .slice(0, 5),
+    [projects, selectedId]
+  );
+
   const selectedEngineer = useMemo(() => {
-    return users?.find((user) => user.id === selectedId);
+    return users?.entities[selectedId] as User;
   }, [users, selectedId]);
 
   const isLoading = isLoadingUser || isLoadingProject;
@@ -66,7 +66,7 @@ const ProjectNew = () => {
   const isError = isErrorUser || isErrorProject;
 
   if (isError) {
-    console.log(errorUser || errorProject);
+    console.error(errorUser || errorProject);
     return <div>Something went wrong</div>;
   }
 
@@ -74,18 +74,18 @@ const ProjectNew = () => {
     <div className="projectNew">
       <div className="section-1">
         <CreateProjectForm
-          users={users}
+          users={userList}
           isLoading={isLoading}
           isSuccess={isSuccess}
           setSelectedId={setSelectedId}
         />
-        {selectedId && <EngineerProfile user={selectedEngineer} />}
+        {selectedEngineer && <EngineerProfile user={selectedEngineer} />}
       </div>
 
-      {selectedId && Boolean(projects.length) && (
+      {Boolean(projectList.length) && (
         <div className="section-2">
           <h1 className="title">Engineer Previous Projects</h1>
-          <ProjectTable projects={projects} />
+          <ProjectTable projects={projectList} />
         </div>
       )}
     </div>

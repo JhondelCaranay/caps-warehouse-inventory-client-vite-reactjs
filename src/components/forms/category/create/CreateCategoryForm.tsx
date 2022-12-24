@@ -23,7 +23,7 @@ const CreateCategoryForm = () => {
       const result = await addNewCategory({
         name: values.name,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      // console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
 
       toast.success("Category created successfully");
       submitProps.resetForm();
@@ -58,34 +58,14 @@ const CreateCategoryForm = () => {
             <Form>
               <h1 className="title">Create Category</h1>
               {/* <DebugControl values={formik.values} /> */}
-              <div className="row">
-                <div className="left">
-                  <InputControl
-                    label="Category Name"
-                    name="name"
-                    type="text"
-                    placeholder="Category Name"
-                    isError={Boolean(formik.touched.name && formik.errors.name)}
-                  />
-                </div>
 
-                {/* <div className="right"></div> */}
-
-                {/* <Field
-                    name="image"
-                    type="file"
-                    accept="image/png, image/jpeg, image/jpg"
-                    value={undefined}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      console.log(
-                        "🚀 ~ file: CreateCategoryForm.tsx:80 ~ CreateCategoryForm ~ event",
-                        event
-                      );
-                      formik.setFieldValue("image", event.currentTarget.files![0]);
-                    }}
-                  />
-                  <ErrorMessage name="image" component={(props) => <TextError {...props} />} /> */}
-              </div>
+              <InputControl
+                label="Category Name"
+                name="name"
+                type="text"
+                placeholder="Category Name"
+                isError={Boolean(formik.touched.name && formik.errors.name)}
+              />
 
               <div className="formGroup">
                 <Button

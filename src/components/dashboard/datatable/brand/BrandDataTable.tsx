@@ -13,9 +13,10 @@ type BrandDataTableProps = {
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
+  error: any;
 };
 
-const BrandDataTable = ({ brands, isLoading, isSuccess, isError }: BrandDataTableProps) => {
+const BrandDataTable = ({ brands, isLoading, isSuccess, isError,error }: BrandDataTableProps) => {
   const { windowSize } = useWindowSize();
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(BRAND_ALL_COLUMNS);
@@ -63,6 +64,7 @@ const BrandDataTable = ({ brands, isLoading, isSuccess, isError }: BrandDataTabl
   }
 
   if (isError) {
+    console.error(error);
     content = (
       <div className="loading">
         <PulseLoader color={"#1976d2"} />

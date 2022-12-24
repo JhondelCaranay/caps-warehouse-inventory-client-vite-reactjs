@@ -6,7 +6,9 @@ const CategoryNew = () => {
   useTitle("Spedi: Category Create");
   return (
     <div className="categoryNew">
-      <CreateCategoryForm />
+      <div className="section-1">
+        <CreateCategoryForm />
+      </div>
     </div>
   );
 };

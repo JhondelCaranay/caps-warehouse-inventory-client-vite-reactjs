@@ -17,6 +17,7 @@ type EditProjectFormProps = {
   project: Project;
   users: User[];
 };
+
 const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
   const navigate = useNavigate();
 
@@ -82,42 +83,37 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
             <Form>
               <h1 className="title">Edit Project</h1>
               {/* <DebugControl values={formik.values} /> */}
-              <div className="row">
-                <div className="left">
-                  <InputControl
-                    label="Project Name"
-                    name="name"
-                    type="text"
-                    placeholder="Project Name"
-                    isError={Boolean(formik.touched.name && formik.errors.name)}
-                  />
 
-                  <TextAreaControl
-                    label="Address"
-                    name="address"
-                    type="text"
-                    placeholder="Address"
-                    isError={Boolean(formik.touched.address && formik.errors.address)}
-                  />
+              <InputControl
+                label="Project Name"
+                name="name"
+                type="text"
+                placeholder="Project Name"
+                isError={Boolean(formik.touched.name && formik.errors.name)}
+              />
 
-                  <SelectControl
-                    disabled
-                    label="Assigned Engineer"
-                    name="userId"
-                    isError={Boolean(formik.touched.userId && formik.errors.userId)}
-                  >
-                    <>
-                      {users?.map((user) => (
-                        <option key={user.id} value={user.id}>
-                          {user.Profile.first_name + " " + user.Profile.last_name}
-                        </option>
-                      ))}
-                    </>
-                  </SelectControl>
-                </div>
+              <TextAreaControl
+                label="Address"
+                name="address"
+                type="text"
+                placeholder="Address"
+                isError={Boolean(formik.touched.address && formik.errors.address)}
+              />
 
-                {/* <div className="right"></div> */}
-              </div>
+              <SelectControl
+                disabled
+                label="Assigned Engineer"
+                name="userId"
+                isError={Boolean(formik.touched.userId && formik.errors.userId)}
+              >
+                <>
+                  {users?.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.Profile.first_name + " " + user.Profile.last_name}
+                    </option>
+                  ))}
+                </>
+              </SelectControl>
 
               <div className="formGroup">
                 <Button

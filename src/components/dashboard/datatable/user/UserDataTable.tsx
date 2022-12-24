@@ -11,28 +11,17 @@ import { CustomPagination } from "../../../datagrid-pagination/CustomPagination"
 import { userColumns, USER_ALL_COLUMNS, USER_MOBILE_COLUMNS } from "./userColumns";
 import "./userDataTable.scss";
 
-const UserDataTable = () => {
+type UserDataTableProps = {
+  users: User[];
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  error: any;
+};
+
+const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserDataTableProps) => {
   const { windowSize } = useWindowSize();
-  const { role, id } = useAuth();
-
-  const {
-    data: users,
-    error,
-    isLoading,
-    isSuccess,
-    isError,
-    refetch,
-  } = useGetUsersQuery("userList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
-
-  const handleEdit = (id: string) => {
-    console.log(id);
-    console.debug("Edit", id);
-  };
+  const { role } = useAuth();
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(USER_ALL_COLUMNS);
 
@@ -49,15 +38,15 @@ const UserDataTable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/dash" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+            <Link className="viewButton" to="/dash" style={{ textDecoration: "none" }}>
+              View
             </Link>
             {
               // if user is admin or user is editing his own profile
               role === ROLES.SUPER_ADMIN ? (
-                <div className="editButton" onClick={() => handleEdit(params.row.id)}>
+                <Link to="/dash" className="editButton" style={{ textDecoration: "none" }}>
                   Edit
-                </div>
+                </Link>
               ) : (
                 <div className="editButton disable">Edit</div>
               )
@@ -78,65 +67,46 @@ const UserDataTable = () => {
   if (isLoading) {
     content = (
       <div className="loading">
-        <PulseLoader color={"#000000"} />
+        <PulseLoader color={"#4e90d2"} />
       </div>
     );
   }
 
   if (isError) {
+    console.error(error);
     content = (
       <div className="loading">
-        <PulseLoader color={"#000000"} />
+        <PulseLoader color={"#4e90d2"} />
         <h1 className="error">Failed to load data</h1>
       </div>
     );
   }
 
   if (isSuccess) {
-    const { ids, entities } = users;
-    // const userList = ids.map((id) => entities[id] as User);
-    const userList = ids
-      .filter((id) => entities[id]?.role !== ROLES.SUPER_ADMIN)
-      .map((id) => entities[id] as User);
-
     content = (
-      <>
-        <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
-          <Stack direction="row" spacing={1}>
-            <Link to="/dash/users/new" style={{ textDecoration: "none" }}>
-              <Button size="small" variant="outlined">
-                Create User
-              </Button>
-            </Link>
-            <Button size="small" variant="outlined" onClick={refetch}>
-              Refresh
-            </Button>
-          </Stack>
-        </Stack>
-        <DataGrid
-          className="datagrid"
-          rows={userList}
-          // columns={userColumns.concat(actionColumn)} // columns - tabel header columns
-          columns={columns} // columns - tabel header columns
-          columnVisibilityModel={columnVisible}
-          onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
-          pageSize={10} // pageSize - number of rows per page
-          rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
-          checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
-          disableSelectionOnClick // disableSelectionOnClick - default is false - disable selection on click
-          components={{
-            Toolbar: GridToolbar, // GridToolbar - toolbar component on top of the table
-            Pagination: CustomPagination, // CustomPagination - custom pagination
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 }, // debounceMs - delay time for quick filter
-              printOptions: { disableToolbarButton: true }, // disableToolbarButton - default is false - disable print button
-            },
-          }}
-        />
-      </>
+      <DataGrid
+        className="datagrid"
+        rows={users}
+        // columns={userColumns.concat(actionColumn)} // columns - tabel header columns
+        columns={columns} // columns - tabel header columns
+        columnVisibilityModel={columnVisible}
+        onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
+        pageSize={10} // pageSize - number of rows per page
+        rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
+        checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
+        disableSelectionOnClick // disableSelectionOnClick - default is false - disable selection on click
+        components={{
+          Toolbar: GridToolbar, // GridToolbar - toolbar component on top of the table
+          Pagination: CustomPagination, // CustomPagination - custom pagination
+        }}
+        componentsProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 }, // debounceMs - delay time for quick filter
+            printOptions: { disableToolbarButton: true }, // disableToolbarButton - default is false - disable print button
+          },
+        }}
+      />
     );
   }
 

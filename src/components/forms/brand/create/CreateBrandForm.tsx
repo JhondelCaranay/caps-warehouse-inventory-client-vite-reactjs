@@ -58,19 +58,14 @@ const CreateBrandForm = () => {
             <Form>
               <h1 className="title">Create Brand</h1>
               {/* <DebugControl values={formik.values} /> */}
-              <div className="row">
-                <div className="left">
-                  <InputControl
-                    label="Brand Name"
-                    name="name"
-                    type="text"
-                    placeholder="Brand Name"
-                    isError={Boolean(formik.touched.name && formik.errors.name)}
-                  />
-                </div>
 
-                {/* <div className="right"></div> */}
-              </div>
+              <InputControl
+                label="Brand Name"
+                name="name"
+                type="text"
+                placeholder="Brand Name"
+                isError={Boolean(formik.touched.name && formik.errors.name)}
+              />
 
               <div className="formGroup">
                 <Button

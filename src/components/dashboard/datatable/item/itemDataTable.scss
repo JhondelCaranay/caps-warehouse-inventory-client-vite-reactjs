@@ -69,6 +69,11 @@
       color: darkblue;
       border: 1px solid rgba(0, 0, 139, 0.596);
       cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 139, 0.596);
+        color: #fff;
+      }
     }
 
     .editButton {
@@ -77,6 +82,11 @@
       color: darkgreen;
       border: 1px solid rgba(0, 139, 0, 0.596);
       cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 139, 0, 0.596);
+        color: #fff;
+      }
     }
   }
 }

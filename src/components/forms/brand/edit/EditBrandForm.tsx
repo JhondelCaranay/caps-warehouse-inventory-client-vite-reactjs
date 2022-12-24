@@ -12,12 +12,10 @@ import "./editBrandForm.scss";
 import { useEffect, useState } from "react";
 
 type EditBrandFormProps = {
-  brand: Brand | null;
-  isLoading: boolean;
-  isSuccess: boolean;
+  brand: Brand;
 };
 
-const EditBrandForm = ({ brand, isLoading, isSuccess }: EditBrandFormProps) => {
+const EditBrandForm = ({ brand }: EditBrandFormProps) => {
   const navigate = useNavigate();
 
   const [updateBrand, { isLoading: isBrandUpdating }] = useUpdateBrandMutation();
@@ -59,15 +57,7 @@ const EditBrandForm = ({ brand, isLoading, isSuccess }: EditBrandFormProps) => {
 
   let content: JSX.Element | null = null;
 
-  if (isLoading) {
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isSuccess && brand) {
+  if (brand) {
     content = (
       <div className="container">
         <Formik
@@ -88,19 +78,14 @@ const EditBrandForm = ({ brand, isLoading, isSuccess }: EditBrandFormProps) => {
               <Form>
                 <h1 className="title">Edit Brand</h1>
                 {/* <DebugControl values={formik.values} /> */}
-                <div className="row">
-                  <div className="left">
-                    <InputControl
-                      label="Brand Name"
-                      name="name"
-                      type="text"
-                      placeholder="Brand Name"
-                      isError={Boolean(formik.touched.name && formik.errors.name)}
-                    />
-                  </div>
 
-                  {/* <div className="right"></div> */}
-                </div>
+                <InputControl
+                  label="Brand Name"
+                  name="name"
+                  type="text"
+                  placeholder="Brand Name"
+                  isError={Boolean(formik.touched.name && formik.errors.name)}
+                />
 
                 <div className="formGroup">
                   <Button
