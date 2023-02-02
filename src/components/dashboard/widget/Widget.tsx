@@ -1,7 +1,7 @@
 import {
-  AccountBalanceWalletOutlined,
-  MonetizationOnOutlined,
-  ShoppingCartOutlined,
+  // AccountBalanceWalletOutlined,
+  // MonetizationOnOutlined,
+  // ShoppingCartOutlined,
   ConstructionOutlined,
   KeyboardArrowUp,
   ListAltOutlined,
@@ -9,7 +9,7 @@ import {
   PersonOutlined,
 } from "@mui/icons-material";
 import { WidgetDataTypes, WidgetProps, WidgetTypes } from "../../../types";
-import "./widget.scss";
+import styles from "./Widget.module.scss";
 
 const Widget = ({ type }: WidgetProps) => {
   let data: WidgetDataTypes = {
@@ -26,16 +26,16 @@ const Widget = ({ type }: WidgetProps) => {
   data = getWidgetData(data, type);
 
   return (
-    <div className="widget">
-      <div className="left">
-        <span className="title">{data.title}</span>
-        <span className="counter">
+    <div className={styles.widget}>
+      <div className={styles.left}>
+        <span className={styles.title}>{data.title}</span>
+        <span className={styles.counter}>
           {data.isMoney && "$"} {amount}
         </span>
-        <span className="link">{data.link}</span>
+        <span className={styles.link}>{data.link}</span>
       </div>
-      <div className="right">
-        <div className="percentage positive">
+      <div className={styles.right}>
+        <div className={`${styles.percentage} ${styles.positive}`}>
           <KeyboardArrowUp />
           {diff} %
         </div>

@@ -1,18 +1,16 @@
-import "./transactionDataTable.scss";
+import styles from "./TransactionDataTable.module.scss";
+
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import useWindowSize from "../../../../hooks/useWindowSize";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
 import PulseLoader from "react-spinners/PulseLoader";
 import { Transaction } from "../../../../types";
-import {
-  transactionColumns,
-  TRANSACTION_ALL_COLUMNS,
-  TRANSACTION_MOBILE_COLUMNS,
-} from "./TransactionColumns";
 import { Button, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useWindowSize } from "../../../../hooks";
+import { Capitalize } from "../../../../config/utils/functions";
+import noImage from "../../../../assets/img/noimage.png";
 
 const TransactionDataTable = () => {
   const { windowSize } = useWindowSize();
@@ -54,11 +52,11 @@ const TransactionDataTable = () => {
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
+          <div className={styles.cellAction}>
             <Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className={styles.viewButton}>View</div>
             </Link>
-            <div className="editButton" onClick={() => handleEdit(params.row.id)}>
+            <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>
               Edit
             </div>
           </div>
@@ -70,11 +68,11 @@ const TransactionDataTable = () => {
     },
   ];
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#000000"} />
       </div>
     );
@@ -86,9 +84,9 @@ const TransactionDataTable = () => {
     }
 
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#000000"} />
-        <h1 className="error">Failed to load data</h1>
+        <h1 className={styles.error}>Failed to load data</h1>
       </div>
     );
   }
@@ -112,7 +110,7 @@ const TransactionDataTable = () => {
           </Stack>
         </Stack>
         <DataGrid
-          className="datagrid"
+          className={styles.datagrid}
           rows={transactionList}
           columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
           columnVisibilityModel={columnVisible}
@@ -137,6 +135,131 @@ const TransactionDataTable = () => {
     );
   }
 
-  return <div className="transactionDataTable">{content}</div>;
+  return <div className={styles.transactionDataTable}>{content}</div>;
 };
 export default TransactionDataTable;
+
+export const TRANSACTION_MOBILE_COLUMNS = {
+  __check__: false,
+  id: false,
+  Item: true,
+  // User: true,
+  UserSender: true,
+  UserReciever: false,
+  Project: true,
+  status: false,
+  quantity: false,
+  remarks: false,
+};
+
+export const TRANSACTION_ALL_COLUMNS = {
+  __check__: false,
+  id: false,
+  Item: true,
+  // User: true,
+  UserSender: true,
+  UserReciever: false,
+  Project: true,
+  status: false,
+  quantity: false,
+  remarks: false,
+};
+
+export const transactionColumns: GridColDef[] = [
+  { field: "__check__", width: 0, sortable: false, filterable: false },
+  { field: "id", headerName: "ID", width: 350, type: "string" },
+  {
+    field: "Item",
+    headerName: "Item Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: Transaction }) => {
+      const { pictureUrl, name } = params.row.Item;
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={pictureUrl ? pictureUrl : noImage} alt="avatar" />
+          {Capitalize(name)}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { name } = params.row.Item;
+      return Capitalize(name);
+    },
+  },
+  {
+    field: "UserSender",
+    headerName: "Sender Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: Transaction }) => {
+      const { first_name, last_name, avatarUrl } = params.row.Sender.Profile;
+      const avatar = avatarUrl ? avatarUrl : noImage;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={avatar} alt="avatar" />
+          {fullName}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { first_name, last_name } = params.row.Sender.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return fullName;
+    },
+  },
+  {
+    field: "UserReciever",
+    headerName: "Reciever Name",
+    width: 300,
+    renderCell: (params: { row: Transaction }) => {
+      const { first_name, last_name, avatarUrl } = params.row.Receiver.Profile;
+      const avatar = avatarUrl ? avatarUrl : noImage;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={avatar} alt="avatar" />
+          {fullName}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { first_name, last_name } = params.row.Receiver.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return fullName;
+    },
+  },
+  {
+    field: "Project",
+    headerName: "Project Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: Transaction }) => {
+      const { name } = params.row.Project;
+      return <div>{Capitalize(name)}</div>;
+    },
+    valueGetter: (params) => {
+      const { name } = params.row.Project;
+      return Capitalize(name);
+    },
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 180,
+    renderCell: (params: { row: Transaction }) => {
+      const { status } = params.row;
+      return (
+        <div className={`${styles.cellWithStatus} ${styles[status]}`}>{Capitalize(status)}</div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { status } = params.row;
+      return Capitalize(status);
+    },
+  },
+  { field: "quantity", headerName: "Quantity", width: 180, type: "number" },
+  { field: "remarks", headerName: "Remarks", width: 180, type: "string" },
+];

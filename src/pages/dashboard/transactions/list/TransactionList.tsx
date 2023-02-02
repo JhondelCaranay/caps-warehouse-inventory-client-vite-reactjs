@@ -1,11 +1,11 @@
-import TransactionDataTable from "../../../../components/dashboard/datatable/transaction/TransactionDataTable";
-import useTitle from "../../../../hooks/useTitle";
-import "./transactionList.scss";
+import styles from "./TransactionList.module.scss";
+import { TransactionDataTable } from "../../../../components";
+import { useTitle } from "../../../../hooks";
 
 const TransactionList = () => {
   useTitle("Spedi: Transaction List");
   return (
-    <div className="transactionList">
+    <div className={styles.transactionList}>
       <TransactionDataTable />
     </div>
   );

@@ -53,10 +53,15 @@
           background-color: #ece8ff;
         }
 
-        .icon {
+        &.icon {
           font-size: 18px;
           color: $sidebar-icons;
         }
+
+        // .icon {
+        //   font-size: 18px;
+        //   color: $sidebar-icons;
+        // }
 
         span {
           font-size: 13px;

@@ -1,23 +1,19 @@
-import "./sidebarMobile.scss";
+import styles from "./SidebarMobile.module.scss";
 import { ROLES, SidebarProps } from "../../../types";
-import {
-  AccountCircleOutlined,
-  BrandingWatermarkOutlined,
-  CategoryOutlined,
-  Construction,
-  Dashboard,
-  ExitToApp,
-  Hardware,
-  LocalShipping,
-  MenuOutlined,
-  PeopleOutline,
-  Warehouse,
-} from "@mui/icons-material";
+import { AccountCircleOutlined, ExitToApp, PeopleOutline } from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
-import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../../app/features/auth/authSlice";
+import {
+  ADMINS_ONLY,
+  ADMIN_CONTROLLER_ONLY,
+  ENGINEER_ONLY,
+  EngineeLinks,
+  ListLinks,
+  MainLinks,
+} from "../../../config/utils/constants";
+
 const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
   return isActive ? "active" : "";
 };
@@ -34,154 +30,103 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
     navigate("/login");
   };
 
-  const ADMIN_AND_CONTROLLER = useMemo(
-    () => [ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.WAREHOUSE_CONTROLLER],
-    [] // only run once
-  );
-  const ADMIN = useMemo(() => [ROLES.ADMIN, ROLES.SUPER_ADMIN], []);
-  const ENGINEER = useMemo(() => [ROLES.ENGINEER], []);
-
   const sideBarToggle = () => {
     setToggleSidebar(!toggleSidebar);
   };
+
   return (
     <>
-      <div className={toggleSidebar ? "sidebarMobile" : "sidebarMobile hidden"}>
-        <div className="top">
-          <MenuOutlined className="icon close" onClick={sideBarToggle} />
-          <span className="logo">Spedi</span>
+      <div
+        className={
+          toggleSidebar ? `${styles.sidebarMobile}` : `${styles.sidebarMobile} ${styles.hidden}`
+        }
+      >
+        {/* top */}
+        <div className={styles.top}>
+          <span className={styles.logo}>Spedi</span>
         </div>
 
         <hr />
 
-        <div className="center">
+        {/* center */}
+        <div className={styles.center}>
           <ul>
-            {
-              // if admin or super admin
-              ADMIN.includes(role as ROLES) && (
-                <>
-                  <p className="title">MAIN</p>
-                  <NavLink end to="/dash" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <Dashboard className="icon" />
-                      <span>Dashboard </span>
-                    </li>
-                  </NavLink>
-                </>
-              )
-            }
+            {ADMINS_ONLY.includes(role as ROLES) && (
+              <>
+                <p className={styles.title}>MAIN</p>
+                <NavLink end to={MainLinks.to} className={navLinkStyles}>
+                  <li className={styles.icon}>
+                    {MainLinks.icon}
+                    <span>{MainLinks.text}</span>
+                  </li>
+                </NavLink>
+              </>
+            )}
+            <p className={styles.title}>LISTS</p>
 
-            <p className="title">LISTS</p>
-            {
-              // if admin or super admin or warehouse controller
-              ADMIN_AND_CONTROLLER.includes(role as ROLES) && (
-                <>
-                  <NavLink
-                    to="/dash/transactions"
-                    className={navLinkStyles}
-                    onClick={sideBarToggle}
-                  >
-                    <li>
-                      <LocalShipping className="icon" />
-                      <span>Transactions</span>
+            {ADMIN_CONTROLLER_ONLY.includes(role as ROLES) && (
+              <>
+                {ListLinks.map((link) => (
+                  <NavLink to={link.to} className={navLinkStyles} key={link.text}>
+                    <li className={styles.icon} onClick={sideBarToggle}>
+                      {link.icon}
+                      <span>{link.text}</span>
                     </li>
                   </NavLink>
-                  <NavLink to="/dash/items" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <Warehouse className="icon" />
-                      <span>Items</span>
-                    </li>
-                  </NavLink>
-                  <NavLink to="/dash/projects" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <Construction className="icon" />
-                      <span>Projects</span>
-                    </li>
-                  </NavLink>
-                  <NavLink to="/dash/category" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <CategoryOutlined className="icon" />
-                      <span>Categories</span>
-                    </li>
-                  </NavLink>
+                ))}
+              </>
+            )}
 
-                  <NavLink to="/dash/brands" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <BrandingWatermarkOutlined className="icon" />
-                      <span>Brands</span>
+            {ADMINS_ONLY.includes(role as ROLES) && (
+              <>
+                <NavLink to="/dash/users" className={navLinkStyles}>
+                  <li className={styles.icon} onClick={sideBarToggle}>
+                    <PeopleOutline />
+                    <span>Users</span>
+                  </li>
+                </NavLink>
+              </>
+            )}
+
+            {ENGINEER_ONLY.includes(role as ROLES) && (
+              <>
+                {EngineeLinks.map((link) => (
+                  <NavLink to={link.to} className={navLinkStyles} key={link.text}>
+                    <li className={styles.icon} onClick={sideBarToggle}>
+                      {link.icon}
+                      <span>{link.text}</span>
                     </li>
                   </NavLink>
-                </>
-              )
-            }
+                ))}
+              </>
+            )}
 
-            {
-              // id admin or super admin
-              ADMIN.includes(role as ROLES) && (
-                <>
-                  <NavLink to="/dash/users" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <PeopleOutline className="icon" />
-                      <span>Users</span>
-                    </li>
-                  </NavLink>
-                </>
-              )
-            }
-
-            {
-              // id admin or super admin
-              ENGINEER.includes(role as ROLES) && (
-                <>
-                  <NavLink to="/me/items" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <Hardware className="icon" />
-                      <span>Items</span>
-                    </li>
-                  </NavLink>
-
-                  <NavLink to="/me/transactions" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <LocalShipping className="icon" />
-                      <span>Transactions</span>
-                    </li>
-                  </NavLink>
-
-                  <NavLink to="/me/projects" className={navLinkStyles} onClick={sideBarToggle}>
-                    <li>
-                      <Construction className="icon" />
-                      <span>My Projects</span>
-                    </li>
-                  </NavLink>
-                </>
-              )
-            }
-
-            <p className="title">USER</p>
-            <li>
-              <AccountCircleOutlined className="icon" />
+            <p className={styles.title}>USER</p>
+            <li className={styles.icon} onClick={sideBarToggle}>
+              <AccountCircleOutlined />
               <span>Profile</span>
             </li>
-            <li>
-              <ExitToApp className="icon" />
+            <li onClick={handleLogout} className={styles.icon}>
+              <ExitToApp />
               <span>Logout</span>
             </li>
           </ul>
         </div>
-        <div className="bottom">
+
+        {/* bottom */}
+        <div className={styles.bottom}>
           <div
-            className="colorOption"
+            className={styles.colorOption}
             // onClick={() => dispatch({ type: "LIGHT" })}
           ></div>
           <div
-            className="colorOption"
+            className={styles.colorOption}
             // onClick={() => dispatch({ type: "DARK" })}
           ></div>
         </div>
       </div>
-
       <div
-        className={toggleSidebar ? "modalBackdrop" : ""}
+        className={toggleSidebar ? `${styles.modalBackdrop}` : ""}
         onClick={() => setToggleSidebar(false)}
       ></div>
     </>

@@ -1,12 +1,12 @@
-import "./transactionNew.scss";
-import useTitle from "../../../../hooks/useTitle";
-import CreateTransactionForm from "../../../../components/forms/transaction/create/CreateTransactionForm";
+import styles from "./TransactionNew.module.scss";
+import { useTitle } from "../../../../hooks";
+import { CreateTransactionForm } from "../../../../components";
 
 const TransactionNew = () => {
   useTitle("Spedi: Transaction Create");
 
   return (
-    <div className="transactionNew">
+    <div className={styles.transactionNew}>
       <CreateTransactionForm />
     </div>
   );
