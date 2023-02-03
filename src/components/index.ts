@@ -6,8 +6,12 @@ export { default as Chart } from "./dashboard/chart/Chart";
 export { default as Featured } from "./dashboard/featured/Featured";
 export { default as Widget } from "./dashboard/widget/Widget";
 
+// TABLE
+export { default as TransactionTable } from "./dashboard/transaction-table/TransactionTable";
+
 // TABLES
 export { default as TransactionDataTable } from "./dashboard/datatable/transaction/TransactionDataTable";
 
 // FORMS
 export { default as CreateTransactionForm } from "./forms/transaction/create/CreateTransactionForm";
+export { default as EditTransactionForm } from "./forms/transaction/edit/EditTransactionForm";

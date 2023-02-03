@@ -1,9 +1,9 @@
-import EditTransactionForm from "../../../../components/forms/transaction/edit/EditTransactionForm";
-import "./transactionEdit.scss";
+import { EditTransactionForm } from "../../../../components";
+import styles from "./TransactionEdit.module.scss";
 
 const TransactionEdit = () => {
   return (
-    <div className="transactionEdit">
+    <div className={styles.transactionEdit}>
       <EditTransactionForm />
     </div>
   );

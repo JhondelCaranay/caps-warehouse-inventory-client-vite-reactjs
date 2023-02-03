@@ -7,3 +7,6 @@ export { default as DashboardLayout } from "./layout/dashboard/DashboardLayout";
 export { default as DashHome } from "./dashboard/dash-home/DashHome";
 export { default as TransactionNew } from "./dashboard/transactions/new/TransactionNew";
 export { default as TransactionList } from "./dashboard/transactions/list/TransactionList";
+export { default as TransactionEdit } from "./dashboard/transactions/edit/TransactionEdit";
+
+export { default as Single } from "./dashboard/single/Single";

@@ -3,7 +3,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { ROLES } from "./types";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Single from "./pages/dashboard/single/Single";
 import { ToastContainer } from "react-toastify";
 import ItemList from "./pages/dashboard/items/list/ItemList";
 import CategoryList from "./pages/dashboard/category/list/CategoryList";
@@ -29,6 +28,7 @@ import {
   Login,
   NotFound,
   PublicLayout,
+  Single,
   TransactionList,
   TransactionNew,
 } from "./pages";
@@ -74,35 +74,30 @@ function App() {
 
                     <Route path="items">
                       <Route index element={<ItemList />} />
-                      {/* <Route path=":itemId" element={<Single />} /> */}
                       <Route path="edit/:itemId" element={<ItemEdit />} />
                       <Route path="new" element={<ItemNew />} />
                     </Route>
 
                     <Route path="projects">
                       <Route index element={<ProjectList />} />
-                      {/* <Route path=":projectsId" element={<Single />} /> */}
                       <Route path="edit/:projectId" element={<ProjectEdit />} />
                       <Route path="new" element={<ProjectNew />} />
                     </Route>
 
                     <Route path="category">
                       <Route index element={<CategoryList />} />
-                      {/* <Route path=":categoryId" element={<Single />} /> */}
                       <Route path="edit/:categoryId" element={<CategoryEdit />} />
                       <Route path="new" element={<CategoryNew />} />
                     </Route>
 
                     <Route path="brands">
                       <Route index element={<BrandList />} />
-                      {/* <Route path=":userId" element={<Single />} /> */}
                       <Route path="edit/:brandId" element={<BrandEdit />} />
                       <Route path="new" element={<BrandNew />} />
                     </Route>
 
                     <Route path="users">
                       <Route index element={<UserList />} />
-                      {/* <Route path=":userId" element={<Single />} /> */}
                       <Route path="new" element={<UserNew />} />
                     </Route>
                   </Route>
