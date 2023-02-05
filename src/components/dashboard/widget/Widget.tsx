@@ -55,7 +55,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "See all users",
         icon: (
           <PersonOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               color: "crimson",
               backgroundColor: "rgba(255, 0, 0, 0.2)",
@@ -72,7 +72,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "see all products",
         icon: (
           <ConstructionOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               backgroundColor: "rgba(0, 128, 0, 0.2)",
               color: "green",
@@ -88,7 +88,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "see all projects",
         icon: (
           <ListAltOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
               color: "purple",
@@ -104,7 +104,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "see all transactions",
         icon: (
           <PaidOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               backgroundColor: "rgba(218, 165, 32, 0.2)",
               color: "goldenrod",

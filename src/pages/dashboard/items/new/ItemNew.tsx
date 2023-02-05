@@ -1,11 +1,12 @@
-import CreateItemForm from "../../../../components/forms/item/create/CreateItemForm";
-import useTitle from "../../../../hooks/useTitle";
-import "./itemNew.scss";
+import styles from "./ItemNew.module.scss";
+import { useTitle } from "../../../../hooks";
+import { CreateItemForm } from "../../../../components";
 
 const ItemNew = () => {
   useTitle("Spedi: Item Create");
+
   return (
-    <div className="itemNew">
+    <div className={styles.itemNew}>
       <CreateItemForm />
     </div>
   );

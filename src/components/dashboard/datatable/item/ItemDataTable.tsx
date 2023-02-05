@@ -1,11 +1,6 @@
+import styles from "./ItemDataTable.module.scss";
 import { Button, Stack } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-  GridColumns,
-  GridColumnVisibilityModel,
-  GridToolbar,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
@@ -13,8 +8,9 @@ import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { Item } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import { itemColumns, ITEM_ALL_COLUMNS, ITEM_MOBILE_COLUMNS } from "./ItemColumns";
-import "./itemDataTable.scss";
+
+import noImage from "../../../../assets/img/noimage.png";
+import { Capitalize } from "../../../../config/utils/functions";
 
 const ItemDataTable = () => {
   const { windowSize } = useWindowSize();
@@ -52,11 +48,11 @@ const ItemDataTable = () => {
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
+          <div className={styles.cellAction}>
             <Link to="/dash" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className={styles.viewButton}>View</div>
             </Link>
-            <div className="editButton" onClick={() => handleEdit(params.row.id)}>
+            <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>
               Edit
             </div>
           </div>
@@ -68,11 +64,11 @@ const ItemDataTable = () => {
     },
   ];
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#000000"} />
       </div>
     );
@@ -80,9 +76,9 @@ const ItemDataTable = () => {
 
   if (isError) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#000000"} />
-        <h1 className="error">Failed to load data</h1>
+        <h1 className={styles.error}>Failed to load data</h1>
       </div>
     );
   }
@@ -106,7 +102,7 @@ const ItemDataTable = () => {
           </Stack>
         </Stack>
         <DataGrid
-          className="datagrid"
+          className={styles.datagrid}
           rows={itemList}
           columns={itemColumns.concat(actionColumn)} // columns - tabel header columns
           columnVisibilityModel={columnVisible}
@@ -131,6 +127,83 @@ const ItemDataTable = () => {
     );
   }
 
-  return <div className="itemDataTable">{content}</div>;
+  return <div className={styles.itemDataTable}>{content}</div>;
 };
 export default ItemDataTable;
+
+export const ITEM_MOBILE_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+  Category: false,
+  Brand: false,
+  unit: false,
+  quantity: false,
+  description: false,
+};
+
+export const ITEM_ALL_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+  Category: true,
+  Brand: false,
+  unit: true,
+  quantity: true,
+};
+
+export const itemColumns: GridColDef[] = [
+  { field: "__check__", hide: true, sortable: false, filterable: false, width: 0 },
+  { field: "id", headerName: "ID", width: 350, type: "string", hide: true },
+  {
+    field: "Item",
+    headerName: "Item Name",
+    hideable: false,
+    width: 300,
+    renderCell: (params: { row: Item }) => {
+      const { name, pictureUrl } = params.row;
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={pictureUrl ? pictureUrl : noImage} alt="avatar" />
+          {Capitalize(name)}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Item }) => {
+      const { name } = params.row;
+      return Capitalize(name);
+    },
+  },
+  {
+    field: "Category",
+    headerName: "Category",
+    width: 300,
+    renderCell: (params: { row: Item }) => {
+      const { name } = params.row.Category;
+      const category = Capitalize(name);
+      return <div>{category}</div>;
+    },
+    valueGetter: (params: { row: Item }) => {
+      const { name } = params.row.Category;
+      const category = Capitalize(name);
+      return category;
+    },
+  },
+  {
+    field: "Brand",
+    headerName: "Brand",
+    width: 300,
+    renderCell: (params: { row: Item }) => {
+      const { name } = params.row.Brand;
+      const brand = Capitalize(name);
+      return <div>{brand}</div>;
+    },
+    valueGetter: (params: { row: Item }) => {
+      const { name } = params.row.Brand;
+      const brand = Capitalize(name);
+      return brand;
+    },
+  },
+  { field: "unit", headerName: "Unit", width: 150, type: "string" },
+  { field: "quantity", headerName: "Quantity", width: 150, type: "number" },
+];

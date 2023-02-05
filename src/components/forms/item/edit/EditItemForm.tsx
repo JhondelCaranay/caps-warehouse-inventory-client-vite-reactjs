@@ -1,3 +1,4 @@
+import styles from "./EditItemForm.module.scss";
 import { AddAPhoto, Close, RemoveCircle } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -16,14 +17,9 @@ import {
 import { storage } from "../../../../config/firebase";
 import { Capitalize } from "../../../../config/utils/functions";
 import { Brand, Category, ItemForm, UNIT } from "../../../../types";
-import DebugControl from "../../../formik/DebugControl";
-import InputControl from "../../../formik/InputControl";
-import { SelectControl } from "../../../formik/SelectControl";
-import TextAreaControl from "../../../formik/TextAreaControl";
 import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
-import "./editItemForm.scss";
-import { initialValues, validationSchema } from "./EditItemSchema";
+import * as Yup from "yup";
 
 const EditItemForm = () => {
   const { itemId } = useParams();
@@ -135,11 +131,11 @@ const EditItemForm = () => {
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (isLoadingItem || isLoadingBrands || isLoadingCategory) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#000000"} />
       </div>
     );
@@ -147,7 +143,7 @@ const EditItemForm = () => {
 
   if (isSuccessBrands && isSuccessCategory && isSuccessItem) {
     content = (
-      <div className="container">
+      <div className={styles.container}>
         <Formik
           initialValues={formValues}
           validationSchema={validationSchema}
@@ -164,123 +160,236 @@ const EditItemForm = () => {
 
             return (
               <Form>
-                <h1 className="title">Edit Item</h1>
+                <h1 className={styles.title}>Edit Item</h1>
 
                 {/* <DebugControl values={formik.values} /> */}
 
-                <div className="row">
-                  <div className="left">
-                    <InputControl
-                      label="Item Name"
-                      name="name"
-                      type="text"
-                      placeholder="Item name"
-                      isError={Boolean(formik.touched.name && formik.errors.name)}
-                    />
+                <div className={styles.row}>
+                  {/* LEFT */}
+                  <div className={styles.left}>
+                    {/* ITEM NAME INPUT */}
+                    <div className={styles.formGroup}>
+                      <label htmlFor="name">Item Name</label>
+                      <Field
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Item name"
+                        className={`${styles.input} ${
+                          Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                        }`}
+                      />
+                      <ErrorMessage
+                        name="name"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
 
-                    <div className="row">
-                      <div className="left">
-                        <InputControl
-                          label="Price"
-                          name="price"
-                          type="number"
-                          isError={Boolean(formik.touched.price && formik.errors.price)}
-                        />
+                    {/* CHILD ROW */}
+                    <div className={styles.row}>
+                      {/* LEFT */}
+                      <div className={styles.left}>
+                        {/* PRICE INPUT */}
+                        <div className={styles.formGroup}>
+                          <label htmlFor="price">Price</label>
+                          <Field
+                            id="price"
+                            name="price"
+                            type="number"
+                            className={`${styles.input} ${
+                              Boolean(formik.touched.price && formik.errors.price)
+                                ? styles.error
+                                : ""
+                            }`}
+                          />
+                          <ErrorMessage
+                            name="price"
+                            component={(props) => (
+                              <TextError {...props} styles={styles["text-error"]} />
+                            )}
+                          />
+                        </div>
                       </div>
-                      <div className="right">
-                        <InputControl
-                          label="Quantity"
-                          name="quantity"
-                          type="number"
-                          isError={Boolean(formik.touched.quantity && formik.errors.quantity)}
-                        />
+                      {/* RIGHT */}
+                      <div className={styles.right}>
+                        {/*  QUANTITY INPUT */}
+                        <div className={styles.formGroup}>
+                          <label htmlFor="quantity">Quantity</label>
+                          <Field
+                            id="quantity"
+                            name="quantity"
+                            type="number"
+                            max="50"
+                            className={`${styles.input} ${
+                              Boolean(formik.touched.quantity && formik.errors.quantity)
+                                ? styles.error
+                                : ""
+                            }`}
+                          />
+                          <ErrorMessage
+                            name="quantity"
+                            component={(props) => (
+                              <TextError {...props} styles={styles["text-error"]} />
+                            )}
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <TextAreaControl
-                      label="Description"
-                      name="description"
-                      type="text"
-                      placeholder="Description"
-                      isError={Boolean(formik.touched.description && formik.errors.description)}
-                    />
+                    {/* DESCRIPTION TEXT AREA */}
+                    <div className={styles.formGroup}>
+                      <label htmlFor="description">Description</label>
+                      <Field
+                        id="description"
+                        name="description"
+                        as="textarea"
+                        rows="4"
+                        placeholder="Description"
+                        className={`${styles.input} ${
+                          Boolean(formik.touched.description && formik.errors.description)
+                            ? styles.error
+                            : ""
+                        }`}
+                      />
+                      <ErrorMessage
+                        name="description"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
 
-                    <InputControl
-                      label="Model"
-                      name="model"
-                      type="text"
-                      placeholder="Model"
-                      isError={Boolean(formik.touched.model && formik.errors.model)}
-                    />
+                    {/* ITEM MODEL INPUT */}
+                    <div className={styles.formGroup}>
+                      <label htmlFor="model">Model</label>
+                      <Field
+                        id="model"
+                        name="model"
+                        type="text"
+                        placeholder="Model"
+                        className={`${styles.input} ${
+                          Boolean(formik.touched.model && formik.errors.model) ? styles.error : ""
+                        }`}
+                      />
+                      <ErrorMessage
+                        name="model"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
 
-                    <SelectControl
-                      label="UNIT"
-                      name="unit"
-                      isError={Boolean(formik.touched.unit && formik.errors.unit)}
-                    >
-                      <>
+                    {/* SELECT ITEM UNIT */}
+                    <div className={styles.formGroup}>
+                      <label htmlFor="unit">Unit</label>
+                      <Field
+                        id="unit"
+                        name="unit"
+                        as="select"
+                        className={`${styles.input} ${
+                          Boolean(formik.touched.unit && formik.errors.unit) ? styles.error : ""
+                        }`}
+                      >
+                        <option value="">Select Unit</option>
                         {Object.keys(UNIT).map((key) => (
                           <option key={key} value={key}>
                             {Capitalize(key)}
                           </option>
                         ))}
-                      </>
-                    </SelectControl>
+                      </Field>
+                      <ErrorMessage
+                        name="unit"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
 
-                    <SelectControl
-                      label="Brand"
-                      name="brandId"
-                      isError={Boolean(formik.touched.brandId && formik.errors.brandId)}
-                    >
-                      <>
+                    {/* SELECT ITEM BRAND */}
+                    <div className={styles.formGroup}>
+                      <label htmlFor="brandId">Brand</label>
+                      <Field
+                        id="brandId"
+                        name="brandId"
+                        as="select"
+                        className={`${styles.input} ${
+                          Boolean(formik.touched.brandId && formik.errors.brandId)
+                            ? styles.error
+                            : ""
+                        }`}
+                      >
+                        <option value="">Select Brand</option>
                         {brands?.map((brand) => (
                           <option key={brand.id} value={brand.id}>
                             {brand.name}
                           </option>
                         ))}
-                      </>
-                    </SelectControl>
+                      </Field>
+                      <ErrorMessage
+                        name="brandId"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
 
-                    <SelectControl
-                      label="Category"
-                      name="categoryId"
-                      isError={Boolean(formik.touched.categoryId && formik.errors.categoryId)}
-                    >
-                      <>
+                    {/* SELECT ITEM CATEGORY */}
+                    <div className={styles.formGroup}>
+                      <label htmlFor="categoryId">Category</label>
+                      <Field
+                        id="categoryId"
+                        name="categoryId"
+                        as="select"
+                        className={`${styles.input} ${
+                          Boolean(formik.touched.categoryId && formik.errors.categoryId)
+                            ? styles.error
+                            : ""
+                        }`}
+                      >
+                        <option value="">Select Brand</option>
                         {category?.map((cat) => (
                           <option key={cat.id} value={cat.id}>
                             {cat.name}
                           </option>
                         ))}
-                      </>
-                    </SelectControl>
+                      </Field>
+                      <ErrorMessage
+                        name="categoryId"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
                   </div>
 
-                  <div className="right">
-                    <div className="formGroup">
+                  <div className={styles.right}>
+                    {/* ITEM PICTURE FILE INPUT */}
+                    <div className={styles.formGroup}>
                       <p>
-                        Picture{" "}
+                        Picture
                         {item?.pictureUrl && (
                           <span onClick={() => setViewImage(true)}>| Current Image</span>
                         )}
                       </p>
                       <div
-                        className={
-                          formik.touched.pictureUrl && formik.errors.pictureUrl
-                            ? "add-photo error"
-                            : "add-photo"
-                        }
+                        className={`${styles["add-photo"]} ${
+                          Boolean(formik.touched.pictureUrl && formik.errors.pictureUrl)
+                            ? styles.error
+                            : ""
+                        }`}
                       >
-                        <div className="controls">
+                        <div className={styles.controls}>
                           <label htmlFor="pictureUrl">
                             <AddAPhoto
-                              className="icons"
+                              className={styles.icons}
                               fontSize="large"
                               onClick={(e) => formik.setFieldTouched("pictureUrl", true)}
                             />
                           </label>
                           <RemoveCircle
-                            className="icons"
+                            className={styles.icons}
                             fontSize="large"
                             onClick={(e) => {
                               formik.setFieldValue("pictureUrl", "");
@@ -288,7 +397,7 @@ const EditItemForm = () => {
                           />
                         </div>
                         {formik.values.pictureUrl && (
-                          <div className="preview">
+                          <div className={styles.preview}>
                             <img
                               style={{
                                 display: formik.errors.pictureUrl ? "none" : "block",
@@ -317,20 +426,15 @@ const EditItemForm = () => {
                       />
                       <ErrorMessage
                         name="pictureUrl"
-                        component={(props) => <TextError {...props} />}
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
                       />
                     </div>
-
-                    {/* <div className="formGroup">
-                      <p>Current picture</p>
-                      <div className="add-photo">
-                        <div className="preview"></div>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
 
-                <div className="formGroup">
+                <div className={styles.formGroup}>
                   <Button
                     type="submit"
                     size="small"
@@ -346,11 +450,15 @@ const EditItemForm = () => {
         </Formik>
 
         {viewImage && (
-          <div className="modal-image">
-            <div className="modal-backdrop" onClick={(e) => setViewImage(false)}></div>
-            <div className="wrapper">
+          <div className={styles["modal-image"]}>
+            <div className={styles["modal-backdrop"]} onClick={(e) => setViewImage(false)}></div>
+            <div className={styles.wrapper}>
               <img src={item?.pictureUrl} alt="" />
-              <Close fontSize="large" className="modal-close" onClick={() => setViewImage(false)} />
+              <Close
+                fontSize="large"
+                className={styles["modal-close"]}
+                onClick={() => setViewImage(false)}
+              />
             </div>
           </div>
         )}
@@ -358,6 +466,37 @@ const EditItemForm = () => {
     );
   }
 
-  return <div className="editItemForm">{content}</div>;
+  return <div className={styles.editItemForm}>{content}</div>;
 };
 export default EditItemForm;
+
+export const initialValues: ItemForm = {
+  name: "",
+  description: "",
+  model: "",
+  unit: "",
+  quantity: 1,
+  price: 1,
+  pictureUrl: "",
+  brandId: "",
+  categoryId: "",
+};
+
+export const validationSchema = Yup.object({
+  name: Yup.string().required("Required"),
+  description: Yup.string(),
+  model: Yup.string(),
+  unit: Yup.string().required("Required"),
+  quantity: Yup.number().required("Required").integer("Must be an integer"),
+  price: Yup.number().required("Required"),
+  pictureUrl: Yup.mixed().test("type", "Only .jpg, .jpeg, .png, files are accepted", (value) => {
+    if (value) {
+      console.log("🚀 ~ file: CreateItemSchema.tsx:29 ~ value", value);
+      return ["image/jpg", "image/jpeg", "image/png"].includes(value.type);
+    } else {
+      return true;
+    }
+  }),
+  brandId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+  categoryId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+});

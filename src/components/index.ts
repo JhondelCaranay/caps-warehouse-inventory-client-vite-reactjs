@@ -11,7 +11,11 @@ export { default as TransactionTable } from "./dashboard/transaction-table/Trans
 
 // TABLES
 export { default as TransactionDataTable } from "./dashboard/datatable/transaction/TransactionDataTable";
+export { default as ItemDataTable } from "./dashboard/datatable/item/ItemDataTable";
 
 // FORMS
 export { default as CreateTransactionForm } from "./forms/transaction/create/CreateTransactionForm";
 export { default as EditTransactionForm } from "./forms/transaction/edit/EditTransactionForm";
+
+export { default as CreateItemForm } from "./forms/item/create/CreateItemForm";
+export { default as EditItemForm } from "./forms/item/edit/EditItemForm";

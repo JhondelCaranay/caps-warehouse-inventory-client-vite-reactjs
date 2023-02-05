@@ -1,12 +1,12 @@
-import ItemDataTable from "../../../../components/dashboard/datatable/item/ItemDataTable";
-import useTitle from "../../../../hooks/useTitle";
-import "./itemList.scss";
+import { ItemDataTable } from "../../../../components";
+import { useTitle } from "../../../../hooks";
+import styles from "./ItemList.module.scss";
 
 const ItemList = () => {
   useTitle("Spedi: Item List");
 
   return (
-    <div className="itemList">
+    <div className={styles.itemList}>
       <ItemDataTable />
     </div>
   );

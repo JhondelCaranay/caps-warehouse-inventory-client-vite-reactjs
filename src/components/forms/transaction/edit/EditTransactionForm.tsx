@@ -252,6 +252,7 @@ const EditTransactionForm = () => {
                             ? styles.error
                             : ""
                         }`}
+                        onChange={handleProjectChange}
                       >
                         <option value="">Select Project</option>
                         {projects?.map((project) => (

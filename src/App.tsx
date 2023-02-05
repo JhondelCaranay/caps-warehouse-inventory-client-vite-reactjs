@@ -4,14 +4,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { ROLES } from "./types";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import ItemList from "./pages/dashboard/items/list/ItemList";
 import CategoryList from "./pages/dashboard/category/list/CategoryList";
 import ProjectList from "./pages/dashboard/project/list/ProjectList";
 import BrandList from "./pages/dashboard/brand/list/BrandList";
 import EngItems from "./pages/engineer/items/EngItems";
 import EngTransactions from "./pages/engineer/transaction/EngTransactions";
 import EngProjects from "./pages/engineer/projects/EngProjects";
-import ItemNew from "./pages/dashboard/items/new/ItemNew";
 import ProjectNew from "./pages/dashboard/project/new/ProjectNew";
 import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
 import BrandNew from "./pages/dashboard/brand/new/BrandNew";
@@ -20,15 +18,17 @@ import UserNew from "./pages/dashboard/user/new/UserNew";
 import ProjectEdit from "./pages/dashboard/project/edit/ProjectEdit";
 import CategoryEdit from "./pages/dashboard/category/edit/CategoryEdit";
 import BrandEdit from "./pages/dashboard/brand/edit/BrandEdit";
-import ItemEdit from "./pages/dashboard/items/edit/ItemEdit";
-import TransactionEdit from "./pages/dashboard/transactions/edit/TransactionEdit";
 import {
   DashboardLayout,
   DashHome,
+  ItemEdit,
+  ItemList,
+  ItemNew,
   Login,
   NotFound,
   PublicLayout,
   Single,
+  TransactionEdit,
   TransactionList,
   TransactionNew,
 } from "./pages";
