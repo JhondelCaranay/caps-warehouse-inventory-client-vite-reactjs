@@ -1,12 +1,20 @@
-import "./projectDataTable.scss";
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
+import styles from "./ProjectDataTable.module.scss";
+import {
+  DataGrid,
+  GridColDef,
+  GridColumnVisibilityModel,
+  GridToolbar,
+  GridValueFormatterParams,
+} from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { Project } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import { projectColumns, PROJECT_ALL_COLUMNS, PROJECT_MOBILE_COLUMNS } from "./projectColumns";
+import noImage from "../../../../assets/img/noimage.png";
+import moment from "moment";
+import { Capitalize } from "../../../../config/utils/functions";
 
 type ProjectDataTableProps = {
   projects: Project[];
@@ -41,12 +49,12 @@ const ProjectDataTable = ({
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
-            <Link className="viewButton" to="/dash" style={{ textDecoration: "none" }}>
+          <div className={styles.cellAction}>
+            <Link className={styles.viewButton} to="/dash" style={{ textDecoration: "none" }}>
               View
             </Link>
             <Link
-              className="editButton"
+              className={styles.editButton}
               to={`/dash/projects/edit/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
@@ -61,12 +69,12 @@ const ProjectDataTable = ({
     },
   ];
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (isLoading) {
     console.log("🚀 ~ file: TransactionDataTable.tsx:82 ~ TransactionDataTable ~ isError", error);
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#1976d2"} />
       </div>
     );
@@ -74,7 +82,7 @@ const ProjectDataTable = ({
 
   if (isError) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#1976d2"} />
         <h1 className="error">Failed to load data</h1>
       </div>
@@ -84,7 +92,7 @@ const ProjectDataTable = ({
   if (isSuccess && Boolean(projects.length)) {
     content = (
       <DataGrid
-        className="datagrid"
+        className={styles.datagrid}
         rows={projects}
         columns={projectColumns.concat(actionColumn)} // columns - tabel header columns
         columnVisibilityModel={columnVisible}
@@ -108,6 +116,71 @@ const ProjectDataTable = ({
     );
   }
 
-  return <div className="projectDataTable">{content}</div>;
+  return <div className={styles.projectDataTable}>{content}</div>;
 };
 export default ProjectDataTable;
+
+export const PROJECT_MOBILE_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+  address: false,
+  User: false,
+  createdAt: false,
+  updatedAt: false,
+};
+
+export const PROJECT_ALL_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+  address: true,
+  User: true,
+  createdAt: false,
+  updatedAt: false,
+};
+
+export const projectColumns: GridColDef[] = [
+  { field: "__check__", sortable: false, filterable: false, width: 0 },
+  { field: "id", headerName: "ID", width: 350, type: "string" },
+  { field: "name", headerName: "Project Name", width: 300, type: "string", hideable: false },
+  { field: "address", headerName: "Address", width: 300, type: "string" },
+  {
+    field: "User",
+    headerName: "Assigned Engineer",
+    width: 300,
+    renderCell: (params: { row: Project }) => {
+      const { first_name, last_name, avatarUrl } = params.row.User.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={avatarUrl ? avatarUrl : noImage} alt="avatar" />
+          {fullName}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Project }) => {
+      const { first_name, last_name } = params.row.User.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return fullName;
+    },
+  },
+  {
+    field: "createdAt",
+    headerName: "Created",
+    width: 300,
+    type: "date",
+    valueFormatter: (params: GridValueFormatterParams<string>) => {
+      return moment(params.value).format("ddd YYYY-MM-DD hh:mm a").toString();
+    },
+  },
+  {
+    field: "updatedAt",
+    headerName: "Updated",
+    width: 300,
+    type: "date",
+    valueFormatter: (params: GridValueFormatterParams<string>) => {
+      return moment(params.value).format("ddd YYYY-MM-DD hh:mm a").toString();
+    },
+  },
+];

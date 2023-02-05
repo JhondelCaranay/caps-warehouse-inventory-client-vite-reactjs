@@ -3,10 +3,10 @@ import { EntityId } from "@reduxjs/toolkit";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
-import ProjectDataTable from "../../../../components/dashboard/datatable/project/ProjectDataTable";
+import { ProjectDataTable } from "../../../../components";
 import useTitle from "../../../../hooks/useTitle";
 import { Project } from "../../../../types";
-import "./projectList.scss";
+import styles from "./ProjectList.module.scss";
 
 const ProjectList = () => {
   useTitle("Spedi: Project List");
@@ -34,7 +34,7 @@ const ProjectList = () => {
   }, [projects]);
 
   return (
-    <div className="projectList">
+    <div className={styles.projectList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
           <Link to="/dash/projects/new" style={{ textDecoration: "none" }}>

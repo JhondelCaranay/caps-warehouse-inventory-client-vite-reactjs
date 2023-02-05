@@ -1,14 +1,12 @@
+import styles from "./ProjectEdit.module.scss";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import EngineerProfile from "../../../../components/dashboard/engineer-profile/EngineerProfile";
-import ProjectTable from "../../../../components/dashboard/project-table/ProjectTable";
-import EditProjectForm from "../../../../components/forms/project/edit/EditProjectForm";
 import useTitle from "../../../../hooks/useTitle";
 import { Project, ROLES, User } from "../../../../types";
-import "./projectEdit.scss";
+import { EditProjectForm, EngineerProfile, ProjectTable } from "../../../../components";
 
 const ProjectEdit = () => {
   useTitle("Spedi: Project Edit");
@@ -70,7 +68,7 @@ const ProjectEdit = () => {
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#4e90d2"} />
       </div>
     );
@@ -78,18 +76,18 @@ const ProjectEdit = () => {
 
   if (isError) {
     console.error(errorProjects || errorUsers);
-    content = <div className="errorMsg">Something went wrong, please try again</div>;
+    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
   }
 
   if (isSuccess) {
     content = (
       <>
-        <div className="section-1">
+        <div className={styles["section-1"]}>
           <EditProjectForm project={selectedProject} users={engineers} />
           <EngineerProfile user={selectedProject?.User} />
         </div>
         {Boolean(previousProject.length) && (
-          <div className="section-2">
+          <div className={styles["section-2"]}>
             <h1 className="title">Engineer Previous Projects</h1>
             <ProjectTable projects={previousProject} />
           </div>
@@ -98,6 +96,6 @@ const ProjectEdit = () => {
     );
   }
 
-  return <div className="projectEdit">{content}</div>;
+  return <div className={styles.projectEdit}>{content}</div>;
 };
 export default ProjectEdit;

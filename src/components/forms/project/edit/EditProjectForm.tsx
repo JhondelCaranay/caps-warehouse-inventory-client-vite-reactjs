@@ -1,17 +1,15 @@
+import styles from "./EditProjectForm.module.scss";
 import { Button } from "@mui/material";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useUpdateProjectMutation } from "../../../../app/services/project/projectApiSlice";
 import { ProjectForm, User, Project } from "../../../../types";
-import InputControl from "../../../formik/InputControl";
-import { SelectControl } from "../../../formik/SelectControl";
-import TextAreaControl from "../../../formik/TextAreaControl";
 import ErrorList from "../../../toast/ErrorList";
-import "./editProjectForm.scss";
-import { initialValues, validationSchema } from "./EditProjectSchema";
+import * as Yup from "yup";
+import { DebugControl, TextError } from "../../../formik";
 
 type EditProjectFormProps = {
   project: Project;
@@ -64,7 +62,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
   let content: JSX.Element = <></>;
 
   content = (
-    <div className="container">
+    <div className={styles.container}>
       <Formik
         initialValues={formValues}
         validationSchema={validationSchema}
@@ -81,41 +79,71 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
           return (
             <Form>
-              <h1 className="title">Edit Project</h1>
-              {/* <DebugControl values={formik.values} /> */}
+              <h1 className={styles.title}>Edit Project</h1>
 
-              <InputControl
-                label="Project Name"
-                name="name"
-                type="text"
-                placeholder="Project Name"
-                isError={Boolean(formik.touched.name && formik.errors.name)}
-              />
+              {/* INPUT PROJECT NAME */}
+              <div className={styles.formGroup}>
+                <label htmlFor="name">Project Name</label>
+                <Field
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Item name"
+                  className={`${styles.input} ${
+                    Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="name"
+                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                />
+              </div>
 
-              <TextAreaControl
-                label="Address"
-                name="address"
-                type="text"
-                placeholder="Address"
-                isError={Boolean(formik.touched.address && formik.errors.address)}
-              />
+              {/* DESCRIPTION TEXT AREA */}
+              <div className={styles.formGroup}>
+                <label htmlFor="address">Address</label>
+                <Field
+                  id="address"
+                  name="address"
+                  as="textarea"
+                  rows="4"
+                  placeholder="Address"
+                  className={`${styles.input} ${
+                    Boolean(formik.touched.address && formik.errors.address) ? styles.error : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="address"
+                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                />
+              </div>
 
-              <SelectControl
-                disabled
-                label="Assigned Engineer"
-                name="userId"
-                isError={Boolean(formik.touched.userId && formik.errors.userId)}
-              >
-                <>
+              {/* SELECT ASSIGN ENGINEER */}
+              <div className={styles.formGroup}>
+                <label htmlFor="userId">Assigned Engineer</label>
+                <Field
+                  disabled
+                  id="userId"
+                  name="userId"
+                  as="select"
+                  className={`${styles.input} ${
+                    Boolean(formik.touched.userId && formik.errors.userId) ? styles.error : ""
+                  }`}
+                >
+                  <option value="">Select Engineer</option>
                   {users?.map((user) => (
                     <option key={user.id} value={user.id}>
                       {user.Profile.first_name + " " + user.Profile.last_name}
                     </option>
                   ))}
-                </>
-              </SelectControl>
+                </Field>
+                <ErrorMessage
+                  name="userId"
+                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                />
+              </div>
 
-              <div className="formGroup">
+              <div className={styles.formGroup}>
                 <Button
                   type="submit"
                   size="small"
@@ -125,6 +153,11 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
                   {buttonText}
                 </Button>
               </div>
+
+              {/* DEBUGER */}
+              {import.meta.env.VITE_NODE_ENV === "development" && (
+                <DebugControl values={formik.values} />
+              )}
             </Form>
           );
         }}
@@ -132,6 +165,18 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
     </div>
   );
 
-  return <div className="editProjectForm">{content}</div>;
+  return <div className={styles.editProjectForm}>{content}</div>;
 };
 export default EditProjectForm;
+
+export const initialValues: ProjectForm = {
+  name: "",
+  address: "",
+  userId: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Required"),
+  address: Yup.string().required("Required"),
+  userId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+});

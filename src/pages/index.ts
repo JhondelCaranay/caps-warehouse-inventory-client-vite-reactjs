@@ -15,4 +15,8 @@ export { default as ItemList } from "./dashboard/items/list/ItemList";
 export { default as ItemNew } from "./dashboard/items/new/ItemNew";
 export { default as ItemEdit } from "./dashboard/items/edit/ItemEdit";
 
+export { default as ProjectList } from "./dashboard/project/list/ProjectList";
+export { default as ProjectNew } from "./dashboard/project/new/ProjectNew";
+export { default as ProjectEdit } from "./dashboard/project/edit/ProjectEdit";
+
 export { default as Single } from "./dashboard/single/Single";

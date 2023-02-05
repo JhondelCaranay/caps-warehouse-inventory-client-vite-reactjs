@@ -1,14 +1,10 @@
-import { createSelector } from "@reduxjs/toolkit";
-import { result } from "lodash";
 import { useMemo, useState } from "react";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import EngineerProfile from "../../../../components/dashboard/engineer-profile/EngineerProfile";
-import ProjectTable from "../../../../components/dashboard/project-table/ProjectTable";
-import CreateProjectForm from "../../../../components/forms/project/create/CreateProjectForm";
+import { CreateProjectForm, EngineerProfile, ProjectTable } from "../../../../components";
 import useTitle from "../../../../hooks/useTitle";
 import { Project, ROLES, User, USER_STATUS } from "../../../../types";
-import "./projectNew.scss";
+import styles from "./ProjectNew.module.scss";
 
 const ProjectNew = () => {
   useTitle("Spedi: Project Create");
@@ -71,8 +67,8 @@ const ProjectNew = () => {
   }
 
   return (
-    <div className="projectNew">
-      <div className="section-1">
+    <div className={styles.projectNew}>
+      <div className={styles["section-1"]}>
         <CreateProjectForm
           users={userList}
           isLoading={isLoading}
@@ -83,8 +79,8 @@ const ProjectNew = () => {
       </div>
 
       {Boolean(projectList.length) && (
-        <div className="section-2">
-          <h1 className="title">Engineer Previous Projects</h1>
+        <div className={styles["section - 2"]}>
+          <h1 className={styles.title}>Engineer Previous Projects</h1>
           <ProjectTable projects={projectList} />
         </div>
       )}
