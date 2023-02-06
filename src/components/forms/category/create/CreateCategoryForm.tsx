@@ -1,5 +1,6 @@
+import styles from "./CreateCategoryForm.module.scss";
 import { Button } from "@mui/material";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -7,8 +8,8 @@ import { useAddNewCategoryMutation } from "../../../../app/services/category/cat
 import { CategoryForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
-import "./createCategoryForm.scss";
-import { initialValues, validationSchema } from "./CreateCategorySchema";
+import * as Yup from "yup";
+import { DebugControl, TextError } from "../../../formik";
 
 const CreateCategoryForm = () => {
   const navigate = useNavigate();
@@ -36,10 +37,10 @@ const CreateCategoryForm = () => {
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   content = (
-    <div className="container">
+    <div className={styles.container}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -56,18 +57,28 @@ const CreateCategoryForm = () => {
 
           return (
             <Form>
-              <h1 className="title">Create Category</h1>
+              <h1 className={styles.title}>Create Category</h1>
               {/* <DebugControl values={formik.values} /> */}
 
-              <InputControl
-                label="Category Name"
-                name="name"
-                type="text"
-                placeholder="Category Name"
-                isError={Boolean(formik.touched.name && formik.errors.name)}
-              />
+              {/* CATEGORY NAME INPUT*/}
+              <div className={styles.formGroup}>
+                <label htmlFor="name">Category Name</label>
+                <Field
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Category Name"
+                  className={`${styles.input} ${
+                    Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="name"
+                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                />
+              </div>
 
-              <div className="formGroup">
+              <div className={styles.formGroup}>
                 <Button
                   type="submit"
                   size="small"
@@ -77,6 +88,11 @@ const CreateCategoryForm = () => {
                   {buttonText}
                 </Button>
               </div>
+
+              {/* DEBUGER */}
+              {import.meta.env.VITE_NODE_ENV === "development" && (
+                <DebugControl values={formik.values} />
+              )}
             </Form>
           );
         }}
@@ -84,7 +100,25 @@ const CreateCategoryForm = () => {
     </div>
   );
 
-  return <div className="createCategoryForm">{content}</div>;
+  return <div className={styles.createCategoryForm}>{content}</div>;
 };
 
 export default CreateCategoryForm;
+
+export const initialValues: CategoryForm = {
+  name: "",
+  // image: "",
+};
+// const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Required"),
+  // only accept image files
+  // image: Yup.mixed().test("type", "Only accept image files", (value) => {
+  //   console.log("🚀 ~ file: CreateCategorySchema.tsx:14 ~ image:Yup.mixed ~ value", value);
+  //   if (value) {
+  //     return allowedTypes.includes(value.type);
+  //   }
+  //   return true;
+  // }),
+});

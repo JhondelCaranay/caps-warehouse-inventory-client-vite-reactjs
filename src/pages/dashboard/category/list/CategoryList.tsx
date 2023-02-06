@@ -2,10 +2,10 @@ import { Button, Stack } from "@mui/material";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
-import CategoryDataTable from "../../../../components/dashboard/datatable/category/CategoryDataTable";
-import useTitle from "../../../../hooks/useTitle";
+import { CategoryDataTable } from "../../../../components";
+import { useTitle } from "../../../../hooks";
 import { Category } from "../../../../types";
-import "./categoryList.scss";
+import styles from "./CategoryList.module.scss";
 
 const CategoryList = () => {
   useTitle("Spedi: Category List");
@@ -29,7 +29,7 @@ const CategoryList = () => {
   }, [categories]);
 
   return (
-    <div className="categoryList">
+    <div className={styles.categoryList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
           <Link to="/dash/category/new" style={{ textDecoration: "none" }}>

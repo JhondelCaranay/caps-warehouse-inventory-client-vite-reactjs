@@ -4,19 +4,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { ROLES } from "./types";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import CategoryList from "./pages/dashboard/category/list/CategoryList";
 import BrandList from "./pages/dashboard/brand/list/BrandList";
 import EngItems from "./pages/engineer/items/EngItems";
 import EngTransactions from "./pages/engineer/transaction/EngTransactions";
 import EngProjects from "./pages/engineer/projects/EngProjects";
 
-import CategoryNew from "./pages/dashboard/category/new/CategoryNew";
 import BrandNew from "./pages/dashboard/brand/new/BrandNew";
 import UserList from "./pages/dashboard/user/list/UserList";
 import UserNew from "./pages/dashboard/user/new/UserNew";
-import CategoryEdit from "./pages/dashboard/category/edit/CategoryEdit";
 import BrandEdit from "./pages/dashboard/brand/edit/BrandEdit";
 import {
+  CategoryEdit,
+  CategoryList,
+  CategoryNew,
   DashboardLayout,
   DashHome,
   ItemEdit,
@@ -33,6 +33,7 @@ import {
   TransactionList,
   TransactionNew,
 } from "./pages";
+
 import { AuthNotAllowed, Prefetch, RequireAuth } from "./guards";
 
 function App() {

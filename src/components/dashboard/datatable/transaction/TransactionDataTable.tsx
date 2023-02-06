@@ -64,7 +64,7 @@ const TransactionDataTable = () => {
       },
       sortable: false,
       filterable: false,
-      hideable: false,
+      // hideable: false,
     },
   ];
 

@@ -20,6 +20,7 @@ import { Brand, Category, ItemForm, UNIT } from "../../../../types";
 import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
+import { DebugControl } from "../../../formik";
 
 const EditItemForm = () => {
   const { itemId } = useParams();
@@ -444,6 +445,11 @@ const EditItemForm = () => {
                     {buttonText}
                   </Button>
                 </div>
+
+                {/* DEBUGER */}
+                {import.meta.env.VITE_NODE_ENV === "development" && (
+                  <DebugControl values={formik.values} />
+                )}
               </Form>
             );
           }}

@@ -1,12 +1,18 @@
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
+import styles from "./CategoryDataTable.module.scss";
+import {
+  DataGrid,
+  GridColDef,
+  GridColumnVisibilityModel,
+  GridToolbar,
+  GridValueFormatterParams,
+} from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { Category } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import { categoryColumns, CATEGORY_ALL_COLUMNS, CATEGORY_MOBILE_COLUMNS } from "./categoryColumns";
-import "./categoryDataTable.scss";
+import moment from "moment";
 
 type BrandDataTableProps = {
   categories: Category[];
@@ -41,12 +47,12 @@ const CategoryDataTable = ({
       width: 150,
       renderCell: (params: { row: Category }) => {
         return (
-          <div className="cellAction">
-            <Link className="viewButton" to="/dash" style={{ textDecoration: "none" }}>
+          <div className={styles.cellAction}>
+            <Link className={styles.viewButton} to="/dash" style={{ textDecoration: "none" }}>
               View
             </Link>
             <Link
-              className="editButton"
+              className={styles.editButton}
               to={`/dash/category/edit/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
@@ -61,11 +67,11 @@ const CategoryDataTable = ({
     },
   ];
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#1976d2"} />
       </div>
     );
@@ -74,7 +80,7 @@ const CategoryDataTable = ({
   if (isError) {
     console.error(error);
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#1976d2"} />
         <h1 className="error">Failed to load data</h1>
       </div>
@@ -84,7 +90,7 @@ const CategoryDataTable = ({
   if (isSuccess && Boolean(categories.length)) {
     content = (
       <DataGrid
-        className="datagrid"
+        className={styles.datagrid}
         rows={categories}
         columns={categoryColumns.concat(actionColumn)} // columns - tabel header columns
         columnVisibilityModel={columnVisible}
@@ -108,6 +114,46 @@ const CategoryDataTable = ({
     );
   }
 
-  return <div className="categoryDataTable">{content}</div>;
+  return <div className={styles.categoryDataTable}>{content}</div>;
 };
 export default CategoryDataTable;
+
+export const CATEGORY_MOBILE_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+  createdAt: false,
+  updatedAt: false,
+};
+
+export const CATEGORY_ALL_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+export const categoryColumns: GridColDef[] = [
+  { field: "__check__", sortable: false, filterable: false, width: 0 },
+  { field: "id", headerName: "ID", width: 350, type: "string" },
+  { field: "name", headerName: "Category Name", width: 300, type: "string", hideable: false },
+  {
+    field: "createdAt",
+    headerName: "Created",
+    width: 300,
+    type: "date",
+    valueFormatter: (params: GridValueFormatterParams<string>) => {
+      return moment(params.value).format("ddd YYYY-MM-DD hh:mm a").toString();
+    },
+  },
+  {
+    field: "updatedAt",
+    headerName: "Updated",
+    width: 300,
+    type: "date",
+    valueFormatter: (params: GridValueFormatterParams<string>) => {
+      return moment(params.value).format("ddd YYYY-MM-DD hh:mm a").toString();
+    },
+  },
+];

@@ -1,11 +1,11 @@
+import styles from "./CategoryEdit.module.scss";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
-import EditCategoryForm from "../../../../components/forms/category/edit/EditCategoryForm";
-import useTitle from "../../../../hooks/useTitle";
 import { Category } from "../../../../types";
-import "./categoryEdit.scss";
+import { EditCategoryForm } from "../../../../components";
+import { useTitle } from "../../../../hooks";
 
 const CategoryEdit = () => {
   useTitle("Spedi: Category Edit");
@@ -32,7 +32,7 @@ const CategoryEdit = () => {
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#4e90d2"} />
       </div>
     );
@@ -40,17 +40,17 @@ const CategoryEdit = () => {
 
   if (isError) {
     console.error(errorCategory);
-    content = <div className="errorMsg">Something went wrong, please try again</div>;
+    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
   }
 
   if (isSuccess) {
     content = (
-      <div className="section-1">
+      <div className={styles["section-1"]}>
         <EditCategoryForm category={category} />
       </div>
     );
   }
 
-  return <div className="categoryEdit">{content}</div>;
+  return <div className={styles.categoryEdit}>{content}</div>;
 };
 export default CategoryEdit;

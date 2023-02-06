@@ -19,4 +19,8 @@ export { default as ProjectList } from "./dashboard/project/list/ProjectList";
 export { default as ProjectNew } from "./dashboard/project/new/ProjectNew";
 export { default as ProjectEdit } from "./dashboard/project/edit/ProjectEdit";
 
+export { default as CategoryList } from "./dashboard/category/list/CategoryList";
+export { default as CategoryNew } from "./dashboard/category/new/CategoryNew";
+export { default as CategoryEdit } from "./dashboard/category/edit/CategoryEdit";
+
 export { default as Single } from "./dashboard/single/Single";
