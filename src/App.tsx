@@ -8,9 +8,6 @@ import EngItems from "./pages/engineer/items/EngItems";
 import EngTransactions from "./pages/engineer/transaction/EngTransactions";
 import EngProjects from "./pages/engineer/projects/EngProjects";
 
-import UserList from "./pages/dashboard/user/list/UserList";
-import UserNew from "./pages/dashboard/user/new/UserNew";
-
 import {
   BrandEdit,
   BrandList,
@@ -33,6 +30,8 @@ import {
   TransactionEdit,
   TransactionList,
   TransactionNew,
+  UserList,
+  UserNew,
 } from "./pages";
 
 import { AuthNotAllowed, Prefetch, RequireAuth } from "./guards";

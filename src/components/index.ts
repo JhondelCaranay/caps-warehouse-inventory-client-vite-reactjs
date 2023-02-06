@@ -18,6 +18,7 @@ export { default as ItemDataTable } from "./dashboard/datatable/item/ItemDataTab
 export { default as ProjectDataTable } from "./dashboard/datatable/project/ProjectDataTable";
 export { default as CategoryDataTable } from "./dashboard/datatable/category/CategoryDataTable";
 export { default as BrandDataTable } from "./dashboard/datatable/brand/BrandDataTable";
+export { default as UserDataTable } from "./dashboard/datatable/user/UserDataTable";
 
 // FORMS
 export { default as CreateTransactionForm } from "./forms/transaction/create/CreateTransactionForm";
@@ -34,3 +35,5 @@ export { default as EditCategoryForm } from "./forms/category/edit/EditCategoryF
 
 export { default as CreateBrandForm } from "./forms/brand/create/CreateBrandForm";
 export { default as EditBrandForm } from "./forms/brand/edit/EditBrandForm";
+
+export { default as CreateUserForm } from "./forms/user/create/CreateUserForm";

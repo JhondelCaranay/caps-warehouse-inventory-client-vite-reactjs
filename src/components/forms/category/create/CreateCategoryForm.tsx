@@ -6,7 +6,6 @@ import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewCategoryMutation } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryForm } from "../../../../types";
-import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
 import { DebugControl, TextError } from "../../../formik";

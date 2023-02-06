@@ -27,4 +27,7 @@ export { default as BrandList } from "./dashboard/brand/list/BrandList";
 export { default as BrandNew } from "./dashboard/brand/new/BrandNew";
 export { default as BrandEdit } from "./dashboard/brand/edit/BrandEdit";
 
+export { default as UserList } from "./dashboard/user/list/UserList";
+export { default as UserNew } from "./dashboard/user/new/UserNew";
+
 export { default as Single } from "./dashboard/single/Single";

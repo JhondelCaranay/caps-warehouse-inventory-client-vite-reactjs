@@ -1,12 +1,13 @@
+import styles from "./UserList.module.scss";
 import { Button, Stack } from "@mui/material";
 import { EntityId } from "@reduxjs/toolkit";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import UserDataTable from "../../../../components/dashboard/datatable/user/UserDataTable";
-import useTitle from "../../../../hooks/useTitle";
+import { useTitle } from "../../../../hooks";
 import { User } from "../../../../types";
-import "./userList.scss";
+import { UserDataTable } from "../../../../components";
+
 const UserList = () => {
   useTitle("Spedi: User List");
 
@@ -29,7 +30,7 @@ const UserList = () => {
   }, [users]);
 
   return (
-    <div className="userList">
+    <div className={styles.userList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
           <Link to="/dash/users/new" style={{ textDecoration: "none" }}>

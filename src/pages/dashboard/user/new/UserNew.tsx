@@ -1,10 +1,11 @@
-import CreateUserForm from "../../../../components/forms/user/create/CreateUserForm";
-import useTitle from "../../../../hooks/useTitle";
-import "./userNew.scss";
+import styles from "./UserNew.module.scss";
+import { useTitle } from "../../../../hooks";
+import { CreateUserForm } from "../../../../components";
 const UserNew = () => {
   useTitle("Spedi: User Create");
+
   return (
-    <div className="userNew">
+    <div className={styles.userNew}>
       <CreateUserForm />
     </div>
   );
