@@ -2,10 +2,10 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import EditBrandForm from "../../../../components/forms/brand/edit/EditBrandForm";
-import useTitle from "../../../../hooks/useTitle";
+import { EditBrandForm } from "../../../../components";
+import { useTitle } from "../../../../hooks";
 import { Brand } from "../../../../types";
-import "./brandEdit.scss";
+import styles from "./BrandEdit.module.scss";
 
 const BrandEdit = () => {
   useTitle("Spedi: Brand Edit");
@@ -32,7 +32,7 @@ const BrandEdit = () => {
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#4e90d2"} />
       </div>
     );
@@ -40,17 +40,17 @@ const BrandEdit = () => {
 
   if (isError) {
     console.error(error);
-    content = <div className="errorMsg">Something went wrong, please try again</div>;
+    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
   }
 
   if (isSuccess) {
     content = (
-      <div className="section-1">
+      <div className={styles["section-1"]}>
         <EditBrandForm brand={brand} />
       </div>
     );
   }
 
-  return <div className="brandEdit">{content}</div>;
+  return <div className={styles.brandEdit}>{content}</div>;
 };
 export default BrandEdit;

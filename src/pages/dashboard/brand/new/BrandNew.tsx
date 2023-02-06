@@ -1,13 +1,13 @@
-import CreateBrandForm from "../../../../components/forms/brand/create/CreateBrandForm";
-import useTitle from "../../../../hooks/useTitle";
-import "./brandNew.scss";
+import { CreateBrandForm } from "../../../../components";
+import { useTitle } from "../../../../hooks";
+import styles from "./BrandNew.module.scss";
 
 const BrandNew = () => {
   useTitle("Spedi: Brand Create");
 
   return (
-    <div className="brandNew">
-      <div className="section-1">
+    <div className={styles.brandNew}>
+      <div className={styles["section-1"]}>
         <CreateBrandForm />
       </div>
     </div>

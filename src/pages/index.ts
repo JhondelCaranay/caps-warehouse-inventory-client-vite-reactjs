@@ -23,4 +23,8 @@ export { default as CategoryList } from "./dashboard/category/list/CategoryList"
 export { default as CategoryNew } from "./dashboard/category/new/CategoryNew";
 export { default as CategoryEdit } from "./dashboard/category/edit/CategoryEdit";
 
+export { default as BrandList } from "./dashboard/brand/list/BrandList";
+export { default as BrandNew } from "./dashboard/brand/new/BrandNew";
+export { default as BrandEdit } from "./dashboard/brand/edit/BrandEdit";
+
 export { default as Single } from "./dashboard/single/Single";

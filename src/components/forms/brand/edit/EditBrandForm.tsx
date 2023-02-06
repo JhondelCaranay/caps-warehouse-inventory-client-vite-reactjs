@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -7,9 +7,10 @@ import { useUpdateBrandMutation } from "../../../../app/services/brand/brandApiS
 import { Brand, BrandForm } from "../../../../types";
 import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
-import { initialValues, validationSchema } from "./EditBrandSchema";
-import "./editBrandForm.scss";
+import * as Yup from "yup";
+import styles from "./EditBrandForm.module.scss";
 import { useEffect, useState } from "react";
+import { DebugControl, TextError } from "../../../formik";
 
 type EditBrandFormProps = {
   brand: Brand;
@@ -55,11 +56,11 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (brand) {
     content = (
-      <div className="container">
+      <div className={styles.container}>
         <Formik
           initialValues={formValues}
           validationSchema={validationSchema}
@@ -77,17 +78,26 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
             return (
               <Form>
                 <h1 className="title">Edit Brand</h1>
-                {/* <DebugControl values={formik.values} /> */}
 
-                <InputControl
-                  label="Brand Name"
-                  name="name"
-                  type="text"
-                  placeholder="Brand Name"
-                  isError={Boolean(formik.touched.name && formik.errors.name)}
-                />
+                {/* BRAND NAME INPUT*/}
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Brand Name</label>
+                  <Field
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Brand Name"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
 
-                <div className="formGroup">
+                <div className={styles.formGroup}>
                   <Button
                     type="submit"
                     size="small"
@@ -97,6 +107,11 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
                     {buttonText}
                   </Button>
                 </div>
+
+                {/* DEBUGER */}
+                {import.meta.env.VITE_NODE_ENV === "development" && (
+                  <DebugControl values={formik.values} />
+                )}
               </Form>
             );
           }}
@@ -105,6 +120,14 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
     );
   }
 
-  return <div className="editBrandForm">{content}</div>;
+  return <div className={styles.editBrandForm}>{content}</div>;
 };
 export default EditBrandForm;
+
+export const initialValues: BrandForm = {
+  name: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Required"),
+});
