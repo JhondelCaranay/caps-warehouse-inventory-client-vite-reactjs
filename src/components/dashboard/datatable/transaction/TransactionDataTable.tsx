@@ -1,34 +1,20 @@
 import styles from "./TransactionDataTable.module.scss";
-
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import PulseLoader from "react-spinners/PulseLoader";
 import { Transaction } from "../../../../types";
-import { Button, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useWindowSize } from "../../../../hooks";
 import { Capitalize } from "../../../../config/utils/functions";
 import noImage from "../../../../assets/img/noimage.png";
 
-const TransactionDataTable = () => {
+type TransactionDataTableProps = {
+  transactions: Transaction[];
+};
+
+const TransactionDataTable = ({ transactions }: TransactionDataTableProps) => {
   const { windowSize } = useWindowSize();
   const navigate = useNavigate();
-
-  const {
-    data: transactions,
-    error,
-    isLoading,
-    isSuccess,
-    isError,
-    refetch,
-  } = useGetTransactionsQuery("transactionList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
 
   const handleEdit = (id: string) => {
     // console.log(id);
@@ -68,74 +54,32 @@ const TransactionDataTable = () => {
     },
   ];
 
-  let content: JSX.Element = <></>;
-
-  if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#000000"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    if (Object.values(error)[0] === 401) {
-      return <Navigate to="/login" replace />;
-    }
-
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#000000"} />
-        <h1 className={styles.error}>Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess) {
-    const { ids, entities } = transactions;
-    const transactionList = ids.map((id) => entities[id] as Transaction);
-
-    content = (
-      <>
-        <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
-          <Stack direction="row" spacing={1}>
-            <Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
-              <Button size="small" variant="outlined">
-                Create Transaction
-              </Button>
-            </Link>
-            <Button size="small" variant="outlined" onClick={refetch}>
-              Refresh
-            </Button>
-          </Stack>
-        </Stack>
-        <DataGrid
-          className={styles.datagrid}
-          rows={transactionList}
-          columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
-          columnVisibilityModel={columnVisible}
-          onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
-          pageSize={10} // pageSize - number of rows per page
-          rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
-          checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
-          disableSelectionOnClick // disableSelectionOnClick - default is false - disable selection on click
-          components={{
-            Toolbar: GridToolbar, // GridToolbar - toolbar component on top of the table
-            Pagination: CustomPagination, // CustomPagination - custom pagination
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 }, // debounceMs - delay time for quick filter
-              printOptions: { disableToolbarButton: true }, // disableToolbarButton - default is false - disable print button
-            },
-          }}
-        />
-      </>
-    );
-  }
-
-  return <div className={styles.transactionDataTable}>{content}</div>;
+  return (
+    <div className={styles.transactionDataTable}>
+      <DataGrid
+        className={styles.datagrid}
+        rows={transactions}
+        columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
+        columnVisibilityModel={columnVisible}
+        onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
+        pageSize={10} // pageSize - number of rows per page
+        rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
+        checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
+        disableSelectionOnClick // disableSelectionOnClick - default is false - disable selection on click
+        components={{
+          Toolbar: GridToolbar, // GridToolbar - toolbar component on top of the table
+          Pagination: CustomPagination, // CustomPagination - custom pagination
+        }}
+        componentsProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 }, // debounceMs - delay time for quick filter
+            printOptions: { disableToolbarButton: true }, // disableToolbarButton - default is false - disable print button
+          },
+        }}
+      />
+    </div>
+  );
 };
 export default TransactionDataTable;
 

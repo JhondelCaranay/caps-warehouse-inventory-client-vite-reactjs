@@ -1,21 +1,6 @@
 .projectDataTable {
   height: 710px;
 
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-
-    .error {
-      color: rgba(255, 0, 0, 0.815);
-      font-weight: 600;
-    }
-  }
-
   .cellWithImg {
     display: flex;
     align-items: center;
@@ -28,34 +13,6 @@
       margin-right: 20px;
     }
   }
-
-  // .cellWithStatus {
-  // 	padding: 5px;
-  // 	border-radius: 5px;
-
-  // 	font-weight: 600;
-
-  // 	&.ON_PROCESS {
-  // 		background-color: #dcfce7;
-  // 		color: #000;
-  // 	}
-  // 	&.ON_DELIVERY {
-  // 		background-color: #bbf7d0;
-  // 		color: #000;
-  // 	}
-  // 	&.CONFIRMED_RECEIVED {
-  // 		background-color: #86efac;
-  // 		color: #000;
-  // 	}
-  // 	&.ON_RETURN {
-  // 		background-color: #4ade80;
-  // 		color: #000;
-  // 	}
-  // 	&.CONFIRMED_RETURNED {
-  // 		background-color: #22c55e;
-  // 		color: #000;
-  // 	}
-  // }
 
   .cellAction {
     display: flex;

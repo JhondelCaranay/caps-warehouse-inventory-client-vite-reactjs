@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { PulseLoader } from "react-spinners";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryDataTable } from "../../../../components";
 import { useTitle } from "../../../../hooks";
@@ -11,7 +11,7 @@ const CategoryList = () => {
   useTitle("Spedi: Category List");
 
   const {
-    data: categories = { entities: {}, ids: [] },
+    data: categories,
     isLoading,
     isSuccess,
     isError,
@@ -22,11 +22,31 @@ const CategoryList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data ? data.ids.map((id) => data.entities[id] as Category) : [],
+    }),
   });
 
-  const categoryList = useMemo(() => {
-    return categories ? categories.ids.map((id) => categories.entities[id] as Category) : [];
-  }, [categories]);
+  let content: JSX.Element = <></>;
+
+  if (isLoading) {
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+      </div>
+    );
+  } else if (isError) {
+    console.log(error);
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+        <h1 className={styles.error}>Failed to load data</h1>
+      </div>
+    );
+  } else if (isSuccess) {
+    content = <CategoryDataTable categories={categories} />;
+  }
 
   return (
     <div className={styles.categoryList}>
@@ -42,13 +62,7 @@ const CategoryList = () => {
           </Button>
         </Stack>
       </Stack>
-      <CategoryDataTable
-        categories={categoryList}
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        isError={isError}
-        error={error}
-      />
+      {content}
     </div>
   );
 };

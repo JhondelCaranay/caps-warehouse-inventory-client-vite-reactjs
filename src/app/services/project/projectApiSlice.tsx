@@ -93,7 +93,6 @@ export const {
   useGetProjectQuery,
   useAddNewProjectMutation,
   useUpdateProjectMutation,
-  // useDeleteProjectMutation,
 } = projectsApiSlice;
 
 // returns the query result object

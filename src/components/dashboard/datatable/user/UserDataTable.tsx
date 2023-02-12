@@ -12,13 +12,9 @@ import noImage from "../../../../assets/img/noimage.png";
 
 type UserDataTableProps = {
   users: User[];
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: any;
 };
 
-const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserDataTableProps) => {
+const UserDataTable = ({ users }: UserDataTableProps) => {
   const { windowSize } = useWindowSize();
   const { role } = useAuth();
 
@@ -61,28 +57,8 @@ const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserData
 
   const columns = useMemo(() => [...userColumns, ...actionColumn], [actionColumn]);
 
-  let content: JSX.Element = <></>;
-
-  if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    console.error(error);
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-        <h1 className="error">Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess) {
-    content = (
+  return (
+    <div className={styles.userDataTable}>
       <DataGrid
         className={styles.datagrid}
         rows={users}
@@ -106,10 +82,8 @@ const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserData
           },
         }}
       />
-    );
-  }
-
-  return <div className={styles.userDataTable}>{content}</div>;
+    </div>
+  );
 };
 export default UserDataTable;
 

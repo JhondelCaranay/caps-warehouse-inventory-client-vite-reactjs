@@ -7,30 +7,21 @@ import { toast } from "react-toastify";
 import { useAddNewProjectMutation } from "../../../../app/services/project/projectApiSlice";
 import { ProjectForm, User } from "../../../../types";
 import ErrorList from "../../../toast/ErrorList";
-import * as Yup from "yup";
 import { DebugControl, TextError } from "../../../formik";
+import * as Yup from "yup";
 
 type CreateProjectFormProps = {
   users: User[];
-  isLoading: boolean;
-  isSuccess: boolean;
   setSelectedId: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const CreateProjectForm = ({
-  users,
-  isLoading,
-  isSuccess,
-  setSelectedId,
-}: CreateProjectFormProps) => {
+const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => {
   const navigate = useNavigate();
 
   const [addNewProject, { isLoading: isProjectUpdating }] = useAddNewProjectMutation();
 
   const onSubmit = async (values: ProjectForm, submitProps: FormikHelpers<ProjectForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
       const result = await addNewProject({
@@ -45,24 +36,13 @@ const CreateProjectForm = ({
       navigate("/dash/projects");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element = <></>;
-
-  if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isSuccess && Boolean(users.length)) {
-    content = (
+  return (
+    <div className={styles.createProjectForm}>
       <div className={styles.container}>
         <Formik
           initialValues={initialValues}
@@ -172,10 +152,8 @@ const CreateProjectForm = ({
           }}
         </Formik>
       </div>
-    );
-  }
-
-  return <div className={styles.createProjectForm}>{content}</div>;
+    </div>
+  );
 };
 export default CreateProjectForm;
 

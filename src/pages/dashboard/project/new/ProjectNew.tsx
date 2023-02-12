@@ -1,89 +1,81 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { PulseLoader } from "react-spinners";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
 import { CreateProjectForm, EngineerProfile, ProjectTable } from "../../../../components";
+import { selectUserById } from "../../../../app/services/user/userApiSlice";
 import useTitle from "../../../../hooks/useTitle";
 import { Project, ROLES, User, USER_STATUS } from "../../../../types";
 import styles from "./ProjectNew.module.scss";
+import { RootState } from "../../../../app/store";
 
 const ProjectNew = () => {
   useTitle("Spedi: Project Create");
   const [selectedId, setSelectedId] = useState<string>("");
 
   const {
-    data: projects = { entities: {}, ids: [] },
-    isLoading: isLoadingProject,
-    isSuccess: isSuccessProject,
-    isError: isErrorProject,
-    error: errorProject,
-  } = useGetProjectsQuery("projectList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
+    data: users,
+    isLoading: isLoadingUsers,
+    isSuccess: isSuccessUsers,
+    isError: isErrorUsers,
+    error: errorUsers,
+  } = useGetUsersQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data
+        ? data.ids
+            .map((id) => data.entities[id] as User)
+            .filter((user) => user.role === ROLES.ENGINEER && user.status === USER_STATUS.ACTIVE)
+        : [],
+    }),
   });
 
-  const {
-    data: users = { entities: {}, ids: [] },
-    isLoading: isLoadingUser,
-    isSuccess: isSuccessUser,
-    isError: isErrorUser,
-    error: errorUser,
-  } = useGetUsersQuery("userList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
+  const { data: projects } = useGetProjectsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data
+        ? data.ids
+            .map((id) => data.entities[id] as Project)
+            .filter((project) => project.User.id === selectedId)
+        : [],
+    }),
   });
 
-  const userList = useMemo(
-    () =>
-      users?.ids
-        .map((id) => users?.entities[id] as User)
-        .filter((user) => user.role === ROLES.ENGINEER && user.status === USER_STATUS.ACTIVE),
-    [users]
-  );
+  const selectedEngineer = useSelector((state: RootState) => selectUserById(state, selectedId));
 
-  const projectList = useMemo(
-    () =>
-      projects?.ids
-        .map((id) => projects?.entities[id] as Project)
-        .filter((project) => project.userId === selectedId)
-        .slice(0, 5),
-    [projects, selectedId]
-  );
+  let content: JSX.Element = <></>;
 
-  const selectedEngineer = useMemo(() => {
-    return users?.entities[selectedId] as User;
-  }, [users, selectedId]);
+  if (isLoadingUsers) {
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#4e90d2"} />
+      </div>
+    );
+  }
 
-  const isLoading = isLoadingUser || isLoadingProject;
-  const isSuccess = isSuccessUser && isSuccessProject;
-  const isError = isErrorUser || isErrorProject;
+  if (isErrorUsers) {
+    console.error(errorUsers);
+    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
+  }
 
-  if (isError) {
-    console.error(errorUser || errorProject);
-    return <div>Something went wrong</div>;
+  if (isSuccessUsers && users) {
+    content = <CreateProjectForm users={users} setSelectedId={setSelectedId} />;
   }
 
   return (
     <div className={styles.projectNew}>
-      <div className={styles["section-1"]}>
-        <CreateProjectForm
-          users={userList}
-          isLoading={isLoading}
-          isSuccess={isSuccess}
-          setSelectedId={setSelectedId}
-        />
-        {selectedEngineer && <EngineerProfile user={selectedEngineer} />}
+      <div className={styles.top}>
+        {content}
+        <EngineerProfile user={selectedEngineer} />
       </div>
 
-      {Boolean(projectList.length) && (
-        <div className={styles["section - 2"]}>
-          <h1 className={styles.title}>Engineer Previous Projects</h1>
-          <ProjectTable projects={projectList} />
-        </div>
-      )}
+      <div className={styles.bottom}>
+        <h1 className={styles.title}>Engineer Previous Projects</h1>
+        <ProjectTable projects={projects} />
+      </div>
     </div>
   );
 };

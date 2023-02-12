@@ -12,8 +12,6 @@ import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
 import { v4 } from "uuid";
 import { storage } from "../../../../config/firebase";
-import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
 import { Capitalize } from "../../../../config/utils/functions";
 import { useNavigate } from "react-router-dom";
 import { DebugControl } from "../../../formik";
@@ -52,45 +50,18 @@ export const validationSchema = Yup.object({
   categoryId: Yup.string().required("Required").uuid("Must be a valid UUID"),
 });
 
-const CreateItemForm = () => {
+type CreateItemFormProps = {
+  brands: Brand[];
+  categories: Category[];
+};
+
+const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
   const navigate = useNavigate();
 
   const [addNewItem, { isLoading: isItemUpdating }] = useAddNewItemMutation();
 
-  const {
-    data: brands,
-    isLoading: isLoadingBrands,
-    isSuccess: isSuccessBrands,
-  } = useGetBrandsQuery("brandList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids.map((id) => entities[id] as Brand),
-      };
-    },
-  });
-
-  const {
-    data: category,
-    isLoading: isLoadingCategory,
-    isSuccess: isSuccessCategory,
-  } = useGetCategoryQuery("categoryList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids.map((id) => entities[id] as Category),
-      };
-    },
-  });
-
   const onSubmit = async (values: ItemForm, submitProps: FormikHelpers<ItemForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
       let url = "";
@@ -100,7 +71,7 @@ const CreateItemForm = () => {
         const snapshot = await uploadBytes(storageRef, file);
         url = await getDownloadURL(snapshot.ref);
       }
-      const result = await addNewItem({
+      await addNewItem({
         name: values.name,
         description: values.description || null,
         model: values.model || null,
@@ -111,31 +82,19 @@ const CreateItemForm = () => {
         brandId: values.brandId,
         categoryId: values.categoryId,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
 
       toast.success("Item created successfully");
       submitProps.resetForm();
       navigate("/dash/items");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element = <></>;
-
-  if (isLoadingBrands || isLoadingCategory) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#000000"} />
-      </div>
-    );
-  }
-
-  if (isSuccessBrands && isSuccessCategory) {
-    content = (
+  return (
+    <div className={styles.createItemForm}>
       <div className={styles.container}>
         <Formik
           initialValues={initialValues}
@@ -339,7 +298,7 @@ const CreateItemForm = () => {
                         }`}
                       >
                         <option value="">Select Brand</option>
-                        {category?.map((cat) => (
+                        {categories?.map((cat) => (
                           <option key={cat.id} value={cat.id}>
                             {cat.name}
                           </option>
@@ -440,9 +399,7 @@ const CreateItemForm = () => {
           }}
         </Formik>
       </div>
-    );
-  }
-
-  return <div className={styles.createItemForm}>{content}</div>;
+    </div>
+  );
 };
 export default CreateItemForm;

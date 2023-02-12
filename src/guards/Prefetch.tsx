@@ -14,10 +14,10 @@ const Prefetch = () => {
         force: true,
       })
     );
-    store.dispatch(itemsApiSlice.util.prefetch("getItems", "itemList", { force: true }));
-    store.dispatch(categoryApiSlice.util.prefetch("getCategory", "categoryList", { force: true }));
-    store.dispatch(projectsApiSlice.util.prefetch("getProjects", "projectList", { force: true }));
-    store.dispatch(brandsApiSlice.util.prefetch("getBrands", "brandList", { force: true }));
+    store.dispatch(itemsApiSlice.util.prefetch("getItems", undefined, { force: true }));
+    store.dispatch(categoryApiSlice.util.prefetch("getCategory", undefined, { force: true }));
+    store.dispatch(projectsApiSlice.util.prefetch("getProjects", undefined, { force: true }));
+    store.dispatch(brandsApiSlice.util.prefetch("getBrands", undefined, { force: true }));
   }, []);
 
   return <Outlet />;

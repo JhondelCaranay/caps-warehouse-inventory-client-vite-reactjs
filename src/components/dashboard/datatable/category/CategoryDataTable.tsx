@@ -16,19 +16,9 @@ import moment from "moment";
 
 type BrandDataTableProps = {
   categories: Category[];
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: any;
 };
 
-const CategoryDataTable = ({
-  categories,
-  isLoading,
-  isSuccess,
-  isError,
-  error,
-}: BrandDataTableProps) => {
+const CategoryDataTable = ({ categories }: BrandDataTableProps) => {
   const { windowSize } = useWindowSize();
 
   const [columnVisible, setColumnVisible] =
@@ -67,28 +57,8 @@ const CategoryDataTable = ({
     },
   ];
 
-  let content: JSX.Element = <></>;
-
-  if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    console.error(error);
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-        <h1 className="error">Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess && Boolean(categories.length)) {
-    content = (
+  return (
+    <div className={styles.categoryDataTable}>
       <DataGrid
         className={styles.datagrid}
         rows={categories}
@@ -111,10 +81,8 @@ const CategoryDataTable = ({
           },
         }}
       />
-    );
-  }
-
-  return <div className={styles.categoryDataTable}>{content}</div>;
+    </div>
+  );
 };
 export default CategoryDataTable;
 

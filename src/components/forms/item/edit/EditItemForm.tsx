@@ -4,74 +4,60 @@ import { Button } from "@mui/material";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
-import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
-import {
-  useGetItemsQuery,
-  useUpdateItemMutation,
-} from "../../../../app/services/item/itemApiSlice";
+import { useUpdateItemMutation } from "../../../../app/services/item/itemApiSlice";
 import { storage } from "../../../../config/firebase";
 import { Capitalize } from "../../../../config/utils/functions";
-import { Brand, Category, ItemForm, UNIT } from "../../../../types";
+import { Brand, Category, Item, ItemForm, UNIT } from "../../../../types";
 import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
 import { DebugControl } from "../../../formik";
 
-const EditItemForm = () => {
-  const { itemId } = useParams();
+export const initialValues: ItemForm = {
+  name: "",
+  description: "",
+  model: "",
+  unit: "",
+  quantity: 1,
+  price: 1,
+  pictureUrl: "",
+  brandId: "",
+  categoryId: "",
+};
+
+export const validationSchema = Yup.object({
+  name: Yup.string().required("Required"),
+  description: Yup.string(),
+  model: Yup.string(),
+  unit: Yup.string().required("Required"),
+  quantity: Yup.number().required("Required").integer("Must be an integer"),
+  price: Yup.number().required("Required"),
+  pictureUrl: Yup.mixed().test("type", "Only .jpg, .jpeg, .png, files are accepted", (value) => {
+    if (value) {
+      console.log("🚀 ~ file: CreateItemSchema.tsx:29 ~ value", value);
+      return ["image/jpg", "image/jpeg", "image/png"].includes(value.type);
+    } else {
+      return true;
+    }
+  }),
+  brandId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+  categoryId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+});
+
+type EditItemFormProps = {
+  item: Item;
+  brands: Brand[];
+  categories: Category[];
+};
+
+const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
   const navigate = useNavigate();
 
   const [updateItem, { isLoading: isItemUpdating }] = useUpdateItemMutation();
-
-  const {
-    data: item,
-    isLoading: isLoadingItem,
-    isSuccess: isSuccessItem,
-  } = useGetItemsQuery("itemList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result?.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: entities[String(itemId)],
-      };
-    },
-  });
-
-  const {
-    data: brands,
-    isLoading: isLoadingBrands,
-    isSuccess: isSuccessBrands,
-  } = useGetBrandsQuery("brandList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids.map((id) => entities[id] as Brand),
-      };
-    },
-  });
-
-  const {
-    data: category,
-    isLoading: isLoadingCategory,
-    isSuccess: isSuccessCategory,
-  } = useGetCategoryQuery("categoryList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids.map((id) => entities[id] as Category),
-      };
-    },
-  });
 
   const [formValues, setFormValues] = useState(initialValues);
   const [viewImage, setViewImage] = useState<boolean>(false);
@@ -95,9 +81,7 @@ const EditItemForm = () => {
   }, [item]);
 
   const onSubmit = async (values: ItemForm, submitProps: FormikHelpers<ItemForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
       let url = "";
@@ -107,7 +91,7 @@ const EditItemForm = () => {
         const snapshot = await uploadBytes(storageRef, file);
         url = await getDownloadURL(snapshot.ref);
       }
-      const result = await updateItem({
+      await updateItem({
         id: values.id,
         name: values.name,
         description: values.description || null,
@@ -119,31 +103,19 @@ const EditItemForm = () => {
         brandId: values.brandId,
         categoryId: values.categoryId,
       }).unwrap();
-      console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
       toast.success("Item edited successfully");
       submitProps.resetForm();
       navigate("/dash/items");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element = <></>;
-
-  if (isLoadingItem || isLoadingBrands || isLoadingCategory) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#000000"} />
-      </div>
-    );
-  }
-
-  if (isSuccessBrands && isSuccessCategory && isSuccessItem) {
-    content = (
+  return (
+    <div className={styles.editItemForm}>
       <div className={styles.container}>
         <Formik
           initialValues={formValues}
@@ -350,7 +322,7 @@ const EditItemForm = () => {
                         }`}
                       >
                         <option value="">Select Brand</option>
-                        {category?.map((cat) => (
+                        {categories?.map((cat) => (
                           <option key={cat.id} value={cat.id}>
                             {cat.name}
                           </option>
@@ -469,40 +441,7 @@ const EditItemForm = () => {
           </div>
         )}
       </div>
-    );
-  }
-
-  return <div className={styles.editItemForm}>{content}</div>;
+    </div>
+  );
 };
 export default EditItemForm;
-
-export const initialValues: ItemForm = {
-  name: "",
-  description: "",
-  model: "",
-  unit: "",
-  quantity: 1,
-  price: 1,
-  pictureUrl: "",
-  brandId: "",
-  categoryId: "",
-};
-
-export const validationSchema = Yup.object({
-  name: Yup.string().required("Required"),
-  description: Yup.string(),
-  model: Yup.string(),
-  unit: Yup.string().required("Required"),
-  quantity: Yup.number().required("Required").integer("Must be an integer"),
-  price: Yup.number().required("Required"),
-  pictureUrl: Yup.mixed().test("type", "Only .jpg, .jpeg, .png, files are accepted", (value) => {
-    if (value) {
-      console.log("🚀 ~ file: CreateItemSchema.tsx:29 ~ value", value);
-      return ["image/jpg", "image/jpeg", "image/png"].includes(value.type);
-    } else {
-      return true;
-    }
-  }),
-  brandId: Yup.string().required("Required").uuid("Must be a valid UUID"),
-  categoryId: Yup.string().required("Required").uuid("Must be a valid UUID"),
-});

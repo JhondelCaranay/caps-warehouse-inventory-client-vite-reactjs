@@ -1,11 +1,10 @@
 import styles from "./ProjectEdit.module.scss";
-import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
 import useTitle from "../../../../hooks/useTitle";
-import { Project, ROLES, User } from "../../../../types";
+import { Project, ROLES, User, USER_STATUS } from "../../../../types";
 import { EditProjectForm, EngineerProfile, ProjectTable } from "../../../../components";
 
 const ProjectEdit = () => {
@@ -13,56 +12,42 @@ const ProjectEdit = () => {
   const { projectId } = useParams();
 
   const {
-    data: projects = { entities: {}, ids: [] },
-    error: errorProjects,
-    isLoading: isLoadingProjects,
-    isSuccess: isSuccessProjects,
-    isError: isErrorProjects,
-  } = useGetProjectsQuery("projectList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
+    data: project,
+    error,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetProjectsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data && projectId ? data.entities[projectId] : undefined,
+    }),
   });
 
-  const {
-    data: users = { entities: {}, ids: [] },
-    isLoading: isLoadingUsers,
-    isSuccess: isSuccessUsers,
-    isError: isErrorUsers,
-    error: errorUsers,
-  } = useGetUsersQuery("userList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
+  const { data: previousProject } = useGetProjectsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data
+        ? data.ids
+            .map((id) => data.entities[id] as Project)
+            .filter((p) => p.User.id === project?.User.id)
+        : [],
+    }),
   });
 
-  const selectedProject = useMemo(
-    () => projects?.entities[String(projectId)] as Project,
-    [projectId, projects]
-  );
-
-  const previousProject = useMemo(
-    () =>
-      projects?.ids
-        .map((id) => projects?.entities[id] as Project)
-        .filter((project) => project.userId === selectedProject?.userId)
-        .slice(0, 5),
-    [projects, selectedProject]
-  );
-
-  const engineers = useMemo(
-    () =>
-      users?.ids
-        .map((id) => users?.entities[id] as User)
-        .filter((user) => user.role === ROLES.ENGINEER),
-    [users]
-  );
-
-  const isLoading = isLoadingProjects || isLoadingUsers;
-  const isSuccess = isSuccessProjects || isSuccessUsers;
-  const isError = isErrorProjects || isErrorUsers;
+  const { data: engineers } = useGetUsersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data
+        ? data.ids
+            .map((id) => data.entities[id] as User)
+            .filter((user) => user.role === ROLES.ENGINEER && user.status === USER_STATUS.ACTIVE)
+        : [],
+    }),
+  });
 
   let content: JSX.Element = <></>;
 
@@ -75,27 +60,25 @@ const ProjectEdit = () => {
   }
 
   if (isError) {
-    console.error(errorProjects || errorUsers);
+    console.log(error);
     content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
   }
 
-  if (isSuccess) {
-    content = (
-      <>
-        <div className={styles["section-1"]}>
-          <EditProjectForm project={selectedProject} users={engineers} />
-          <EngineerProfile user={selectedProject?.User} />
-        </div>
-        {Boolean(previousProject.length) && (
-          <div className={styles["section-2"]}>
-            <h1 className="title">Engineer Previous Projects</h1>
-            <ProjectTable projects={previousProject} />
-          </div>
-        )}
-      </>
-    );
+  if (isSuccess && project) {
+    content = <EditProjectForm project={project} users={engineers} />;
   }
 
-  return <div className={styles.projectEdit}>{content}</div>;
+  return (
+    <div className={styles.projectEdit}>
+      <div className={styles.top}>
+        {content}
+        <EngineerProfile user={project?.User} />
+      </div>
+      <div className={styles.bottom}>
+        <h1 className="title">Engineer Previous Projects</h1>
+        <ProjectTable projects={previousProject} />
+      </div>
+    </div>
+  );
 };
 export default ProjectEdit;

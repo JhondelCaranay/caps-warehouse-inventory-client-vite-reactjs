@@ -8,7 +8,6 @@ import {
 } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PulseLoader from "react-spinners/PulseLoader";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { Project } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
@@ -18,19 +17,9 @@ import { Capitalize } from "../../../../config/utils/functions";
 
 type ProjectDataTableProps = {
   projects: Project[];
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: any;
 };
 
-const ProjectDataTable = ({
-  projects,
-  isLoading,
-  isSuccess,
-  isError,
-  error,
-}: ProjectDataTableProps) => {
+const ProjectDataTable = ({ projects }: ProjectDataTableProps) => {
   const { windowSize } = useWindowSize();
 
   const [columnVisible, setColumnVisible] =
@@ -69,28 +58,8 @@ const ProjectDataTable = ({
     },
   ];
 
-  let content: JSX.Element = <></>;
-
-  if (isLoading) {
-    console.log("🚀 ~ file: TransactionDataTable.tsx:82 ~ TransactionDataTable ~ isError", error);
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-        <h1 className="error">Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess && Boolean(projects.length)) {
-    content = (
+  return (
+    <div className={styles.projectDataTable}>
       <DataGrid
         className={styles.datagrid}
         rows={projects}
@@ -113,11 +82,10 @@ const ProjectDataTable = ({
           },
         }}
       />
-    );
-  }
-
-  return <div className={styles.projectDataTable}>{content}</div>;
+    </div>
+  );
 };
+
 export default ProjectDataTable;
 
 export const PROJECT_MOBILE_COLUMNS = {

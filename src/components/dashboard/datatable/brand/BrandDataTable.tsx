@@ -16,13 +16,9 @@ import moment from "moment";
 
 type BrandDataTableProps = {
   brands: Brand[];
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: any;
 };
 
-const BrandDataTable = ({ brands, isLoading, isSuccess, isError, error }: BrandDataTableProps) => {
+const BrandDataTable = ({ brands }: BrandDataTableProps) => {
   const { windowSize } = useWindowSize();
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(BRAND_ALL_COLUMNS);
@@ -59,28 +55,8 @@ const BrandDataTable = ({ brands, isLoading, isSuccess, isError, error }: BrandD
     },
   ];
 
-  let content: JSX.Element = <></>;
-
-  if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    console.error(error);
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-        <h1 className={styles.error}>Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess && Boolean(brands.length)) {
-    content = (
+  return (
+    <div className={styles.brandDataTable}>
       <DataGrid
         className={styles.datagrid}
         rows={brands}
@@ -103,10 +79,8 @@ const BrandDataTable = ({ brands, isLoading, isSuccess, isError, error }: BrandD
           },
         }}
       />
-    );
-  }
-
-  return <div className={styles.brandDataTable}>{content}</div>;
+    </div>
+  );
 };
 export default BrandDataTable;
 

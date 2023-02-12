@@ -4,9 +4,10 @@ import styles from "./CategoryNew.module.scss";
 
 const CategoryNew = () => {
   useTitle("Spedi: Category Create");
+
   return (
     <div className={styles.categoryNew}>
-      <div className={styles["section-1"]}>
+      <div className={styles.left}>
         <CreateCategoryForm />
       </div>
     </div>

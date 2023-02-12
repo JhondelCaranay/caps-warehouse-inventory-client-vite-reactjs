@@ -34,23 +34,19 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
   }, [category]);
 
   const onSubmit = async (values: CategoryForm, submitProps: FormikHelpers<CategoryForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await updateCategory({
+      await updateCategory({
         id: values.id,
         name: values.name,
       }).unwrap();
-      // console.log("🚀 ~ file: EditCategoryForm.tsx:51 ~ onSubmit ~ result", result)
 
       toast.success("Category edited successfully");
       submitProps.resetForm();
       navigate("/dash/category");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);

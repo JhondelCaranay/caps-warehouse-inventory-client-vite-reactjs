@@ -35,9 +35,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
   }, [project]);
 
   const onSubmit = async (values: ProjectForm, submitProps: FormikHelpers<ProjectForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1s000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
       const result = await updateProject({
@@ -53,119 +51,116 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
       navigate("/dash/projects");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element = <></>;
+  return (
+    <div className={styles.editProjectForm}>
+      <div className={styles.container}>
+        <Formik
+          initialValues={formValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          enableReinitialize
+        >
+          {(formik) => {
+            const buttonText =
+              isProjectUpdating || formik.isSubmitting ? (
+                <PulseLoader color={"#1976d2"} />
+              ) : (
+                <span>Edit</span>
+              );
 
-  content = (
-    <div className={styles.container}>
-      <Formik
-        initialValues={formValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        enableReinitialize
-      >
-        {(formik) => {
-          const buttonText =
-            isProjectUpdating || formik.isSubmitting ? (
-              <PulseLoader color={"#1976d2"} />
-            ) : (
-              <span>Edit</span>
+            return (
+              <Form>
+                <h1 className={styles.title}>Edit Project</h1>
+
+                {/* INPUT PROJECT NAME */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Project Name</label>
+                  <Field
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Item name"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
+
+                {/* DESCRIPTION TEXT AREA */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="address">Address</label>
+                  <Field
+                    id="address"
+                    name="address"
+                    as="textarea"
+                    rows="4"
+                    placeholder="Address"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.address && formik.errors.address) ? styles.error : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="address"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
+
+                {/* SELECT ASSIGN ENGINEER */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="userId">Assigned Engineer</label>
+                  <Field
+                    disabled
+                    id="userId"
+                    name="userId"
+                    as="select"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.userId && formik.errors.userId) ? styles.error : ""
+                    }`}
+                  >
+                    <option value="">Select Engineer</option>
+                    {users?.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.Profile.first_name + " " + user.Profile.last_name}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage
+                    name="userId"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <Button
+                    type="submit"
+                    size="small"
+                    variant="outlined"
+                    disabled={!formik.isValid || formik.isSubmitting}
+                  >
+                    {buttonText}
+                  </Button>
+                </div>
+
+                {/* DEBUGER */}
+                {import.meta.env.VITE_NODE_ENV === "development" && (
+                  <DebugControl values={formik.values} />
+                )}
+              </Form>
             );
-
-          return (
-            <Form>
-              <h1 className={styles.title}>Edit Project</h1>
-
-              {/* INPUT PROJECT NAME */}
-              <div className={styles.formGroup}>
-                <label htmlFor="name">Project Name</label>
-                <Field
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Item name"
-                  className={`${styles.input} ${
-                    Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
-                  }`}
-                />
-                <ErrorMessage
-                  name="name"
-                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
-                />
-              </div>
-
-              {/* DESCRIPTION TEXT AREA */}
-              <div className={styles.formGroup}>
-                <label htmlFor="address">Address</label>
-                <Field
-                  id="address"
-                  name="address"
-                  as="textarea"
-                  rows="4"
-                  placeholder="Address"
-                  className={`${styles.input} ${
-                    Boolean(formik.touched.address && formik.errors.address) ? styles.error : ""
-                  }`}
-                />
-                <ErrorMessage
-                  name="address"
-                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
-                />
-              </div>
-
-              {/* SELECT ASSIGN ENGINEER */}
-              <div className={styles.formGroup}>
-                <label htmlFor="userId">Assigned Engineer</label>
-                <Field
-                  disabled
-                  id="userId"
-                  name="userId"
-                  as="select"
-                  className={`${styles.input} ${
-                    Boolean(formik.touched.userId && formik.errors.userId) ? styles.error : ""
-                  }`}
-                >
-                  <option value="">Select Engineer</option>
-                  {users?.map((user) => (
-                    <option key={user.id} value={user.id}>
-                      {user.Profile.first_name + " " + user.Profile.last_name}
-                    </option>
-                  ))}
-                </Field>
-                <ErrorMessage
-                  name="userId"
-                  component={(props) => <TextError {...props} styles={styles["text-error"]} />}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <Button
-                  type="submit"
-                  size="small"
-                  variant="outlined"
-                  disabled={!formik.isValid || formik.isSubmitting}
-                >
-                  {buttonText}
-                </Button>
-              </div>
-
-              {/* DEBUGER */}
-              {import.meta.env.VITE_NODE_ENV === "development" && (
-                <DebugControl values={formik.values} />
-              )}
-            </Form>
-          );
-        }}
-      </Formik>
+          }}
+        </Formik>
+      </div>
     </div>
   );
-
-  return <div className={styles.editProjectForm}>{content}</div>;
 };
 export default EditProjectForm;
 

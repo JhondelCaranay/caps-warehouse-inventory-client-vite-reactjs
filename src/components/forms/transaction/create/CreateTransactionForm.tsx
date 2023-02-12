@@ -2,8 +2,6 @@ import styles from "./CreateTransactionForm.module.scss";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
-import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { Item, Project, TransactionForm, TRANSACTION_STATUS } from "../../../../types";
 import { toast } from "react-toastify";
 import ErrorList from "../../../toast/ErrorList";
@@ -40,41 +38,16 @@ export const validationSchema = Yup.object().shape({
   projectId: Yup.string().required("Required").uuid("Must be a valid UUID"),
 });
 
-const CreateTransactionForm = () => {
+type CreateTransactionFormProps = {
+  projects: Project[];
+  items: Item[];
+};
+
+const CreateTransactionForm = ({ projects, items }: CreateTransactionFormProps) => {
   const navigate = useNavigate();
   const { id } = useAuth();
 
   const [addNewTransaction, { isLoading: isTransactionUpdating }] = useAddNewTransactionMutation();
-
-  const {
-    data: projects,
-    isLoading: isLoadingProjects,
-    isSuccess: isSuccessProjects,
-  } = useGetProjectsQuery("projectList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids.map((id) => entities[id] as Project),
-      };
-    },
-  });
-
-  const {
-    data: items,
-    isLoading: isLoadingItems,
-    isSuccess: isSuccessItems,
-  } = useGetItemsQuery("itemList", {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: (result) => {
-      const { entities, ids } = result.data || { entities: {}, ids: [] };
-      return {
-        ...result,
-        data: ids.map((id) => entities[id] as Item),
-      };
-    },
-  });
 
   const [formValues, setFormValues] = useState(initialValues);
 
@@ -86,13 +59,10 @@ const CreateTransactionForm = () => {
   }, []);
 
   const onSubmit = async (values: TransactionForm, submitProps: FormikHelpers<TransactionForm>) => {
-    console.log("🚀 ~ file: CreateTransactionForm.tsx:65 ~ CreateTransactionForm ~ values", values);
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await addNewTransaction({
+      await addNewTransaction({
         quantity: values.quantity,
         remarks: values.remarks || null,
         status: values.status,
@@ -104,34 +74,19 @@ const CreateTransactionForm = () => {
         itemId: values.itemId,
         projectId: values.projectId,
       }).unwrap();
-      console.log(
-        "🚀 ~ file: CreateTransactionForm.tsx:86 ~ CreateTransactionForm ~ result",
-        result
-      );
 
       toast.success("Transaction created successfully");
       submitProps.resetForm();
       navigate("/dash/transactions");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element = <></>;
-
-  if (isLoadingItems || isLoadingProjects) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#000000"} />
-      </div>
-    );
-  }
-
-  if (isSuccessItems && isSuccessProjects) {
-    content = (
+  return (
+    <div className={styles.createTransactionForm}>
       <div className={styles.container}>
         <Formik
           initialValues={formValues}
@@ -355,9 +310,7 @@ const CreateTransactionForm = () => {
           }}
         </Formik>
       </div>
-    );
-  }
-
-  return <div className={styles.createTransactionForm}>{content}</div>;
+    </div>
+  );
 };
 export default CreateTransactionForm;

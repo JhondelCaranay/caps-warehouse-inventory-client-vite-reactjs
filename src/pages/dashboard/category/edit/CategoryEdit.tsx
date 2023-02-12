@@ -12,21 +12,22 @@ const CategoryEdit = () => {
   const { categoryId } = useParams();
 
   const {
-    data: categories = { entities: {}, ids: [] },
+    data: category,
     isLoading,
     isSuccess,
     isError,
-    error: errorCategory,
+    error,
   } = useGetCategoryQuery("categoryList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data && categoryId ? data.entities[categoryId] : undefined,
+    }),
   });
 
-  const category = useMemo(() => {
-    return categories.entities[String(categoryId)] as Category;
-  }, [categories, categoryId]);
+  if (isSuccess && !category) {
+    return <div className={styles.notFound}>Brand not found</div>;
+  }
 
   let content: JSX.Element = <></>;
 
@@ -39,18 +40,17 @@ const CategoryEdit = () => {
   }
 
   if (isError) {
-    console.error(errorCategory);
     content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
   }
 
-  if (isSuccess) {
-    content = (
-      <div className={styles["section-1"]}>
-        <EditCategoryForm category={category} />
-      </div>
-    );
+  if (isSuccess && category) {
+    content = <EditCategoryForm category={category} />;
   }
 
-  return <div className={styles.categoryEdit}>{content}</div>;
+  return (
+    <div className={styles.categoryEdit}>
+      <div className={styles.left}>{content}</div>
+    </div>
+  );
 };
 export default CategoryEdit;

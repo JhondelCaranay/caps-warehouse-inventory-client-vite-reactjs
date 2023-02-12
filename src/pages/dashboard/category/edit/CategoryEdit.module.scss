@@ -4,35 +4,40 @@
   padding: 20px;
 
   .loading {
+    background-color: white;
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-    height: calc(100vh - 90px);
-    background-color: white;
   }
 
   .errorMsg {
+    background-color: white;
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-    height: calc(100vh - 90px);
-    background-color: white;
+    color: red;
   }
 
-  .section-1 {
+  .left {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 20px;
-    padding-bottom: 20px;
   }
 
   @media (min-width: 1024px) {
-    .section-1 {
+    .left {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+}
+
+.notFound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  height: calc(100vh - 92px);
+  background-color: white;
+  color: red;
 }

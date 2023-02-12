@@ -3,16 +3,6 @@
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   padding: 20px;
 
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-    height: calc(100vh - 90px);
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
   .container {
     form {
       display: flex;

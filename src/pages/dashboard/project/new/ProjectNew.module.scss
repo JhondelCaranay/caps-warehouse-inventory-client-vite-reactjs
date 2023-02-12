@@ -3,7 +3,22 @@
   color: #333;
   padding: 20px;
 
-  .section-1 {
+  .loading {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .errorMsg {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: red;
+  }
+
+  .top {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 20px;
@@ -11,12 +26,12 @@
   }
 
   @media (min-width: 1024px) {
-    .section-1 {
+    .top {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  .section-2 {
+  .bottom {
     -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
     box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
     padding: 20px;
@@ -33,3 +48,4 @@
     }
   }
 }
+
