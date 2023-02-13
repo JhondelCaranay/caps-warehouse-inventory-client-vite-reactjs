@@ -1,17 +1,17 @@
+import styles from "./UserList.module.scss";
 import { Button, Stack } from "@mui/material";
-import { EntityId } from "@reduxjs/toolkit";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import UserDataTable from "../../../../components/dashboard/datatable/user/UserDataTable";
-import useTitle from "../../../../hooks/useTitle";
+import { useTitle } from "../../../../hooks";
 import { User } from "../../../../types";
-import "./userList.scss";
+import { UserDataTable } from "../../../../components";
+import { PulseLoader } from "react-spinners";
+
 const UserList = () => {
   useTitle("Spedi: User List");
 
   const {
-    data: users = { entities: {}, ids: [] },
+    data: users,
     isLoading,
     isSuccess,
     isError,
@@ -22,14 +22,34 @@ const UserList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data ? data.ids.map((id) => data.entities[id] as User) : [],
+    }),
   });
 
-  const userList = useMemo(() => {
-    return users ? users.ids.map((id: EntityId) => users.entities[id] as User) : [];
-  }, [users]);
+  let content: JSX.Element = <></>;
+
+  if (isLoading) {
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+      </div>
+    );
+  } else if (isError) {
+    console.error(error);
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+        <h1 className={styles.error}>Failed to load data</h1>
+      </div>
+    );
+  } else if (isSuccess) {
+    content = <UserDataTable users={users} />;
+  }
 
   return (
-    <div className="userList">
+    <div className={styles.userList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
           <Link to="/dash/users/new" style={{ textDecoration: "none" }}>
@@ -42,13 +62,7 @@ const UserList = () => {
           </Button>
         </Stack>
       </Stack>
-      <UserDataTable
-        users={userList}
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        isError={isError}
-        error={error}
-      />
+      {content}
     </div>
   );
 };

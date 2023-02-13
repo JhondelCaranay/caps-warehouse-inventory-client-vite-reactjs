@@ -1,4 +1,4 @@
-import "./chart.scss";
+import styles from "./Chart.module.scss";
 
 import {
   AreaChart,
@@ -12,18 +12,18 @@ import {
 import { ChartProps } from "../../../types";
 
 const data = [
-  { name: "January", users: 10, products: 50, transactions: 100 },
-  { name: "February", users: 20, products: 55, transactions: 60 },
-  { name: "March", users: 30, products: 70, transactions: 90 },
-  { name: "April", users: 40, products: 100, transactions: 100 },
-  { name: "May", users: 30, products: 50, transactions: 50 },
-  { name: "June", users: 20, products: 90, transactions: 80 },
+  { name: "January", users: 10, items: 50, transactions: 100 },
+  { name: "February", users: 20, items: 55, transactions: 60 },
+  { name: "March", users: 30, items: 70, transactions: 90 },
+  { name: "April", users: 40, items: 100, transactions: 100 },
+  { name: "May", users: 30, items: 50, transactions: 50 },
+  { name: "June", users: 20, items: 90, transactions: 80 },
 ];
 
 const Chart = ({ aspect, title }: ChartProps) => {
   return (
-    <div className="chart">
-      <div className="title">{title}</div>
+    <div className={styles.chart}>
+      <div className={styles.title}>{title}</div>
       <ResponsiveContainer width="100%" aspect={aspect}>
         <AreaChart
           width={730}
@@ -36,7 +36,7 @@ const Chart = ({ aspect, title }: ChartProps) => {
               <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
             </linearGradient>
-            <linearGradient id="productsColor" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="itemsColor" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
             </linearGradient>
@@ -47,7 +47,7 @@ const Chart = ({ aspect, title }: ChartProps) => {
           </defs>
           <XAxis dataKey="name" stroke="gray" />
           <YAxis />
-          <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
+          <CartesianGrid strokeDasharray="3 3" className={styles.chartGrid} />
           <Tooltip />
           <Area
             type="monotone"
@@ -58,11 +58,11 @@ const Chart = ({ aspect, title }: ChartProps) => {
           />
           <Area
             type="monotone"
-            dataKey="products"
+            dataKey="items"
             stackId="1"
             stroke="#0ea5e9"
             fillOpacity={1}
-            fill="url(#productsColor)"
+            fill="url(#itemsColor)"
           />
           <Area
             type="monotone"

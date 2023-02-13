@@ -1,0 +1,68 @@
+.navbar {
+  height: 50px;
+  border-bottom: 0.5px solid rgb(231, 228, 228);
+
+  font-size: 14px;
+  color: #555;
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .left {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      .logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      color: #555;
+
+      &.active {
+        scale: 1.1;
+        color: #000;
+        text-underline-offset: 0.15em;
+        text-decoration: underline;
+      }
+    }
+
+    ul {
+      text-decoration: none;
+      list-style: none;
+      display: none;
+      gap: 20px;
+
+      li {
+        cursor: pointer;
+
+        &:hover {
+          scale: 1.1;
+          color: #000;
+        }
+      }
+    }
+
+    @media (min-width: 640px) {
+      ul {
+        display: flex;
+      }
+    }
+  }
+}

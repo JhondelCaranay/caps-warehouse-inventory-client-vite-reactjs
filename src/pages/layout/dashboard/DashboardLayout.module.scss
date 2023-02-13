@@ -1,0 +1,30 @@
+.dashLayout {
+  // mobile first approach
+  display: flex;
+
+  .sidebar {
+    display: none;
+  }
+
+  .outlet {
+    flex: 1;
+  }
+
+  @media (min-width: 768px) {
+    .sidebar {
+      display: block;
+      flex: 1;
+      transition: all 1s ease;
+    }
+
+    .outlet {
+      flex: 6;
+      height: 100vh;
+      overflow-y: scroll;
+    }
+
+    .onClose {
+      display: none;
+    }
+  }
+}

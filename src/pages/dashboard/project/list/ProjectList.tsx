@@ -1,40 +1,55 @@
 import { Button, Stack } from "@mui/material";
-import { EntityId } from "@reduxjs/toolkit";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { PulseLoader } from "react-spinners";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
-import ProjectDataTable from "../../../../components/dashboard/datatable/project/ProjectDataTable";
+import { ProjectDataTable } from "../../../../components";
 import useTitle from "../../../../hooks/useTitle";
 import { Project } from "../../../../types";
-import "./projectList.scss";
+import styles from "./ProjectList.module.scss";
 
 const ProjectList = () => {
   useTitle("Spedi: Project List");
 
   const {
-    data: projects = { entities: {}, ids: [] },
+    data: projects,
     error,
     isLoading,
     isSuccess,
     isError,
     refetch,
-  } = useGetProjectsQuery("projectList", {
+  } = useGetProjectsQuery(undefined, {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data?.ids.map((id) => data?.entities[id] as Project),
+    }),
   });
 
-  const isLoadingData = isLoading;
-  const isSuccessData = isSuccess;
-  const isErrorData = isError;
+  let content: JSX.Element = <></>;
 
-  const projectList = useMemo(() => {
-    return projects ? projects.ids.map((id: EntityId) => projects.entities[id] as Project) : [];
-  }, [projects]);
+  if (isLoading) {
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+      </div>
+    );
+  } else if (isError) {
+    console.error(error);
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+        <h1 className={styles.error}>Failed to load data</h1>
+      </div>
+    );
+  } else if (isSuccess && projects) {
+    content = <ProjectDataTable projects={projects} />;
+  }
 
   return (
-    <div className="projectList">
+    <div className={styles.projectList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
           <Link to="/dash/projects/new" style={{ textDecoration: "none" }}>
@@ -47,13 +62,7 @@ const ProjectList = () => {
           </Button>
         </Stack>
       </Stack>
-      <ProjectDataTable
-        projects={projectList}
-        isLoading={isLoadingData}
-        isSuccess={isSuccessData}
-        isError={isErrorData}
-        error={error}
-      />
+      {content}
     </div>
   );
 };

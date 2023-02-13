@@ -1,16 +1,16 @@
+import styles from "./EditCategoryForm.module.scss";
 import { Button } from "@mui/material";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useUpdateCategoryMutation } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryForm } from "../../../../types/formik.type";
-import InputControl from "../../../formik/InputControl";
 import ErrorList from "../../../toast/ErrorList";
-import { initialValues, validationSchema } from "./EditCategorySchema";
-import "./editCategoryForm.scss";
 import { Category } from "../../../../types";
+import * as Yup from "yup";
+import { DebugControl, TextError } from "../../../formik";
 
 type EditCategoryFormProps = {
   category: Category;
@@ -34,33 +34,29 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
   }, [category]);
 
   const onSubmit = async (values: CategoryForm, submitProps: FormikHelpers<CategoryForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
-      const result = await updateCategory({
+      await updateCategory({
         id: values.id,
         name: values.name,
       }).unwrap();
-      // console.log("🚀 ~ file: EditCategoryForm.tsx:51 ~ onSubmit ~ result", result)
 
       toast.success("Category edited successfully");
       submitProps.resetForm();
       navigate("/dash/category");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   if (category) {
     content = (
-      <div className="container">
+      <div className={styles.container}>
         <Formik
           initialValues={formValues}
           validationSchema={validationSchema}
@@ -77,21 +73,27 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
 
             return (
               <Form>
-                <h1 className="title">Edit Category</h1>
-                {/* <DebugControl values={formik.values} /> */}
-                <div className="row">
-                  <div className="left">
-                    <InputControl
-                      label="Category Name"
-                      name="name"
-                      type="text"
-                      placeholder="Category Name"
-                      isError={Boolean(formik.touched.name && formik.errors.name)}
-                    />
-                  </div>
+                <h1 className={styles.title}>Edit Category</h1>
+
+                {/* CATEGORY NAME INPUT*/}
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Category Name</label>
+                  <Field
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Category Name"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
                 </div>
 
-                <div className="formGroup">
+                <div className={styles.formGroup}>
                   <Button
                     type="submit"
                     size="small"
@@ -101,6 +103,11 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
                     {buttonText}
                   </Button>
                 </div>
+
+                {/* DEBUGER */}
+                {import.meta.env.VITE_NODE_ENV === "development" && (
+                  <DebugControl values={formik.values} />
+                )}
               </Form>
             );
           }}
@@ -109,6 +116,14 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
     );
   }
 
-  return <div className="editCategoryForm">{content}</div>;
+  return <div className={styles.editCategoryForm}>{content}</div>;
 };
 export default EditCategoryForm;
+
+export const initialValues: CategoryForm = {
+  name: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Required"),
+});

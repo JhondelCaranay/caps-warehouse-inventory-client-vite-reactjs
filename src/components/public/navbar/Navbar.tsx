@@ -1,21 +1,21 @@
-import "./navbar.scss";
+import styles from "./Navbar.module.scss";
 import spediLogo from "./../../../assets/img/logo.jpg";
 import { Link, NavLink } from "react-router-dom";
 
 const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
-  return isActive ? "active" : "";
+  return isActive ? `${styles.active}` : "";
 };
 
 const Navbar = () => {
   return (
-    <div className="navbar">
-      <div className="left">
+    <div className={styles.navbar}>
+      <div className={styles.left}>
         <Link to="/">
-          <img src={spediLogo} alt="" className="logo" />
+          <img src={spediLogo} alt="" className={styles.logo} />
         </Link>
         <h1>Spedi</h1>
       </div>
-      <div className="right">
+      <div className={styles.right}>
         <ul>
           <NavLink end to="/" className={navLinkStyles}>
             <li>Home</li>

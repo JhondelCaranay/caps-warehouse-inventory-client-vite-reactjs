@@ -1,3 +1,4 @@
+import styles from "./CreateUserForm.module.scss";
 import { AddAPhoto, RemoveCircle } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -9,15 +10,11 @@ import { v4 } from "uuid";
 import { useAddNewUserMutation } from "../../../../app/services/user/userApiSlice";
 import { storage } from "../../../../config/firebase";
 import { Capitalize } from "../../../../config/utils/functions";
-import { ROLES, UserCreateForm } from "../../../../types";
-import DebugControl from "../../../formik/DebugControl";
-import InputControl from "../../../formik/InputControl";
-import { SelectControl } from "../../../formik/SelectControl";
-import TextAreaControl from "../../../formik/TextAreaControl";
+import { ROLES, UserCreateForm, USER_STATUS } from "../../../../types";
 import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
-import "./createUserForm.scss";
-import { initialValues, validationSchema } from "./CreateUserSchema";
+import * as Yup from "yup";
+import { DebugControl } from "../../../formik";
 
 const CreateUserForm = () => {
   const navigate = useNavigate();
@@ -66,10 +63,10 @@ const CreateUserForm = () => {
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element | null = null;
+  let content: JSX.Element = <></>;
 
   content = (
-    <div className="container">
+    <div className={styles.container}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -86,44 +83,101 @@ const CreateUserForm = () => {
 
           return (
             <Form>
-              <h1 className="title">Create User</h1>
+              <h1 className={styles.title}>Create User</h1>
               {/* <DebugControl values={formik.values} /> */}
-              <div className="row">
-                <div className="left">
-                  <InputControl
-                    label="First Name"
-                    name="first_name"
-                    type="text"
-                    isError={Boolean(formik.touched.first_name && formik.errors.first_name)}
-                  />
+              <div className={styles.row}>
+                {/* LEFT */}
+                <div className={styles.left}>
+                  {/* FIRSTNAME INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="first_name">First Name</label>
+                    <Field
+                      id="first_name"
+                      name="first_name"
+                      type="text"
+                      placeholder="First Name"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.first_name && formik.errors.first_name)
+                          ? styles.error
+                          : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="first_name"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
 
-                  <InputControl
-                    label="Last Name"
-                    name="last_name"
-                    type="text"
-                    isError={Boolean(formik.touched.last_name && formik.errors.last_name)}
-                  />
+                  {/* LASTNAME INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="last_name">Last Name</label>
+                    <Field
+                      id="last_name"
+                      name="last_name"
+                      type="text"
+                      placeholder="Last Name"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.last_name && formik.errors.last_name)
+                          ? styles.error
+                          : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="last_name"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
 
-                  <InputControl
-                    label="Email"
-                    name="email"
-                    type="text"
-                    isError={Boolean(formik.touched.email && formik.errors.email)}
-                  />
+                  {/* EMAIL INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="email">Email</label>
+                    <Field
+                      id="email"
+                      name="email"
+                      type="text"
+                      placeholder="Email"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.email && formik.errors.email) ? styles.error : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
 
-                  <InputControl
-                    label="Position"
-                    name="position"
-                    type="text"
-                    isError={Boolean(formik.touched.position && formik.errors.position)}
-                  />
+                  {/* EMAIL INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="position">Position</label>
+                    <Field
+                      id="position"
+                      name="position"
+                      type="text"
+                      placeholder="Position"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.position && formik.errors.position)
+                          ? styles.error
+                          : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="position"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
 
-                  <SelectControl
-                    label="Role"
-                    name="role"
-                    isError={Boolean(formik.touched.role && formik.errors.role)}
-                  >
-                    <>
+                  {/* SELECT USER ROLE */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="role">Category</label>
+                    <Field
+                      id="role"
+                      name="role"
+                      as="select"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.role && formik.errors.role) ? styles.error : ""
+                      }`}
+                    >
+                      <option value="">Select Role</option>
                       {Object.keys(ROLES)
                         .filter((key) => key !== ROLES.SUPER_ADMIN)
                         .map((key) => (
@@ -131,45 +185,73 @@ const CreateUserForm = () => {
                             {Capitalize(key)}
                           </option>
                         ))}
-                    </>
-                  </SelectControl>
+                    </Field>
+                    <ErrorMessage
+                      name="role"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
 
-                  <InputControl
-                    label="Contact"
-                    name="contact"
-                    type="text"
-                    placeholder="+631234567890"
-                    isError={Boolean(formik.touched.contact && formik.errors.contact)}
-                  />
+                  {/* EMAIL INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="contact">Contact</label>
+                    <Field
+                      id="contact"
+                      name="contact"
+                      type="text"
+                      placeholder="+631234567890"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.contact && formik.errors.contact) ? styles.error : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="contact"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
                 </div>
 
-                <div className="right">
-                  <TextAreaControl
-                    label="Address"
-                    name="address"
-                    type="text"
-                    isError={Boolean(formik.touched.address && formik.errors.address)}
-                  />
+                {/* RIGHT */}
+                <div className={styles.right}>
+                  {/* ADDRESS TEXT AREA */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="address">Address</label>
+                    <Field
+                      id="address"
+                      name="address"
+                      as="textarea"
+                      rows="4"
+                      placeholder="Address"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.address && formik.errors.address) ? styles.error : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="address"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
 
-                  <div className="formGroup">
+                  {/* USER PROFILE PICTURE FILE INPUT */}
+                  <div className={styles.formGroup}>
                     <p>Picture</p>
                     <div
-                      className={
-                        formik.touched.avatarUrl && formik.errors.avatarUrl
-                          ? "add-photo error"
-                          : "add-photo"
-                      }
+                      className={`${styles["add-photo"]} ${
+                        Boolean(formik.touched.avatarUrl && formik.errors.avatarUrl)
+                          ? styles.error
+                          : ""
+                      }`}
                     >
-                      <div className="controls">
+                      <div className={styles.controls}>
                         <label htmlFor="avatarUrl">
                           <AddAPhoto
-                            className="icons"
+                            className={styles.icons}
                             fontSize="large"
                             onClick={(e) => formik.setFieldTouched("avatarUrl", true)}
                           />
                         </label>
                         <RemoveCircle
-                          className="icons"
+                          className={styles.icons}
                           fontSize="large"
                           onClick={(e) => {
                             formik.setFieldValue("avatarUrl", null);
@@ -177,7 +259,7 @@ const CreateUserForm = () => {
                         />
                       </div>
                       {formik.values.avatarUrl && (
-                        <div className="preview">
+                        <div className={styles.preview}>
                           <img
                             style={{
                               display: formik.errors.avatarUrl ? "none" : "block",
@@ -193,25 +275,25 @@ const CreateUserForm = () => {
                       id="avatarUrl"
                       type="file"
                       accept="image/png, image/gif, image/jpeg"
-                      className={
-                        formik.touched.avatarUrl && formik.errors.avatarUrl
-                          ? "input error"
-                          : "input"
-                      }
-                      value={""}
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.avatarUrl && formik.errors.avatarUrl)
+                          ? styles.error
+                          : ""
+                      }`}
+                      value={undefined}
                       onChange={(event: any) => {
                         formik.setFieldValue("avatarUrl", event.currentTarget.files[0]);
                       }}
                     />
                     <ErrorMessage
                       name="avatarUrl"
-                      component={(props) => <TextError {...props} />}
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="formGroup">
+              <div className={styles.formGroup}>
                 <Button
                   type="submit"
                   size="small"
@@ -221,6 +303,11 @@ const CreateUserForm = () => {
                   {buttonText}
                 </Button>
               </div>
+
+              {/* DEBUGER */}
+              {import.meta.env.VITE_NODE_ENV === "development" && (
+                <DebugControl values={formik.values} />
+              )}
             </Form>
           );
         }}
@@ -228,6 +315,38 @@ const CreateUserForm = () => {
     </div>
   );
 
-  return <div className="createUserForm">{content}</div>;
+  return <div className={styles.createUserForm}>{content}</div>;
 };
 export default CreateUserForm;
+
+export const initialValues: UserCreateForm = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  position: "",
+  address: "",
+  contact: "",
+  avatarUrl: "",
+  status: USER_STATUS.ACTIVE,
+  role: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  first_name: Yup.string().required("Required"),
+  last_name: Yup.string().required("Required"),
+  email: Yup.string().required("Required").email("Invalid email address"),
+  position: Yup.string().required("Required"),
+  address: Yup.string(),
+
+  contact: Yup.string().matches(/^(?:\+63|0)\d{10}$/, "Must be only digits"),
+  // contact: Yup.string().matches(/^[0-9]+$/, "Must be only digits"),
+  avatarUrl: Yup.mixed().test("type", "Only .jpg, .jpeg, .png, files are accepted", (value) => {
+    if (value) {
+      return ["image/jpg", "image/jpeg", "image/png"].includes(value.type);
+    } else {
+      return true;
+    }
+  }),
+  status: Yup.string(),
+  role: Yup.string().required("Required"),
+});

@@ -1,38 +1,27 @@
+import styles from "./CreateProjectForm.module.scss";
 import { Button } from "@mui/material";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useAddNewProjectMutation } from "../../../../app/services/project/projectApiSlice";
 import { ProjectForm, User } from "../../../../types";
-import InputControl from "../../../formik/InputControl";
-import { SelectControl } from "../../../formik/SelectControl";
-import TextAreaControl from "../../../formik/TextAreaControl";
 import ErrorList from "../../../toast/ErrorList";
-import "./createProjectForm.scss";
-import { initialValues, validationSchema } from "./CreateProjectSchema";
+import { DebugControl, TextError } from "../../../formik";
+import * as Yup from "yup";
 
 type CreateProjectFormProps = {
   users: User[];
-  isLoading: boolean;
-  isSuccess: boolean;
   setSelectedId: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const CreateProjectForm = ({
-  users,
-  isLoading,
-  isSuccess,
-  setSelectedId,
-}: CreateProjectFormProps) => {
+const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => {
   const navigate = useNavigate();
 
   const [addNewProject, { isLoading: isProjectUpdating }] = useAddNewProjectMutation();
 
   const onSubmit = async (values: ProjectForm, submitProps: FormikHelpers<ProjectForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
       const result = await addNewProject({
@@ -47,25 +36,14 @@ const CreateProjectForm = ({
       navigate("/dash/projects");
     } catch (err: any) {
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
     }
     submitProps.setSubmitting(false);
   };
 
-  let content: JSX.Element | null = null;
-
-  if (isLoading) {
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  }
-
-  if (isSuccess && Boolean(users.length)) {
-    content = (
-      <div className="container">
+  return (
+    <div className={styles.createProjectForm}>
+      <div className={styles.container}>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -82,49 +60,79 @@ const CreateProjectForm = ({
 
             return (
               <Form>
-                <h1 className="title">Create Project</h1>
-                {/* <DebugControl values={formik.values} /> */}
+                <h1 className={styles.title}>Create Project</h1>
 
-                <InputControl
-                  label="Project Name"
-                  name="name"
-                  type="text"
-                  placeholder="Project Name"
-                  isError={Boolean(formik.touched.name && formik.errors.name)}
-                />
+                {/* INPUT PROJECT NAME */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Project Name</label>
+                  <Field
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Item name"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
 
-                <TextAreaControl
-                  label="Address"
-                  name="address"
-                  type="text"
-                  placeholder="Address"
-                  isError={Boolean(formik.touched.address && formik.errors.address)}
-                />
+                {/* DESCRIPTION TEXT AREA */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="address">Address</label>
+                  <Field
+                    id="address"
+                    name="address"
+                    as="textarea"
+                    rows="4"
+                    placeholder="Address"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.address && formik.errors.address) ? styles.error : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="address"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
 
-                <SelectControl
-                  label="Assign Engineer"
-                  name="userId"
-                  isError={Boolean(formik.touched.userId && formik.errors.userId)}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                    formik.setFieldValue("userId", e.target.value);
+                {/* SELECT ASSIGN ENGINEER */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="userId">Assigned Engineer</label>
+                  <Field
+                    id="userId"
+                    name="userId"
+                    as="select"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.userId && formik.errors.userId) ? styles.error : ""
+                    }`}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                      formik.setFieldValue("userId", e.target.value);
 
-                    if (e.target.value !== "") {
-                      setSelectedId(e.target.value);
-                    } else {
-                      setSelectedId("");
-                    }
-                  }}
-                >
-                  <>
+                      if (e.target.value !== "") {
+                        setSelectedId(e.target.value);
+                      } else {
+                        setSelectedId("");
+                      }
+                    }}
+                  >
+                    <option value="">Select Engineer</option>
                     {users?.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.Profile.first_name + " " + user.Profile.last_name}
                       </option>
                     ))}
-                  </>
-                </SelectControl>
+                  </Field>
+                  <ErrorMessage
+                    name="userId"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
 
-                <div className="formGroup">
+                <div className={styles.formGroup}>
                   <Button
                     type="submit"
                     size="small"
@@ -134,14 +142,29 @@ const CreateProjectForm = ({
                     {buttonText}
                   </Button>
                 </div>
+
+                {/* DEBUGER */}
+                {import.meta.env.VITE_NODE_ENV === "development" && (
+                  <DebugControl values={formik.values} />
+                )}
               </Form>
             );
           }}
         </Formik>
       </div>
-    );
-  }
-
-  return <div className="createProjectForm">{content}</div>;
+    </div>
+  );
 };
 export default CreateProjectForm;
+
+export const initialValues: ProjectForm = {
+  name: "",
+  address: "",
+  userId: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Required"),
+  address: Yup.string().required("Required"),
+  userId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+});

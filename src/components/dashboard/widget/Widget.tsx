@@ -1,7 +1,7 @@
 import {
-  AccountBalanceWalletOutlined,
-  MonetizationOnOutlined,
-  ShoppingCartOutlined,
+  // AccountBalanceWalletOutlined,
+  // MonetizationOnOutlined,
+  // ShoppingCartOutlined,
   ConstructionOutlined,
   KeyboardArrowUp,
   ListAltOutlined,
@@ -9,7 +9,7 @@ import {
   PersonOutlined,
 } from "@mui/icons-material";
 import { WidgetDataTypes, WidgetProps, WidgetTypes } from "../../../types";
-import "./widget.scss";
+import styles from "./Widget.module.scss";
 
 const Widget = ({ type }: WidgetProps) => {
   let data: WidgetDataTypes = {
@@ -26,16 +26,16 @@ const Widget = ({ type }: WidgetProps) => {
   data = getWidgetData(data, type);
 
   return (
-    <div className="widget">
-      <div className="left">
-        <span className="title">{data.title}</span>
-        <span className="counter">
+    <div className={styles.widget}>
+      <div className={styles.left}>
+        <span className={styles.title}>{data.title}</span>
+        <span className={styles.counter}>
           {data.isMoney && "$"} {amount}
         </span>
-        <span className="link">{data.link}</span>
+        <span className={styles.link}>{data.link}</span>
       </div>
-      <div className="right">
-        <div className="percentage positive">
+      <div className={styles.right}>
+        <div className={`${styles.percentage} ${styles.positive}`}>
           <KeyboardArrowUp />
           {diff} %
         </div>
@@ -55,7 +55,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "See all users",
         icon: (
           <PersonOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               color: "crimson",
               backgroundColor: "rgba(255, 0, 0, 0.2)",
@@ -72,7 +72,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "see all products",
         icon: (
           <ConstructionOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               backgroundColor: "rgba(0, 128, 0, 0.2)",
               color: "green",
@@ -88,7 +88,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "see all projects",
         icon: (
           <ListAltOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
               color: "purple",
@@ -104,7 +104,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         link: "see all transactions",
         icon: (
           <PaidOutlined
-            className="icon"
+            className={`${styles.icon}`}
             style={{
               backgroundColor: "rgba(218, 165, 32, 0.2)",
               color: "goldenrod",

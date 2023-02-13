@@ -1,25 +1,20 @@
-import { Button, Stack } from "@mui/material";
+import styles from "./UserDataTable.module.scss";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
 import useAuth from "../../../../hooks/useAuth";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { ROLES, User } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import { userColumns, USER_ALL_COLUMNS, USER_MOBILE_COLUMNS } from "./userColumns";
-import "./userDataTable.scss";
+import { Capitalize } from "../../../../config/utils/functions";
+import noImage from "../../../../assets/img/noimage.png";
 
 type UserDataTableProps = {
   users: User[];
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: any;
 };
 
-const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserDataTableProps) => {
+const UserDataTable = ({ users }: UserDataTableProps) => {
   const { windowSize } = useWindowSize();
   const { role } = useAuth();
 
@@ -37,18 +32,22 @@ const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserData
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
-            <Link className="viewButton" to="/dash" style={{ textDecoration: "none" }}>
+          <div className={styles.cellAction}>
+            <Link
+              className={styles.viewButton}
+              to="/dash/users/1"
+              style={{ textDecoration: "none" }}
+            >
               View
             </Link>
             {
               // if user is admin or user is editing his own profile
               role === ROLES.SUPER_ADMIN ? (
-                <Link to="/dash" className="editButton" style={{ textDecoration: "none" }}>
+                <Link to="/dash" className={styles.editButton} style={{ textDecoration: "none" }}>
                   Edit
                 </Link>
               ) : (
-                <div className="editButton disable">Edit</div>
+                <div className={`${styles.editButton} ${styles.disable}`}>Edit</div>
               )
             }
           </div>
@@ -62,30 +61,10 @@ const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserData
 
   const columns = useMemo(() => [...userColumns, ...actionColumn], [actionColumn]);
 
-  let content: JSX.Element | null = null;
-
-  if (isLoading) {
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    console.error(error);
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#4e90d2"} />
-        <h1 className="error">Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess) {
-    content = (
+  return (
+    <div className={styles.userDataTable}>
       <DataGrid
-        className="datagrid"
+        className={styles.datagrid}
         rows={users}
         // columns={userColumns.concat(actionColumn)} // columns - tabel header columns
         columns={columns} // columns - tabel header columns
@@ -107,9 +86,76 @@ const UserDataTable = ({ users, isLoading, isSuccess, isError, error }: UserData
           },
         }}
       />
-    );
-  }
-
-  return <div className="userDataTable">{content}</div>;
+    </div>
+  );
 };
 export default UserDataTable;
+
+export const USER_MOBILE_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+};
+
+export const USER_ALL_COLUMNS = {
+  __check__: false,
+  id: false,
+  name: true,
+};
+
+export const userColumns: GridColDef[] = [
+  { field: "__check__", sortable: false, filterable: false, width: 0 },
+  { field: "id", headerName: "ID", width: 350, type: "string" },
+
+  {
+    field: "Full Name",
+    headerName: "Full Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: User }) => {
+      const { first_name, last_name, avatarUrl } = params.row.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={avatarUrl ? avatarUrl : noImage} alt="avatar" />
+          {fullName}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: User }) => {
+      const { first_name, last_name } = params.row.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return fullName;
+    },
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    width: 300,
+    type: "string",
+  },
+  {
+    field: "role",
+    headerName: "Role",
+    width: 180,
+    type: "string",
+    valueFormatter: (params: { value: string }) => {
+      return Capitalize(params.value);
+    },
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+    renderCell: (params: { row: User }) => {
+      const { status } = params.row;
+      return (
+        <div className={`${styles.cellWithStatus} ${styles[status]}`}>{Capitalize(status)}</div>
+      );
+    },
+    valueGetter: (params: { row: User }) => {
+      const { status } = params.row;
+      return Capitalize(status);
+    },
+  },
+];

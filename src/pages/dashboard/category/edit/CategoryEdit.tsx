@@ -1,56 +1,56 @@
+import styles from "./CategoryEdit.module.scss";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
-import EditCategoryForm from "../../../../components/forms/category/edit/EditCategoryForm";
-import useTitle from "../../../../hooks/useTitle";
 import { Category } from "../../../../types";
-import "./categoryEdit.scss";
+import { EditCategoryForm } from "../../../../components";
+import { useTitle } from "../../../../hooks";
 
 const CategoryEdit = () => {
   useTitle("Spedi: Category Edit");
   const { categoryId } = useParams();
 
   const {
-    data: categories = { entities: {}, ids: [] },
+    data: category,
     isLoading,
     isSuccess,
     isError,
-    error: errorCategory,
+    error,
   } = useGetCategoryQuery("categoryList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data && categoryId ? data.entities[categoryId] : undefined,
+    }),
   });
 
-  const category = useMemo(() => {
-    return categories.entities[String(categoryId)] as Category;
-  }, [categories, categoryId]);
+  if (isSuccess && !category) {
+    return <div className={styles.notFound}>Brand not found</div>;
+  }
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
     content = (
-      <div className="loading">
+      <div className={styles.loading}>
         <PulseLoader color={"#4e90d2"} />
       </div>
     );
   }
 
   if (isError) {
-    console.error(errorCategory);
-    content = <div className="errorMsg">Something went wrong, please try again</div>;
+    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
   }
 
-  if (isSuccess) {
-    content = (
-      <div className="section-1">
-        <EditCategoryForm category={category} />
-      </div>
-    );
+  if (isSuccess && category) {
+    content = <EditCategoryForm category={category} />;
   }
 
-  return <div className="categoryEdit">{content}</div>;
+  return (
+    <div className={styles.categoryEdit}>
+      <div className={styles.left}>{content}</div>
+    </div>
+  );
 };
 export default CategoryEdit;

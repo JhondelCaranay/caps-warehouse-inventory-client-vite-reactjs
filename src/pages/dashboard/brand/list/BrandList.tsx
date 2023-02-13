@@ -1,11 +1,11 @@
 import { Button, Stack } from "@mui/material";
-import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { PulseLoader } from "react-spinners";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import BrandDataTable from "../../../../components/dashboard/datatable/brand/BrandDataTable";
-import useTitle from "../../../../hooks/useTitle";
+import { BrandDataTable } from "../../../../components";
+import { useTitle } from "../../../../hooks";
 import { Brand } from "../../../../types";
-import "./brandList.scss";
+import styles from "./BrandList.module.scss";
 
 const BrandList = () => {
   useTitle("Spedi: Brand List");
@@ -17,19 +17,39 @@ const BrandList = () => {
     isError,
     error,
     refetch,
-  } = useGetBrandsQuery("brandList", {
+  } = useGetBrandsQuery(undefined, {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data ? data.ids.map((id) => data.entities[id] as Brand) : [],
+    }),
   });
 
-  const brandList = useMemo(() => {
-    return brands ? brands.ids.map((id) => brands.entities[id] as Brand) : [];
-  }, [brands]);
+  let content: JSX.Element = <></>;
+
+  if (isLoading) {
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+      </div>
+    );
+  } else if (isError) {
+    console.error(error);
+    content = (
+      <div className={styles.loading}>
+        <PulseLoader color={"#1976d2"} />
+        <h1 className={styles.error}>Failed to load data</h1>
+      </div>
+    );
+  } else if (isSuccess) {
+    content = <BrandDataTable brands={brands} />;
+  }
 
   return (
-    <div className="brandList">
+    <div className={styles.brandList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
           <Link to="/dash/brands/new" style={{ textDecoration: "none" }}>
@@ -42,13 +62,7 @@ const BrandList = () => {
           </Button>
         </Stack>
       </Stack>
-      <BrandDataTable
-        brands={brandList}
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        isError={isError}
-        error={error}
-      />
+      {content}
     </div>
   );
 };

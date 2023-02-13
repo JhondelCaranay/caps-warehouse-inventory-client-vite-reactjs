@@ -1,36 +1,20 @@
-import "./transactionDataTable.scss";
+import styles from "./TransactionDataTable.module.scss";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import useWindowSize from "../../../../hooks/useWindowSize";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
-import PulseLoader from "react-spinners/PulseLoader";
 import { Transaction } from "../../../../types";
-import {
-  transactionColumns,
-  TRANSACTION_ALL_COLUMNS,
-  TRANSACTION_MOBILE_COLUMNS,
-} from "./TransactionColumns";
-import { Button, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useWindowSize } from "../../../../hooks";
+import { Capitalize } from "../../../../config/utils/functions";
+import noImage from "../../../../assets/img/noimage.png";
 
-const TransactionDataTable = () => {
+type TransactionDataTableProps = {
+  transactions: Transaction[];
+};
+
+const TransactionDataTable = ({ transactions }: TransactionDataTableProps) => {
   const { windowSize } = useWindowSize();
   const navigate = useNavigate();
-
-  const {
-    data: transactions,
-    error,
-    isLoading,
-    isSuccess,
-    isError,
-    refetch,
-  } = useGetTransactionsQuery("transactionList", {
-    pollingInterval: 60000,
-    refetchOnFocus: true,
-    refetchOnMountOrArgChange: true,
-    refetchOnReconnect: true,
-  });
 
   const handleEdit = (id: string) => {
     // console.log(id);
@@ -54,11 +38,11 @@ const TransactionDataTable = () => {
       width: 150,
       renderCell: (params) => {
         return (
-          <div className="cellAction">
+          <div className={styles.cellAction}>
             <Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className={styles.viewButton}>View</div>
             </Link>
-            <div className="editButton" onClick={() => handleEdit(params.row.id)}>
+            <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>
               Edit
             </div>
           </div>
@@ -66,77 +50,160 @@ const TransactionDataTable = () => {
       },
       sortable: false,
       filterable: false,
-      hideable: false,
+      // hideable: false,
     },
   ];
 
-  let content: JSX.Element | null = null;
-
-  if (isLoading) {
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#000000"} />
-      </div>
-    );
-  }
-
-  if (isError) {
-    if (Object.values(error)[0] === 401) {
-      return <Navigate to="/login" replace />;
-    }
-
-    content = (
-      <div className="loading">
-        <PulseLoader color={"#000000"} />
-        <h1 className="error">Failed to load data</h1>
-      </div>
-    );
-  }
-
-  if (isSuccess) {
-    const { ids, entities } = transactions;
-    const transactionList = ids.map((id) => entities[id] as Transaction);
-
-    content = (
-      <>
-        <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
-          <Stack direction="row" spacing={1}>
-            <Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
-              <Button size="small" variant="outlined">
-                Create Transaction
-              </Button>
-            </Link>
-            <Button size="small" variant="outlined" onClick={refetch}>
-              Refresh
-            </Button>
-          </Stack>
-        </Stack>
-        <DataGrid
-          className="datagrid"
-          rows={transactionList}
-          columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
-          columnVisibilityModel={columnVisible}
-          onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
-          pageSize={10} // pageSize - number of rows per page
-          rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
-          checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
-          disableSelectionOnClick // disableSelectionOnClick - default is false - disable selection on click
-          components={{
-            Toolbar: GridToolbar, // GridToolbar - toolbar component on top of the table
-            Pagination: CustomPagination, // CustomPagination - custom pagination
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 }, // debounceMs - delay time for quick filter
-              printOptions: { disableToolbarButton: true }, // disableToolbarButton - default is false - disable print button
-            },
-          }}
-        />
-      </>
-    );
-  }
-
-  return <div className="transactionDataTable">{content}</div>;
+  return (
+    <div className={styles.transactionDataTable}>
+      <DataGrid
+        className={styles.datagrid}
+        rows={transactions}
+        columns={transactionColumns.concat(actionColumn)} // columns - tabel header columns
+        columnVisibilityModel={columnVisible}
+        onColumnVisibilityModelChange={(newModel) => setColumnVisible(newModel)}
+        pageSize={10} // pageSize - number of rows per page
+        rowsPerPageOptions={[10]} // rowsPerPageOptions - array of numbers of rows per page
+        checkboxSelection={windowSize > 640 ? true : false} // checkboxSelection - default is false - enable checkbox selection
+        disableSelectionOnClick // disableSelectionOnClick - default is false - disable selection on click
+        components={{
+          Toolbar: GridToolbar, // GridToolbar - toolbar component on top of the table
+          Pagination: CustomPagination, // CustomPagination - custom pagination
+        }}
+        componentsProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 }, // debounceMs - delay time for quick filter
+            printOptions: { disableToolbarButton: true }, // disableToolbarButton - default is false - disable print button
+          },
+        }}
+      />
+    </div>
+  );
 };
 export default TransactionDataTable;
+
+export const TRANSACTION_MOBILE_COLUMNS = {
+  __check__: false,
+  id: false,
+  Item: true,
+  // User: true,
+  UserSender: true,
+  UserReciever: false,
+  Project: true,
+  status: false,
+  quantity: false,
+  remarks: false,
+};
+
+export const TRANSACTION_ALL_COLUMNS = {
+  __check__: false,
+  id: false,
+  Item: true,
+  // User: true,
+  UserSender: true,
+  UserReciever: false,
+  Project: true,
+  status: false,
+  quantity: false,
+  remarks: false,
+};
+
+export const transactionColumns: GridColDef[] = [
+  { field: "__check__", width: 0, sortable: false, filterable: false },
+  { field: "id", headerName: "ID", width: 350, type: "string" },
+  {
+    field: "Item",
+    headerName: "Item Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: Transaction }) => {
+      const { pictureUrl, name } = params.row.Item;
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={pictureUrl ? pictureUrl : noImage} alt="avatar" />
+          {Capitalize(name)}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { name } = params.row.Item;
+      return Capitalize(name);
+    },
+  },
+  {
+    field: "UserSender",
+    headerName: "Sender Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: Transaction }) => {
+      const { first_name, last_name, avatarUrl } = params.row.Sender.Profile;
+      const avatar = avatarUrl ? avatarUrl : noImage;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={avatar} alt="avatar" />
+          {fullName}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { first_name, last_name } = params.row.Sender.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return fullName;
+    },
+  },
+  {
+    field: "UserReciever",
+    headerName: "Reciever Name",
+    width: 300,
+    renderCell: (params: { row: Transaction }) => {
+      const { first_name, last_name, avatarUrl } = params.row.Receiver.Profile;
+      const avatar = avatarUrl ? avatarUrl : noImage;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+
+      return (
+        <div className={styles.cellWithImg}>
+          <img className={styles.cellImg} src={avatar} alt="avatar" />
+          {fullName}
+        </div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { first_name, last_name } = params.row.Receiver.Profile;
+      const fullName = Capitalize(`${first_name} ${last_name}`);
+      return fullName;
+    },
+  },
+  {
+    field: "Project",
+    headerName: "Project Name",
+    width: 300,
+    hideable: false,
+    renderCell: (params: { row: Transaction }) => {
+      const { name } = params.row.Project;
+      return <div>{Capitalize(name)}</div>;
+    },
+    valueGetter: (params) => {
+      const { name } = params.row.Project;
+      return Capitalize(name);
+    },
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 180,
+    renderCell: (params: { row: Transaction }) => {
+      const { status } = params.row;
+      return (
+        <div className={`${styles.cellWithStatus} ${styles[status]}`}>{Capitalize(status)}</div>
+      );
+    },
+    valueGetter: (params: { row: Transaction }) => {
+      const { status } = params.row;
+      return Capitalize(status);
+    },
+  },
+  { field: "quantity", headerName: "Quantity", width: 180, type: "number" },
+  { field: "remarks", headerName: "Remarks", width: 180, type: "string" },
+];

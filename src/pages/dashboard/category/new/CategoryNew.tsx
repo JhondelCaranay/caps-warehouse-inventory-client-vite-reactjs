@@ -1,12 +1,13 @@
-import CreateCategoryForm from "../../../../components/forms/category/create/CreateCategoryForm";
-import useTitle from "../../../../hooks/useTitle";
-import "./categoryNew.scss";
+import { CreateCategoryForm } from "../../../../components";
+import { useTitle } from "../../../../hooks";
+import styles from "./CategoryNew.module.scss";
 
 const CategoryNew = () => {
   useTitle("Spedi: Category Create");
+
   return (
-    <div className="categoryNew">
-      <div className="section-1">
+    <div className={styles.categoryNew}>
+      <div className={styles.left}>
         <CreateCategoryForm />
       </div>
     </div>
