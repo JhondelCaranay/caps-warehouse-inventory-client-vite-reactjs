@@ -35,7 +35,7 @@ const ItemDataTable = ({ items }: ItemDataTableProps) => {
       renderCell: (params) => {
         return (
           <div className={styles.cellAction}>
-            <Link to="/dash" style={{ textDecoration: "none" }}>
+            <Link to="/dash/items/1" style={{ textDecoration: "none" }}>
               <div className={styles.viewButton}>View</div>
             </Link>
             <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>

@@ -9,24 +9,29 @@ import EngTransactions from "./pages/engineer/transaction/EngTransactions";
 import EngProjects from "./pages/engineer/projects/EngProjects";
 
 import {
+  BrandDetail,
   BrandEdit,
   BrandList,
   BrandNew,
+  CategoryDetail,
   CategoryEdit,
   CategoryList,
   CategoryNew,
   DashboardLayout,
   DashHome,
+  ItemDetail,
   ItemEdit,
   ItemList,
   ItemNew,
   Login,
   NotFound,
+  ProjectDetail,
   ProjectEdit,
   ProjectList,
   ProjectNew,
   PublicLayout,
   Single,
+  TransactionDetail,
   TransactionEdit,
   TransactionList,
   TransactionNew,
@@ -69,37 +74,42 @@ function App() {
                   >
                     <Route path="transactions">
                       <Route index element={<TransactionList />} />
-                      <Route path=":transactionId" element={<Single />} />
+                      <Route path=":transactionId" element={<TransactionDetail />} />
                       <Route path="edit/:transactionId" element={<TransactionEdit />} />
                       <Route path="new" element={<TransactionNew />} />
                     </Route>
 
                     <Route path="items">
                       <Route index element={<ItemList />} />
+                      <Route path=":itemId" element={<ItemDetail />} />
                       <Route path="edit/:itemId" element={<ItemEdit />} />
                       <Route path="new" element={<ItemNew />} />
                     </Route>
 
                     <Route path="projects">
                       <Route index element={<ProjectList />} />
+                      <Route path=":projectId" element={<ProjectDetail />} />
                       <Route path="edit/:projectId" element={<ProjectEdit />} />
                       <Route path="new" element={<ProjectNew />} />
                     </Route>
 
                     <Route path="category">
                       <Route index element={<CategoryList />} />
+                      <Route path=":categoryId" element={<CategoryDetail />} />
                       <Route path="edit/:categoryId" element={<CategoryEdit />} />
                       <Route path="new" element={<CategoryNew />} />
                     </Route>
 
                     <Route path="brands">
                       <Route index element={<BrandList />} />
+                      <Route path=":brandId" element={<BrandDetail />} />
                       <Route path="edit/:brandId" element={<BrandEdit />} />
                       <Route path="new" element={<BrandNew />} />
                     </Route>
 
                     <Route path="users">
                       <Route index element={<UserList />} />
+                      <Route path=":userId" element={<Single />} />
                       <Route path="new" element={<UserNew />} />
                     </Route>
                   </Route>

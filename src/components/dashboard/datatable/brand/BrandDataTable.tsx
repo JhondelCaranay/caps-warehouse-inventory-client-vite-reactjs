@@ -36,7 +36,11 @@ const BrandDataTable = ({ brands }: BrandDataTableProps) => {
       renderCell: (params: { row: Brand }) => {
         return (
           <div className={styles.cellAction}>
-            <Link className={styles.viewButton} to="/dash" style={{ textDecoration: "none" }}>
+            <Link
+              className={styles.viewButton}
+              to="/dash/brands/1"
+              style={{ textDecoration: "none" }}
+            >
               View
             </Link>
             <Link
