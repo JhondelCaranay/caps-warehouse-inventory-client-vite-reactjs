@@ -35,6 +35,7 @@ import {
   TransactionEdit,
   TransactionList,
   TransactionNew,
+  UserDetail,
   UserList,
   UserNew,
 } from "./pages";
@@ -109,9 +110,10 @@ function App() {
 
                     <Route path="users">
                       <Route index element={<UserList />} />
-                      <Route path=":userId" element={<Single />} />
+                      <Route path=":brandId" element={<UserDetail />} />
                       <Route path="new" element={<UserNew />} />
                     </Route>
+                    <Route path="single" element={<Single />} />
                   </Route>
                 </Route>
 

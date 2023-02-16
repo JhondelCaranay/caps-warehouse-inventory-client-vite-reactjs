@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
 import { EditBrandForm } from "../../../../components";
@@ -8,6 +8,7 @@ import styles from "./BrandEdit.module.scss";
 const BrandEdit = () => {
   useTitle("Spedi: Brand Edit");
   const { brandId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: brand,
@@ -23,10 +24,6 @@ const BrandEdit = () => {
     }),
   });
 
-  if (isSuccess && !brand) {
-    return <div className={styles.notFound}>Brand not found</div>;
-  }
-
   let content: JSX.Element = <></>;
 
   if (isLoading) {
@@ -38,8 +35,16 @@ const BrandEdit = () => {
   }
 
   if (isError) {
-    console.error(error);
-    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
+    console.log(error);
+    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+  }
+
+  if (isSuccess && !brand) {
+    content = (
+      <div className={styles.notFound}>
+        Brand not found. <span onClick={() => navigate(-1)}>Please go back</span>
+      </div>
+    );
   }
 
   if (isSuccess && brand) {
@@ -48,7 +53,7 @@ const BrandEdit = () => {
 
   return (
     <div className={styles.brandEdit}>
-      <div className={styles.left}>{content}</div>
+      <div className={styles.wrapper}>{content}</div>
     </div>
   );
 };

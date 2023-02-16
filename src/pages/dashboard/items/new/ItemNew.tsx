@@ -26,7 +26,9 @@ const ItemNew = () => {
 
   return (
     <div className={styles.itemNew}>
-      <CreateItemForm brands={brands} categories={categories} />
+      <div className={styles.wrapper}>
+        <CreateItemForm brands={brands} categories={categories} />
+      </div>
     </div>
   );
 };

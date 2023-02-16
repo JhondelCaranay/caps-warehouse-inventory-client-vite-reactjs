@@ -3,4 +3,90 @@
   color: #333;
   width: 100%;
   padding: 20px;
+
+  .wrapper {
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    padding: 20px;
+
+    position: relative;
+
+    .title {
+      font-size: 16px;
+      color: lightgray;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .information {
+      display: flex;
+      gap: 20px;
+
+      .itemTitle {
+        margin-bottom: 10px;
+        color: #555;
+      }
+
+      .itemImg {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .details {
+        .detailItem {
+          margin-bottom: 10px;
+          font-size: 14px;
+
+          .itemKey {
+            font-weight: bold;
+            color: gray;
+            margin-right: 5px;
+          }
+
+          .itemValue {
+            font-weight: 300;
+          }
+        }
+      }
+    }
+
+    .backButton {
+      position: absolute;
+      width: 60px;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #7451f8;
+      background-color: #7551f818;
+      cursor: pointer;
+      border-radius: 0px 0px 0px 5px;
+      z-index: 99;
+      &:hover {
+        background-color: #7551f830;
+      }
+    }
+
+    .editButton {
+      position: absolute;
+      width: 60px;
+      top: 40px;
+      right: 0;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      //dark green theme
+      color: #00b300;
+      background-color: #00b30018;
+      cursor: pointer;
+      border-radius: 0px 0px 0px 5px;
+      z-index: 99;
+      &:hover {
+        background-color: #00b30030;
+      }
+    }
+  }
 }

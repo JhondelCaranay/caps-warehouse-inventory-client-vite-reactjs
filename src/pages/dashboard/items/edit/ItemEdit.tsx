@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
@@ -11,6 +11,7 @@ import styles from "./ItemEdit.module.scss";
 const ItemEdit = () => {
   useTitle("Spedi: Item Edit");
   const { itemId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: item,
@@ -53,13 +54,25 @@ const ItemEdit = () => {
   }
 
   if (isError) {
-    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
+    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+  }
+
+  if (isSuccess && !item) {
+    content = (
+      <div className={styles.notFound}>
+        Project not found. <span onClick={() => navigate(-1)}>Please go back</span>
+      </div>
+    );
   }
 
   if (isSuccess && item) {
     content = <EditItemForm item={item} brands={brands} categories={categories} />;
   }
 
-  return <div className={styles.itemEdit}>{content}</div>;
+  return (
+    <div className={styles.itemEdit}>
+      <div className={styles.wrapper}>{content}</div>
+    </div>
+  );
 };
 export default ItemEdit;

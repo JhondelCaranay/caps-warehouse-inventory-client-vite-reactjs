@@ -34,5 +34,6 @@ export { default as BrandDetail } from "./dashboard/brand/detail/BrandDetail";
 
 export { default as UserList } from "./dashboard/user/list/UserList";
 export { default as UserNew } from "./dashboard/user/new/UserNew";
+export { default as UserDetail } from "./dashboard/user/detail/UserDetail";
 
 export { default as Single } from "./dashboard/single/Single";

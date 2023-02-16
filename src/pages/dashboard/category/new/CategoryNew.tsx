@@ -7,7 +7,7 @@ const CategoryNew = () => {
 
   return (
     <div className={styles.categoryNew}>
-      <div className={styles.left}>
+      <div className={styles.wrapper}>
         <CreateCategoryForm />
       </div>
     </div>

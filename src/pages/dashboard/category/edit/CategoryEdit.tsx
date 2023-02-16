@@ -1,15 +1,14 @@
 import styles from "./CategoryEdit.module.scss";
-import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
-import { Category } from "../../../../types";
 import { EditCategoryForm } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 
 const CategoryEdit = () => {
   useTitle("Spedi: Category Edit");
   const { categoryId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: category,
@@ -25,10 +24,6 @@ const CategoryEdit = () => {
     }),
   });
 
-  if (isSuccess && !category) {
-    return <div className={styles.notFound}>Brand not found</div>;
-  }
-
   let content: JSX.Element = <></>;
 
   if (isLoading) {
@@ -40,7 +35,16 @@ const CategoryEdit = () => {
   }
 
   if (isError) {
-    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
+    console.log(error);
+    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+  }
+
+  if (isSuccess && !category) {
+    content = (
+      <div className={styles.notFound}>
+        Category not found. <span onClick={() => navigate(-1)}>Please go back</span>
+      </div>
+    );
   }
 
   if (isSuccess && category) {
@@ -49,7 +53,7 @@ const CategoryEdit = () => {
 
   return (
     <div className={styles.categoryEdit}>
-      <div className={styles.left}>{content}</div>
+      <div className={styles.wrapper}>{content}</div>
     </div>
   );
 };

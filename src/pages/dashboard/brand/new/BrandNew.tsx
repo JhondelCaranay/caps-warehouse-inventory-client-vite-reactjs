@@ -7,7 +7,7 @@ const BrandNew = () => {
 
   return (
     <div className={styles.brandNew}>
-      <div className={styles.left}>
+      <div className={styles.wrapper}>
         <CreateBrandForm />
       </div>
     </div>

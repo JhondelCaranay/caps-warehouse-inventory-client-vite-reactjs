@@ -1,81 +1,75 @@
 .createTransactionForm {
-  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
-  padding: 20px;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-  .container {
-    form {
+    .title {
+      font-size: 1rem;
+      font-weight: 900;
+      color: gray;
+      text-align: center;
+    }
+
+    .row {
       display: flex;
       flex-direction: column;
       gap: 20px;
 
-      .title {
-        font-size: 1rem;
-        font-weight: 900;
-        color: gray;
-        text-align: center;
-      }
-
-      .row {
+      .left {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 10px;
+      }
 
-        .left {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
+      .right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .row {
+        flex-direction: row;
+      }
+    }
+
+    .formGroup {
+      label {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: gray;
+      }
+
+      .input {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 3px;
+        outline: none;
+        border: 1px solid gray;
+        border-radius: 5px;
+
+        &.error {
+          border: 1px solid red;
         }
 
-        .right {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
+        &::placeholder {
+          color: lightgray;
         }
       }
 
-      @media (min-width: 768px) {
-        .row {
-          flex-direction: row;
-        }
+      textarea {
+        resize: none;
       }
 
-      .formGroup {
-        label {
-          font-size: 0.8rem;
-          font-weight: bold;
-          color: gray;
-        }
-
-        .input {
-          width: 100%;
-          font-size: 0.9rem;
-          padding: 3px;
-          outline: none;
-          border: 1px solid gray;
-          border-radius: 5px;
-
-          &.error {
-            border: 1px solid red;
-          }
-
-          &::placeholder {
-            color: lightgray;
-          }
-        }
-
-        textarea {
-          resize: none;
-        }
-
-        .text-error {
-          color: red;
-          font-weight: bold;
-          font-size: 0.8rem;
-          letter-spacing: 1px;
-        }
+      .text-error {
+        color: red;
+        font-weight: bold;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
       }
     }
   }
