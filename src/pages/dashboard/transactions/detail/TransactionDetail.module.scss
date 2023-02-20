@@ -4,88 +4,37 @@
   width: 100%;
   padding: 20px;
 
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  .title {
-    font-size: 16px;
-    color: lightgray;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-
-  .subtitle {
-    font-size: 14px;
-    color: lightgray;
-    margin-bottom: 10px;
-    margin-top: 5px;
-    font-weight: bold;
-  }
-
-  .top {
-    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  .wrapper {
+    -webkit-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 1px 1px 3px 1px rgba(201, 201, 201, 0.47);
     padding: 20px;
+    position: relative;
 
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 20px;
 
-    .itemImg {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
+    .loading {
+      background-color: white;
     }
 
-    hr {
-      border: 1px solid lightgray;
-      margin: 0;
-    }
+    .errorMsg {
+      background-color: white;
+      color: red;
 
-    .information {
-      .itemTitle {
-        margin-bottom: 10px;
-        color: #555;
-      }
+      span {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
 
-      .detailItem {
-        margin-bottom: 10px;
-        font-size: 14px;
-
-        .itemKey {
-          font-weight: bold;
-          color: gray;
-          margin-right: 5px;
-        }
-
-        .itemValue {
-          font-weight: 300;
+        &:hover {
+          background-color: #333;
         }
       }
     }
-
-    .left {
-      flex: 1;
-      gap: 15px;
-      border-right: 1px solid lightgray;
-    }
-
-    .center {
-      flex: 1;
-      border-right: 1px solid lightgray;
-    }
-
-    .right {
-      flex: 1;
-    }
-  }
-
-  .bottom {
-    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
-    padding: 20px;
 
     .title {
       font-size: 16px;
@@ -94,89 +43,229 @@
       font-weight: bold;
     }
 
-    .items {
-      display: flex;
-      gap: 40px;
-      justify-content: space-between;
-      position: relative;
+    .subtitle {
+      font-size: 14px;
+      color: lightgray;
+      margin-bottom: 10px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
 
-      .item {
-        position: relative;
-        background-color: #f5f5f5;
-        border-radius: 50%;
+    .top {
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+      padding: 20px;
+
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      gap: 20px;
+
+      .itemImg {
         width: 100px;
         height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        color: #555;
-        // add blur
-        text-shadow: 1px 1px 2px gray;
-        z-index: 2;
+      hr {
+        border: 1px solid lightgray;
+        margin: 0;
+      }
 
-        .value {
+      .information {
+        .itemTitle {
+          margin-bottom: 10px;
+          color: #555;
+          text-transform: uppercase;
+        }
+
+        .detailItem {
+          margin-bottom: 10px;
           font-size: 14px;
-          font-weight: bold;
-          text-align: center;
-        }
 
-        &.WAITING {
-          background-color: green;
-          color: white;
-          animation: pulse 1.2s infinite ease-in;
-        }
-
-        &.ON_DELIVERY {
-          background-color: green;
-          color: white;
-          animation: pulse 1.2s infinite ease-in;
-        }
-        &.CONFIRMED_RECEIVED {
-          background-color: green;
-          color: white;
-          animation: pulse 1.2s infinite ease-in;
-        }
-        &.ON_RETURN {
-          background-color: green;
-          color: white;
-          animation: pulse 1.2s infinite ease-in;
-        }
-        &.CONFIRMED_RETURNED {
-          background-color: green;
-          color: white;
-          animation: pulse 1.2s infinite ease-in;
-        }
-        &.CANCELLED {
-          background-color: red;
-          color: white;
-          animation: pulse 1.2s infinite ease-in;
-        }
-
-        @keyframes pulse {
-          from {
-            transform: scale(0.9);
-            opacity: 0.5;
+          .itemKey {
+            font-weight: bold;
+            color: gray;
+            margin-right: 5px;
           }
 
-          to {
-            transform: scale(1.05);
-            opacity: 1;
+          .itemValue {
+            font-weight: 300;
           }
         }
       }
+    }
 
-      &:before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #f5f5f5;
-        z-index: 1;
+    @media (min-width: 1024px) {
+      .top {
+        flex-direction: row;
+      }
+    }
+
+    .bottom {
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+      padding: 20px;
+      width: 100%;
+
+      .title {
+        font-size: 16px;
+        color: lightgray;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .items {
+        display: flex;
+        gap: 40px;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        font-size: 14px;
+
+        .item {
+          position: relative;
+          background-color: #f5f5f5;
+          border-radius: 50%;
+          width: 100px;
+          height: 100px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          color: #555;
+          // add blur
+          text-shadow: 1px 1px 2px gray;
+          z-index: 2;
+
+          .value {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+          }
+
+          &.ACTIVE {
+            background-color: green;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+
+          &.WAITING {
+            background-color: green;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+
+          &.ON_DELIVERY {
+            background-color: green;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+          &.CONFIRMED_RECEIVED {
+            background-color: green;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+          &.ON_RETURN {
+            background-color: green;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+          &.CONFIRMED_RETURNED {
+            background-color: green;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+          &.CANCELLED {
+            background-color: red;
+            color: white;
+            animation: pulse 1.2s infinite ease-in;
+          }
+
+          @keyframes pulse {
+            from {
+              transform: scale(0.9);
+              opacity: 0.5;
+            }
+
+            to {
+              transform: scale(1.05);
+              opacity: 1;
+            }
+          }
+        }
+
+        &:before {
+          content: "";
+          display: block;
+          position: absolute;
+          //  vertical line
+          top: 0;
+          left: 50%;
+          width: 4px;
+          height: 100%;
+          background-color: #f5f5f5;
+          z-index: 1;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .items {
+          flex-direction: row;
+          align-items: center;
+
+          &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #f5f5f5;
+            z-index: 1;
+          }
+        }
+      }
+    }
+
+    .backButton {
+      position: absolute;
+      width: 60px;
+      top: 0;
+      right: 0;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #7451f8;
+      background-color: #7551f818;
+      cursor: pointer;
+      border-radius: 0px 0px 0px 5px;
+      z-index: 99;
+      &:hover {
+        background-color: #7551f830;
+      }
+    }
+
+    .editButton {
+      position: absolute;
+      width: 60px;
+      top: 40px;
+      right: 0;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      //dark green theme
+      color: #00b300;
+      background-color: #00b30018;
+      cursor: pointer;
+      border-radius: 0px 0px 0px 5px;
+      z-index: 99;
+      &:hover {
+        background-color: #00b30030;
       }
     }
   }

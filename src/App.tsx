@@ -110,7 +110,7 @@ function App() {
 
                     <Route path="users">
                       <Route index element={<UserList />} />
-                      <Route path=":brandId" element={<UserDetail />} />
+                      <Route path=":userId" element={<UserDetail />} />
                       <Route path="new" element={<UserNew />} />
                     </Route>
                     <Route path="single" element={<Single />} />

@@ -70,13 +70,6 @@ const TransactionEdit = () => {
     content = <EditTransactionForm transaction={transaction} projects={projects} items={items} />;
   }
 
-  if (true) {
-    content = (
-      <div className={styles.notFound}>
-        Transaction not found. <span onClick={() => navigate(-1)}>Please go back</span>
-      </div>
-    );
-  }
   return (
     <div className={styles.transactionEdit}>
       <div className={styles.wrapper}>{content}</div>

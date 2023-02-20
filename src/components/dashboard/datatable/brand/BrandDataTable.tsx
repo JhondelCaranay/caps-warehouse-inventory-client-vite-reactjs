@@ -38,7 +38,7 @@ const BrandDataTable = ({ brands }: BrandDataTableProps) => {
           <div className={styles.cellAction}>
             <Link
               className={styles.viewButton}
-              to="/dash/brands/1"
+              to={`/dash/brands/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
               View

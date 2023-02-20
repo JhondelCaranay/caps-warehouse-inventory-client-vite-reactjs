@@ -1,7 +1,7 @@
 import styles from "./CategoryEdit.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
 import { EditCategoryForm } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 
@@ -16,7 +16,7 @@ const CategoryEdit = () => {
     isSuccess,
     isError,
     error,
-  } = useGetCategoryQuery("categoryList", {
+  } = useGetCategoriesQuery(undefined, {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,

@@ -1,7 +1,6 @@
 import "./datatable.scss";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { userRows } from "../../../datatableSource";
 import { userColumns } from "./userColumns";
 import { CustomPagination } from "../../datagrid-pagination/CustomPagination";

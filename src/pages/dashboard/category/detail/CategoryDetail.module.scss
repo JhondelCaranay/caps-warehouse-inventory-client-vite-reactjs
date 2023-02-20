@@ -11,6 +11,28 @@
 
     position: relative;
 
+    .loading {
+      background-color: white;
+    }
+
+    .errorMsg {
+      background-color: white;
+      color: red;
+
+      span {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #333;
+        }
+      }
+    }
+
     .title {
       font-size: 16px;
       color: lightgray;
@@ -20,6 +42,7 @@
 
     .information {
       .itemTitle {
+        text-transform: uppercase;
         margin-bottom: 10px;
         color: #555;
       }

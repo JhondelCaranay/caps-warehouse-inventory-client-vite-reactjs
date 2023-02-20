@@ -43,6 +43,17 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Brand", id: "LIST" }];
       },
     }),
+    getBrand: builder.query<EntityState<Brand>, string>({
+      query: (id) => ({
+        url: `/api/brands/${id}`,
+      }),
+      transformResponse: (response: Brand, meta, arg) => {
+        return brandsAdapter.upsertOne(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        return [{ type: "Brand", id: arg }];
+      },
+    }),
     addNewBrand: builder.mutation<Brand, BrandForm>({
       query: (data) => ({
         url: "/api/brands",
@@ -79,6 +90,7 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetBrandsQuery,
+  useGetBrandQuery,
   useAddNewBrandMutation,
   useUpdateBrandMutation,
   // useDeleteBrandMutation,

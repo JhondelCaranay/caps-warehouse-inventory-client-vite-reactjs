@@ -41,7 +41,7 @@ const ProjectDataTable = ({ projects }: ProjectDataTableProps) => {
           <div className={styles.cellAction}>
             <Link
               className={styles.viewButton}
-              to="/dash/projects/1"
+              to={`/dash/projects/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
               View

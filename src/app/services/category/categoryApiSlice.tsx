@@ -21,7 +21,7 @@ const initialState = categoryAdapter.getInitialState({});
 
 export const categoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getCategory: builder.query<EntityState<Category>, string | void>({
+    getCategories: builder.query<EntityState<Category>, string | void>({
       query: () => ({
         url: "/api/category",
         // validateStatus: (response, result) => {
@@ -42,6 +42,17 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
             ...result.ids.map((id) => ({ type: "Category" as const, id })),
           ];
         } else return [{ type: "Category", id: "LIST" }];
+      },
+    }),
+    getCategory: builder.query<EntityState<Category>, string>({
+      query: (id) => ({
+        url: `/api/category/${id}`,
+      }),
+      transformResponse: (response: Category, meta, arg) => {
+        return categoryAdapter.upsertOne(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        return [{ type: "Category", id: arg }];
       },
     }),
     addNewCategory: builder.mutation<Category, CategoryForm>({
@@ -79,6 +90,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetCategoriesQuery,
   useGetCategoryQuery,
   useAddNewCategoryMutation,
   useUpdateCategoryMutation,

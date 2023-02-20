@@ -59,7 +59,7 @@ const EditTransactionForm = ({ transaction, projects, items }: EditTransactionFo
         ...prev,
         id: transaction.id,
         quantity: transaction.quantity,
-        remarks: transaction.remarks,
+        remarks: transaction.remarks || "",
         status: transaction.status as TRANSACTION_STATUS,
         release_slip_num: transaction.release_slip_num,
         materials_issuance_num: transaction.materials_issuance_num,

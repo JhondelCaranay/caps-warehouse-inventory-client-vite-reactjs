@@ -22,19 +22,19 @@ const Navbar = ({ toggleSidebar, setToggleSidebar }: NavbarProps) => {
             <MenuOutlined className={styles.icon} />
           </div>
           {/* search bar */}
-          <div className={styles.search}>
+          {/* <div className={styles.search}>
             <input type="text" placeholder="Search..." />
             <SearchOutlined />
-          </div>
+          </div> */}
         </div>
         {/* right */}
         <div className={styles.right}>
           {/* icons */}
-          <div className={styles.item}>
+          {/* <div className={styles.item}>
             <LanguageOutlined className={styles.icon} />
             English
-          </div>
-          <div className={styles.item}>
+          </div> */}
+          {/* <div className={styles.item}>
             <DarkModeOutlined
               className={styles.icon}
               // onClick={() => dispatch({ type: "TOGGLE" })}
@@ -43,13 +43,14 @@ const Navbar = ({ toggleSidebar, setToggleSidebar }: NavbarProps) => {
           <div className={styles.item}>
             <FullscreenExitOutlined className={styles.icon} />
           </div>
-          <div className={styles.item}>
-            <NotificationsNoneOutlined className={styles.icon} />
-            <div className="counter">1</div>
-          </div>
+
           <div className={styles.item}>
             <ChatBubbleOutlineOutlined className={styles.icon} />
             <div className="counter">2</div>
+          </div> */}
+          <div className={styles.item}>
+            <NotificationsNoneOutlined className={styles.icon} />
+            <div className="counter">1</div>
           </div>
           {/* user avatar */}
           <div className={styles.item}>

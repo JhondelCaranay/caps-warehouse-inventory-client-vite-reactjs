@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
 import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
 import { EditItemForm } from "../../../../components";
 import { useTitle } from "../../../../hooks";
@@ -35,7 +35,7 @@ const ItemEdit = () => {
     }),
   });
 
-  const { data: categories } = useGetCategoryQuery(undefined, {
+  const { data: categories } = useGetCategoriesQuery(undefined, {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,

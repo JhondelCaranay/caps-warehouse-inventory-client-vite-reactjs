@@ -16,7 +16,7 @@ const BrandEdit = () => {
     isSuccess,
     isError,
     error,
-  } = useGetBrandsQuery("brandList", {
+  } = useGetBrandsQuery(undefined, {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,

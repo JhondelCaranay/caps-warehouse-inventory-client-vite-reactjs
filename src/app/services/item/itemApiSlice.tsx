@@ -43,6 +43,17 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Item", id: "LIST" }];
       },
     }),
+    getItem: builder.query<EntityState<Item>, string>({
+      query: (id) => ({
+        url: `/api/items/${id}`,
+      }),
+      transformResponse: (response: Item, meta, arg) => {
+        return itemsAdapter.upsertOne(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        return [{ type: "Item", id: arg }];
+      },
+    }),
     addNewItem: builder.mutation<Item, ItemForm>({
       query: (data) => ({
         url: "/api/items",
@@ -79,6 +90,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetItemsQuery,
+  useGetItemQuery,
   useAddNewItemMutation,
   useUpdateItemMutation,
   // useDeleteItemMutation,
