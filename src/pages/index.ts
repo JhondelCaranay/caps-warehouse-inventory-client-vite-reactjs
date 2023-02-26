@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 export { default as PublicLayout } from "./layout/public/PublicLayout";
 export { default as NotFound } from "./public/404/Page404";
 export { default as Homepage } from "./public/homepage/Homepage";
@@ -35,5 +36,12 @@ export { default as BrandDetail } from "./dashboard/brand/detail/BrandDetail";
 export { default as UserList } from "./dashboard/user/list/UserList";
 export { default as UserNew } from "./dashboard/user/new/UserNew";
 export { default as UserDetail } from "./dashboard/user/detail/UserDetail";
+
+export { default as EngTransactions } from "./engineer/transaction/list/EngTransactions";
+export { default as EngTransactionDetail } from "./engineer/transaction/detail/EngTransactionDetail";
+export { default as EngProjects } from "./engineer/projects/list/EngProjects";
+export { default as EngProjectDetail } from "./engineer/projects/detail/EngProjectDetail";
+export { default as EngItems } from "./engineer/items/list/EngItems";
+export { default as EngItemDetail } from "./engineer/items/detail/EngItemDetail";
 
 export { default as Single } from "./dashboard/single/Single";

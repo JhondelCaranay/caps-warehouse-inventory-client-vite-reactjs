@@ -9,8 +9,10 @@ import {
   NotificationsNoneOutlined,
   SearchOutlined,
 } from "@mui/icons-material";
+import { useAuth } from "../../../hooks";
 
 const Navbar = ({ toggleSidebar, setToggleSidebar }: NavbarProps) => {
+  const { email } = useAuth();
   return (
     <div className={styles.navbar}>
       {/* wrapper */}
@@ -53,6 +55,7 @@ const Navbar = ({ toggleSidebar, setToggleSidebar }: NavbarProps) => {
             <div className="counter">1</div>
           </div>
           {/* user avatar */}
+          <div className={styles.item}>{email}</div>
           <div className={styles.item}>
             <img
               src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"

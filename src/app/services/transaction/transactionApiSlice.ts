@@ -43,6 +43,22 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Transaction", id: "LIST" }];
       },
     }),
+    getMyTransactions: builder.query<EntityState<Transaction>, string | void>({
+      query: () => ({
+        url: "/api/transactions/my-transaction",
+      }),
+      transformResponse: (response: Transaction[], meta, arg) => {
+        return transactionsAdapter.setAll(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: "Transaction", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "Transaction" as const, id })),
+          ];
+        } else return [{ type: "Transaction", id: "LIST" }];
+      },
+    }),
     getTransaction: builder.query<EntityState<Transaction>, string>({
       query: (id) => ({
         url: `/api/transactions/${id}`,
@@ -90,6 +106,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetTransactionsQuery,
+  useGetMyTransactionsQuery,
   useGetTransactionQuery,
   useAddNewTransactionMutation,
   useUpdateTransactionMutation,
