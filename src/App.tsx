@@ -4,9 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ROLES } from "./types";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import EngItems from "./pages/engineer/items/EngItems";
-import EngTransactions from "./pages/engineer/transaction/EngTransactions";
-import EngProjects from "./pages/engineer/projects/EngProjects";
 
 import {
   BrandDetail,
@@ -19,6 +16,12 @@ import {
   CategoryNew,
   DashboardLayout,
   DashHome,
+  EngItemDetail,
+  EngItems,
+  EngProjectDetail,
+  EngProjects,
+  EngTransactionDetail,
+  EngTransactions,
   ItemDetail,
   ItemEdit,
   ItemList,
@@ -35,6 +38,7 @@ import {
   TransactionEdit,
   TransactionList,
   TransactionNew,
+  UserDetail,
   UserList,
   UserNew,
 } from "./pages";
@@ -109,9 +113,10 @@ function App() {
 
                     <Route path="users">
                       <Route index element={<UserList />} />
-                      <Route path=":userId" element={<Single />} />
+                      <Route path=":userId" element={<UserDetail />} />
                       <Route path="new" element={<UserNew />} />
                     </Route>
+                    <Route path="single" element={<Single />} />
                   </Route>
                 </Route>
 
@@ -121,14 +126,17 @@ function App() {
 
                     <Route path="items">
                       <Route index element={<EngItems />} />
+                      <Route path=":itemId" element={<EngItemDetail />} />
                     </Route>
 
                     <Route path="transactions">
                       <Route index element={<EngTransactions />} />
+                      <Route path=":transactionId" element={<EngTransactionDetail />} />
                     </Route>
 
                     <Route path="projects">
                       <Route index element={<EngProjects />} />
+                      <Route path=":projectId" element={<EngProjectDetail />} />
                     </Route>
                   </Route>
                 </Route>

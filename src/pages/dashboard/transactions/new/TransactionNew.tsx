@@ -26,7 +26,9 @@ const TransactionNew = () => {
 
   return (
     <div className={styles.transactionNew}>
-      <CreateTransactionForm projects={projects} items={items} />
+      <div className={styles.wrapper}>
+        <CreateTransactionForm projects={projects} items={items} />
+      </div>
     </div>
   );
 };

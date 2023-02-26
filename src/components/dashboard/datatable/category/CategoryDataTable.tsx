@@ -40,7 +40,7 @@ const CategoryDataTable = ({ categories }: BrandDataTableProps) => {
           <div className={styles.cellAction}>
             <Link
               className={styles.viewButton}
-              to="/dash/category/1"
+              to={`/dash/category/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
               View

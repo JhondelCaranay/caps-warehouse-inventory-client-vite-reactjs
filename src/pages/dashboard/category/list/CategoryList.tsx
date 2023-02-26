@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
 import { CategoryDataTable } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 import { Category } from "../../../../types";
@@ -17,7 +17,7 @@ const CategoryList = () => {
     isError,
     error,
     refetch,
-  } = useGetCategoryQuery("categoryList", {
+  } = useGetCategoriesQuery(undefined, {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,

@@ -70,7 +70,7 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
 
             return (
               <Form>
-                <h1 className="title">Edit Brand</h1>
+                <h1 className={styles.title}>Edit Brand</h1>
 
                 {/* BRAND NAME INPUT*/}
                 <div className={styles.formGroup}>

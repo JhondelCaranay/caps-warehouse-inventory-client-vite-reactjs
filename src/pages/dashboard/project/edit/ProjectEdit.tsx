@@ -1,5 +1,5 @@
 import styles from "./ProjectEdit.module.scss";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
@@ -10,6 +10,7 @@ import { EditProjectForm, EngineerProfile, ProjectTable } from "../../../../comp
 const ProjectEdit = () => {
   useTitle("Spedi: Project Edit");
   const { projectId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: project,
@@ -61,23 +62,35 @@ const ProjectEdit = () => {
 
   if (isError) {
     console.log(error);
-    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
+    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+  }
+
+  if (isSuccess && !project) {
+    content = (
+      <div className={styles.notFound}>
+        Project not found. <span onClick={() => navigate(-1)}>Please go back</span>
+      </div>
+    );
   }
 
   if (isSuccess && project) {
-    content = <EditProjectForm project={project} users={engineers} />;
+    content = (
+      <>
+        <div className={styles.top}>
+          <EditProjectForm project={project} users={engineers} />
+          <EngineerProfile user={project?.User} />
+        </div>
+        <div className={styles.bottom}>
+          <h1 className="title">Engineer Previous Projects</h1>
+          <ProjectTable projects={previousProject} />
+        </div>
+      </>
+    );
   }
 
   return (
     <div className={styles.projectEdit}>
-      <div className={styles.top}>
-        {content}
-        <EngineerProfile user={project?.User} />
-      </div>
-      <div className={styles.bottom}>
-        <h1 className="title">Engineer Previous Projects</h1>
-        <ProjectTable projects={previousProject} />
-      </div>
+      <div className={styles.wrapper}>{content}</div>
     </div>
   );
 };

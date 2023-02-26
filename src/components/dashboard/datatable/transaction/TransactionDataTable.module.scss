@@ -40,13 +40,7 @@
     border-radius: 5px;
     font-weight: 600;
 
-    // ON_PROCESS
-    // ON_DELIVERY
-    // CONFIRMED_RECEIVED
-    // ON_RETURN
-    // CONFIRMED_RETURNED
-
-    &.ON_PROCESS {
+    &.WAITING {
       background-color: #dcfce7;
       color: #000;
     }

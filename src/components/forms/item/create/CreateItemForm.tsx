@@ -95,310 +95,290 @@ const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
 
   return (
     <div className={styles.createItemForm}>
-      <div className={styles.container}>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          enableReinitialize
-        >
-          {(formik) => {
-            const buttonText =
-              isItemUpdating || formik.isSubmitting ? (
-                <PulseLoader color={"black"} />
-              ) : (
-                <span>Create</span>
-              );
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        enableReinitialize
+      >
+        {(formik) => {
+          const buttonText =
+            isItemUpdating || formik.isSubmitting ? (
+              <PulseLoader color={"black"} />
+            ) : (
+              <span>Create</span>
+            );
 
-            return (
-              <Form>
-                <h1 className={styles.title}>Create Item</h1>
+          return (
+            <Form>
+              <h1 className={styles.title}>Create Item</h1>
 
-                <div className={styles.row}>
-                  {/* LEFT */}
-                  <div className={styles.left}>
-                    {/* ITEM NAME INPUT */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="name">Item Name</label>
-                      <Field
-                        id="name"
-                        name="name"
-                        type="text"
-                        placeholder="Item name"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
-                        }`}
-                      />
-                      <ErrorMessage
-                        name="name"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
-                    </div>
-                    {/* CHILD ROW */}
-                    <div className={styles.row}>
-                      {/* LEFT */}
-                      <div className={styles.left}>
-                        {/* PRICE INPUT */}
-                        <div className={styles.formGroup}>
-                          <label htmlFor="price">Price</label>
-                          <Field
-                            id="price"
-                            name="price"
-                            type="number"
-                            className={`${styles.input} ${
-                              Boolean(formik.touched.price && formik.errors.price)
-                                ? styles.error
-                                : ""
-                            }`}
-                          />
-                          <ErrorMessage
-                            name="price"
-                            component={(props) => (
-                              <TextError {...props} styles={styles["text-error"]} />
-                            )}
-                          />
-                        </div>
-                      </div>
-                      {/* RIGHT */}
-                      <div className={styles.right}>
-                        {/*  QUANTITY INPUT */}
-                        <div className={styles.formGroup}>
-                          <label htmlFor="quantity">Quantity</label>
-                          <Field
-                            id="quantity"
-                            name="quantity"
-                            type="number"
-                            max="50"
-                            className={`${styles.input} ${
-                              Boolean(formik.touched.quantity && formik.errors.quantity)
-                                ? styles.error
-                                : ""
-                            }`}
-                          />
-                          <ErrorMessage
-                            name="quantity"
-                            component={(props) => (
-                              <TextError {...props} styles={styles["text-error"]} />
-                            )}
-                          />
-                        </div>
+              <div className={styles.row}>
+                {/* LEFT */}
+                <div className={styles.left}>
+                  {/* ITEM NAME INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="name">Item Name</label>
+                    <Field
+                      id="name"
+                      name="name"
+                      type="text"
+                      placeholder="Item name"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+                  {/* CHILD ROW */}
+                  <div className={styles.row}>
+                    {/* LEFT */}
+                    <div className={styles.left}>
+                      {/* PRICE INPUT */}
+                      <div className={styles.formGroup}>
+                        <label htmlFor="price">Price</label>
+                        <Field
+                          id="price"
+                          name="price"
+                          type="number"
+                          className={`${styles.input} ${
+                            Boolean(formik.touched.price && formik.errors.price) ? styles.error : ""
+                          }`}
+                        />
+                        <ErrorMessage
+                          name="price"
+                          component={(props) => (
+                            <TextError {...props} styles={styles["text-error"]} />
+                          )}
+                        />
                       </div>
                     </div>
-
-                    {/* DESCRIPTION TEXT AREA */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="description">Description</label>
-                      <Field
-                        id="description"
-                        name="description"
-                        as="textarea"
-                        rows="4"
-                        placeholder="Description"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.description && formik.errors.description)
-                            ? styles.error
-                            : ""
-                        }`}
-                      />
-                      <ErrorMessage
-                        name="description"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
-                    </div>
-
-                    {/* ITEM MODEL INPUT */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="model">Model</label>
-                      <Field
-                        id="model"
-                        name="model"
-                        type="text"
-                        placeholder="Model"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.model && formik.errors.model) ? styles.error : ""
-                        }`}
-                      />
-                      <ErrorMessage
-                        name="model"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
-                    </div>
-
-                    {/* SELECT ITEM UNIT */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="unit">Unit</label>
-                      <Field
-                        id="unit"
-                        name="unit"
-                        as="select"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.unit && formik.errors.unit) ? styles.error : ""
-                        }`}
-                      >
-                        <option value="">Select Unit</option>
-                        {Object.keys(UNIT).map((key) => (
-                          <option key={key} value={key}>
-                            {Capitalize(key)}
-                          </option>
-                        ))}
-                      </Field>
-                      <ErrorMessage
-                        name="unit"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
-                    </div>
-
-                    {/* SELECT ITEM BRAND */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="brandId">Brand</label>
-                      <Field
-                        id="brandId"
-                        name="brandId"
-                        as="select"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.brandId && formik.errors.brandId)
-                            ? styles.error
-                            : ""
-                        }`}
-                      >
-                        <option value="">Select Brand</option>
-                        {brands?.map((brand) => (
-                          <option key={brand.id} value={brand.id}>
-                            {brand.name}
-                          </option>
-                        ))}
-                      </Field>
-                      <ErrorMessage
-                        name="brandId"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
-                    </div>
-
-                    {/* SELECT ITEM CATEGORY */}
-                    <div className={styles.formGroup}>
-                      <label htmlFor="categoryId">Category</label>
-                      <Field
-                        id="categoryId"
-                        name="categoryId"
-                        as="select"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.categoryId && formik.errors.categoryId)
-                            ? styles.error
-                            : ""
-                        }`}
-                      >
-                        <option value="">Select Brand</option>
-                        {categories?.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </Field>
-                      <ErrorMessage
-                        name="categoryId"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
+                    {/* RIGHT */}
+                    <div className={styles.right}>
+                      {/*  QUANTITY INPUT */}
+                      <div className={styles.formGroup}>
+                        <label htmlFor="quantity">Quantity</label>
+                        <Field
+                          id="quantity"
+                          name="quantity"
+                          type="number"
+                          max="50"
+                          className={`${styles.input} ${
+                            Boolean(formik.touched.quantity && formik.errors.quantity)
+                              ? styles.error
+                              : ""
+                          }`}
+                        />
+                        <ErrorMessage
+                          name="quantity"
+                          component={(props) => (
+                            <TextError {...props} styles={styles["text-error"]} />
+                          )}
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  {/* RIGHT */}
-                  <div className={styles.right}>
-                    {/* ITEM PICTURE FILE INPUT */}
-                    <div className={styles.formGroup}>
-                      <p>Picture</p>
-                      <div
-                        className={`${styles["add-photo"]} ${
-                          Boolean(formik.touched.pictureUrl && formik.errors.pictureUrl)
-                            ? styles.error
-                            : ""
-                        }`}
-                      >
-                        <div className={styles.controls}>
-                          <label htmlFor="pictureUrl">
-                            <AddAPhoto
-                              className={styles.icons}
-                              fontSize="large"
-                              onClick={(e) => formik.setFieldTouched("pictureUrl", true)}
-                            />
-                          </label>
-                          <RemoveCircle
+                  {/* DESCRIPTION TEXT AREA */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="description">Description</label>
+                    <Field
+                      id="description"
+                      name="description"
+                      as="textarea"
+                      rows="4"
+                      placeholder="Description"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.description && formik.errors.description)
+                          ? styles.error
+                          : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="description"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+
+                  {/* ITEM MODEL INPUT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="model">Model</label>
+                    <Field
+                      id="model"
+                      name="model"
+                      type="text"
+                      placeholder="Model"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.model && formik.errors.model) ? styles.error : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="model"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+
+                  {/* SELECT ITEM UNIT */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="unit">Unit</label>
+                    <Field
+                      id="unit"
+                      name="unit"
+                      as="select"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.unit && formik.errors.unit) ? styles.error : ""
+                      }`}
+                    >
+                      <option value="">Select Unit</option>
+                      {Object.keys(UNIT).map((key) => (
+                        <option key={key} value={key}>
+                          {Capitalize(key)}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage
+                      name="unit"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+
+                  {/* SELECT ITEM BRAND */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="brandId">Brand</label>
+                    <Field
+                      id="brandId"
+                      name="brandId"
+                      as="select"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.brandId && formik.errors.brandId) ? styles.error : ""
+                      }`}
+                    >
+                      <option value="">Select Brand</option>
+                      {brands?.map((brand) => (
+                        <option key={brand.id} value={brand.id}>
+                          {brand.name}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage
+                      name="brandId"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+
+                  {/* SELECT ITEM CATEGORY */}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="categoryId">Category</label>
+                    <Field
+                      id="categoryId"
+                      name="categoryId"
+                      as="select"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.categoryId && formik.errors.categoryId)
+                          ? styles.error
+                          : ""
+                      }`}
+                    >
+                      <option value="">Select Brand</option>
+                      {categories?.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage
+                      name="categoryId"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+                </div>
+
+                {/* RIGHT */}
+                <div className={styles.right}>
+                  {/* ITEM PICTURE FILE INPUT */}
+                  <div className={styles.formGroup}>
+                    <p>Picture</p>
+                    <div
+                      className={`${styles["add-photo"]} ${
+                        Boolean(formik.touched.pictureUrl && formik.errors.pictureUrl)
+                          ? styles.error
+                          : ""
+                      }`}
+                    >
+                      <div className={styles.controls}>
+                        <label htmlFor="pictureUrl">
+                          <AddAPhoto
                             className={styles.icons}
                             fontSize="large"
-                            onClick={(e) => {
-                              formik.setFieldValue("pictureUrl", "");
+                            onClick={(e) => formik.setFieldTouched("pictureUrl", true)}
+                          />
+                        </label>
+                        <RemoveCircle
+                          className={styles.icons}
+                          fontSize="large"
+                          onClick={(e) => {
+                            formik.setFieldValue("pictureUrl", "");
+                          }}
+                        />
+                      </div>
+                      {formik.values.pictureUrl && (
+                        <div className={styles.preview}>
+                          <img
+                            style={{
+                              display: formik.errors.pictureUrl ? "none" : "block",
                             }}
+                            src={URL.createObjectURL(formik.values.pictureUrl)}
+                            alt="preview"
                           />
                         </div>
-                        {formik.values.pictureUrl && (
-                          <div className={styles.preview}>
-                            <img
-                              style={{
-                                display: formik.errors.pictureUrl ? "none" : "block",
-                              }}
-                              src={URL.createObjectURL(formik.values.pictureUrl)}
-                              alt="preview"
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <Field
-                        name="pictureUrl"
-                        id="pictureUrl"
-                        type="file"
-                        accept="image/png, image/gif, image/jpeg"
-                        className={`${styles.input} ${
-                          Boolean(formik.touched.pictureUrl && formik.errors.pictureUrl)
-                            ? styles.error
-                            : ""
-                        }`}
-                        value={undefined}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                          if (e.currentTarget.files)
-                            formik.setFieldValue("pictureUrl", e.currentTarget.files[0]);
-                        }}
-                      />
-                      <ErrorMessage
-                        name="pictureUrl"
-                        component={(props) => (
-                          <TextError {...props} styles={styles["text-error"]} />
-                        )}
-                      />
+                      )}
                     </div>
+                    <Field
+                      name="pictureUrl"
+                      id="pictureUrl"
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.pictureUrl && formik.errors.pictureUrl)
+                          ? styles.error
+                          : ""
+                      }`}
+                      value={undefined}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (e.currentTarget.files)
+                          formik.setFieldValue("pictureUrl", e.currentTarget.files[0]);
+                      }}
+                    />
+                    <ErrorMessage
+                      name="pictureUrl"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
                   </div>
                 </div>
+              </div>
 
-                <div className={styles.formGroup}>
-                  <Button
-                    type="submit"
-                    size="small"
-                    variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
-                  >
-                    {buttonText}
-                  </Button>
-                </div>
+              <div className={styles.formGroup}>
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="outlined"
+                  disabled={!formik.isValid || formik.isSubmitting}
+                >
+                  {buttonText}
+                </Button>
+              </div>
 
-                {/* DEBUGER */}
-                {import.meta.env.VITE_NODE_ENV === "development" && (
-                  <DebugControl values={formik.values} />
-                )}
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
+              {/* DEBUGER */}
+              {import.meta.env.VITE_NODE_ENV === "development" && (
+                <DebugControl values={formik.values} />
+              )}
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 };

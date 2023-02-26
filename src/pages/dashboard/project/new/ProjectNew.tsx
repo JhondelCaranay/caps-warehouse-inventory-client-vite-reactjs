@@ -16,10 +16,10 @@ const ProjectNew = () => {
 
   const {
     data: users,
-    isLoading: isLoadingUsers,
-    isSuccess: isSuccessUsers,
-    isError: isErrorUsers,
-    error: errorUsers,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
   } = useGetUsersQuery(undefined, {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
@@ -48,7 +48,7 @@ const ProjectNew = () => {
 
   let content: JSX.Element = <></>;
 
-  if (isLoadingUsers) {
+  if (isLoading) {
     content = (
       <div className={styles.loading}>
         <PulseLoader color={"#4e90d2"} />
@@ -56,26 +56,30 @@ const ProjectNew = () => {
     );
   }
 
-  if (isErrorUsers) {
-    console.error(errorUsers);
-    content = <div className={styles.errorMsg}>Something went wrong, please try again</div>;
+  if (isError) {
+    console.log(error);
+    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
   }
 
-  if (isSuccessUsers && users) {
-    content = <CreateProjectForm users={users} setSelectedId={setSelectedId} />;
+  if (isSuccess && users) {
+    content = (
+      <>
+        <div className={styles.top}>
+          <CreateProjectForm users={users} setSelectedId={setSelectedId} />
+          <EngineerProfile user={selectedEngineer} />
+        </div>
+
+        <div className={styles.bottom}>
+          <h1 className={styles.title}>Engineer Previous Projects</h1>
+          <ProjectTable projects={projects} />
+        </div>
+      </>
+    );
   }
 
   return (
     <div className={styles.projectNew}>
-      <div className={styles.top}>
-        {content}
-        <EngineerProfile user={selectedEngineer} />
-      </div>
-
-      <div className={styles.bottom}>
-        <h1 className={styles.title}>Engineer Previous Projects</h1>
-        <ProjectTable projects={projects} />
-      </div>
+      <div className={styles.wrapper}>{content}</div>
     </div>
   );
 };

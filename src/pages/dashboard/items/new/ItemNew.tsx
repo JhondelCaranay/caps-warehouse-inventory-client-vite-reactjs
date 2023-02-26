@@ -2,7 +2,7 @@ import styles from "./ItemNew.module.scss";
 import { useTitle } from "../../../../hooks";
 import { CreateItemForm } from "../../../../components";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
 import { Brand, Category } from "../../../../types";
 
 const ItemNew = () => {
@@ -16,7 +16,7 @@ const ItemNew = () => {
     }),
   });
 
-  const { data: categories } = useGetCategoryQuery(undefined, {
+  const { data: categories } = useGetCategoriesQuery(undefined, {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,
@@ -26,7 +26,9 @@ const ItemNew = () => {
 
   return (
     <div className={styles.itemNew}>
-      <CreateItemForm brands={brands} categories={categories} />
+      <div className={styles.wrapper}>
+        <CreateItemForm brands={brands} categories={categories} />
+      </div>
     </div>
   );
 };

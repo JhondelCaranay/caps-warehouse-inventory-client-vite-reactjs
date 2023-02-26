@@ -10,12 +10,10 @@ import { brandsApiSlice } from "../app/services/brand/brandApiSlice";
 const Prefetch = () => {
   useEffect(() => {
     store.dispatch(
-      transactionsApiSlice.util.prefetch("getTransactions", "transactionList", {
-        force: true,
-      })
+      transactionsApiSlice.util.prefetch("getTransactions", undefined, { force: true })
     );
     store.dispatch(itemsApiSlice.util.prefetch("getItems", undefined, { force: true }));
-    store.dispatch(categoryApiSlice.util.prefetch("getCategory", undefined, { force: true }));
+    store.dispatch(categoryApiSlice.util.prefetch("getCategories", undefined, { force: true }));
     store.dispatch(projectsApiSlice.util.prefetch("getProjects", undefined, { force: true }));
     store.dispatch(brandsApiSlice.util.prefetch("getBrands", undefined, { force: true }));
   }, []);

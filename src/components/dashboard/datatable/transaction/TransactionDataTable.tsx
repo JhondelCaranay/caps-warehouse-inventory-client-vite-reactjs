@@ -39,7 +39,7 @@ const TransactionDataTable = ({ transactions }: TransactionDataTableProps) => {
       renderCell: (params) => {
         return (
           <div className={styles.cellAction}>
-            <Link to="/dash/transactions/1" style={{ textDecoration: "none" }}>
+            <Link to={`/dash/transactions/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className={styles.viewButton}>View</div>
             </Link>
             <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>
@@ -88,7 +88,7 @@ export const TRANSACTION_MOBILE_COLUMNS = {
   id: false,
   Item: true,
   // User: true,
-  UserSender: true,
+  UserSender: false,
   UserReciever: false,
   Project: true,
   status: false,
@@ -101,10 +101,10 @@ export const TRANSACTION_ALL_COLUMNS = {
   id: false,
   Item: true,
   // User: true,
-  UserSender: true,
+  UserSender: false,
   UserReciever: false,
   Project: true,
-  status: false,
+  status: true,
   quantity: false,
   remarks: false,
 };

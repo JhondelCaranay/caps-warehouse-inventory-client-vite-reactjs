@@ -2,7 +2,6 @@ import styles from "./UserDataTable.module.scss";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import useAuth from "../../../../hooks/useAuth";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { ROLES, User } from "../../../../types";
@@ -35,7 +34,7 @@ const UserDataTable = ({ users }: UserDataTableProps) => {
           <div className={styles.cellAction}>
             <Link
               className={styles.viewButton}
-              to="/dash/users/1"
+              to={`/dash/users/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
               View

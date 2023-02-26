@@ -3,18 +3,41 @@
   color: #333;
   padding: 20px;
 
-  .loading {
-    background-color: white;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+  .wrapper {
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    padding: 20px;
 
-  .errorMsg {
-    background-color: white;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    color: red;
+    .loading {
+      background-color: white;
+    }
+
+    .errorMsg {
+      background-color: white;
+      color: red;
+    }
+
+    .notFound {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      gap: 10px;
+      background-color: white;
+      color: red;
+
+      span {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #333;
+        }
+      }
+    }
   }
 }

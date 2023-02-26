@@ -168,7 +168,7 @@ const CreateUserForm = () => {
 
                   {/* SELECT USER ROLE */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="role">Category</label>
+                    <label htmlFor="role">System Privilege</label>
                     <Field
                       id="role"
                       name="role"
