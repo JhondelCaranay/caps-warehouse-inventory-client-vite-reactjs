@@ -2,9 +2,14 @@ import moment from "moment";
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetProjectQuery } from "../../../../app/services/project/projectApiSlice";
+import { useGetTransactionsByProjectIdQuery } from "../../../../app/services/transaction/transactionApiSlice";
+import { TransactionTable } from "../../../../components";
+import { useTitle } from "../../../../hooks";
+import { Project, Transaction } from "../../../../types";
 import styles from "./EngProjectDetail.module.scss";
 
 const EngProjectDetail = () => {
+  useTitle("Spedi: Project Detail");
   const navigate = useNavigate();
   const { projectId } = useParams();
 
@@ -18,7 +23,16 @@ const EngProjectDetail = () => {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,
-      data: data?.entities[projectId as string],
+      data: data?.entities[projectId as string] as Project,
+    }),
+    skip: !projectId,
+  });
+
+  const { data: transactions } = useGetTransactionsByProjectIdQuery(projectId as string, {
+    refetchOnMountOrArgChange: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data ? (data.ids.map((id) => data.entities[id]) as Transaction[]) : [],
     }),
     skip: !projectId,
   });
@@ -86,6 +100,9 @@ const EngProjectDetail = () => {
   return (
     <div className={styles.engProjectDetail}>
       <div className={styles.wrapper}>{content}</div>
+      <div className={styles.transactionTable}>
+        {transactions && <TransactionTable transactions={transactions} />}
+      </div>
     </div>
   );
 };

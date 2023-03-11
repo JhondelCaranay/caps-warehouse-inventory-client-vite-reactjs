@@ -43,6 +43,23 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Item", id: "LIST" }];
       },
     }),
+    getItemsByFilters: builder.query<EntityState<Item>, string | void>({
+      query: (filters) => ({
+        url: `/api/items?${filters}`,
+      }),
+      transformResponse: (response: Item[], meta, arg) => {
+        return itemsAdapter.setAll(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: "Item", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "Item" as const, id })),
+          ];
+        } else return [{ type: "Item", id: "LIST" }];
+      },
+    }),
+
     getItem: builder.query<EntityState<Item>, string>({
       query: (id) => ({
         url: `/api/items/${id}`,
@@ -90,6 +107,7 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetItemsQuery,
+  useGetItemsByFiltersQuery,
   useGetItemQuery,
   useAddNewItemMutation,
   useUpdateItemMutation,

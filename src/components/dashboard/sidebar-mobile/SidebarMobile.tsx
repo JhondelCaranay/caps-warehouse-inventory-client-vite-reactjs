@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../../../app/features/auth/authSlice";
 import {
   ADMINS_ONLY,
-  ADMIN_CONTROLLER_ONLY,
   ENGINEER_ONLY,
-  EngineeLinks,
-  ListLinks,
+  EngineerLinks,
   MainLinks,
+  controllerLinks,
+  CONTROLLER_ONLY,
+  adminsLinks,
 } from "../../../config/utils/constants";
 
 const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
@@ -64,9 +65,9 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
             )}
             <p className={styles.title}>LISTS</p>
 
-            {ADMIN_CONTROLLER_ONLY.includes(role as ROLES) && (
+            {CONTROLLER_ONLY.includes(role as ROLES) && (
               <>
-                {ListLinks.map((link) => (
+                {controllerLinks.map((link) => (
                   <NavLink to={link.to} className={navLinkStyles} key={link.text}>
                     <li className={styles.icon} onClick={sideBarToggle}>
                       {link.icon}
@@ -79,18 +80,20 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
 
             {ADMINS_ONLY.includes(role as ROLES) && (
               <>
-                <NavLink to="/dash/users" className={navLinkStyles}>
-                  <li className={styles.icon} onClick={sideBarToggle}>
-                    <PeopleOutline />
-                    <span>Users</span>
-                  </li>
-                </NavLink>
+                {adminsLinks.map((link) => (
+                  <NavLink to={link.to} className={navLinkStyles} key={link.text}>
+                    <li className={styles.icon} onClick={sideBarToggle}>
+                      {link.icon}
+                      <span>{link.text}</span>
+                    </li>
+                  </NavLink>
+                ))}
               </>
             )}
 
             {ENGINEER_ONLY.includes(role as ROLES) && (
               <>
-                {EngineeLinks.map((link) => (
+                {EngineerLinks.map((link) => (
                   <NavLink to={link.to} className={navLinkStyles} key={link.text}>
                     <li className={styles.icon} onClick={sideBarToggle}>
                       {link.icon}

@@ -61,9 +61,9 @@ const EditTransactionForm = ({ transaction, projects, items }: EditTransactionFo
         quantity: transaction.quantity,
         remarks: transaction.remarks || "",
         status: transaction.status as TRANSACTION_STATUS,
-        release_slip_num: transaction.release_slip_num,
-        materials_issuance_num: transaction.materials_issuance_num,
-        gate_pass_num: transaction.gate_pass_num,
+        release_slip_num: transaction.release_slip_num || "",
+        materials_issuance_num: transaction.materials_issuance_num || "",
+        gate_pass_num: transaction.gate_pass_num || "",
         senderId: transaction.senderId,
         receiverId: transaction.receiverId,
         itemId: transaction.itemId,
@@ -90,7 +90,7 @@ const EditTransactionForm = ({ transaction, projects, items }: EditTransactionFo
         projectId: values.projectId,
       }).unwrap();
 
-      toast.success("Transaction created successfully");
+      toast.success("Transaction updated successfully");
       submitProps.resetForm();
       navigate("/dash/transactions");
     } catch (err: any) {

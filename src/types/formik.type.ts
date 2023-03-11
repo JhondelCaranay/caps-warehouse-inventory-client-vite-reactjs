@@ -7,12 +7,12 @@ export type LoginFormValues = {
 
 export type TransactionForm = {
   id?: string;
-  quantity: number;
-  remarks: string | null;
+  quantity?: number;
+  remarks?: string | null;
   status: TRANSACTION_STATUS | string;
-  release_slip_num: string;
-  materials_issuance_num: string;
-  gate_pass_num: string;
+  release_slip_num?: string;
+  materials_issuance_num?: string;
+  gate_pass_num?: string;
   senderId?: string;
   receiverId?: string;
   itemId?: string;

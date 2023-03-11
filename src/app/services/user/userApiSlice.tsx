@@ -55,6 +55,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return [{ type: "User", id: arg }];
       },
     }),
+    getMyProfile: builder.query<EntityState<User>, string>({
+      query: () => ({
+        url: `/api/users/me`,
+      }),
+      transformResponse: (response: User, meta, arg) => {
+        return usersAdapter.upsertOne(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        return [{ type: "User", id: arg }];
+      },
+    }),
     addNewUser: builder.mutation<User, UserCreateForm>({
       query: (data) => ({
         url: "/api/users",
@@ -92,6 +103,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetUsersQuery,
   useGetUserQuery,
+  useGetMyProfileQuery,
   useAddNewUserMutation,
   // useUpdateUserMutation,
   // useDeleteUserMutation,

@@ -59,6 +59,22 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Transaction", id: "LIST" }];
       },
     }),
+    getTransactionsByProjectId: builder.query<EntityState<Transaction>, string | void>({
+      query: (id) => ({
+        url: `/api/transactions/project/${id}`,
+      }),
+      transformResponse: (response: Transaction[], meta, arg) => {
+        return transactionsAdapter.setAll(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: "Transaction", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "Transaction" as const, id })),
+          ];
+        } else return [{ type: "Transaction", id: "LIST" }];
+      },
+    }),
     getTransaction: builder.query<EntityState<Transaction>, string>({
       query: (id) => ({
         url: `/api/transactions/${id}`,
@@ -70,6 +86,7 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         return [{ type: "Transaction", id: arg }];
       },
     }),
+
     addNewTransaction: builder.mutation<Transaction, TransactionForm>({
       query: (data) => ({
         url: "/api/transactions",
@@ -83,6 +100,18 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
     updateTransaction: builder.mutation<Transaction, TransactionForm>({
       query: ({ id, ...data }) => ({
         url: `/api/transactions/${id}`,
+        method: "PATCH",
+        body: {
+          ...data,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "Transaction", id: arg.id }];
+      },
+    }),
+    updateTransactionStatus: builder.mutation<Transaction, TransactionForm>({
+      query: ({ id, ...data }) => ({
+        url: `/api/transactions/status/${id}`,
         method: "PATCH",
         body: {
           ...data,
@@ -107,9 +136,11 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetTransactionsQuery,
   useGetMyTransactionsQuery,
+  useGetTransactionsByProjectIdQuery,
   useGetTransactionQuery,
   useAddNewTransactionMutation,
   useUpdateTransactionMutation,
+  useUpdateTransactionStatusMutation,
   // useDeleteTransactionMutation,
 } = transactionsApiSlice;
 

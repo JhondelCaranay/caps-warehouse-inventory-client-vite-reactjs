@@ -1,12 +1,25 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { useGetTransactionQuery } from "../../../../app/services/transaction/transactionApiSlice";
+import {
+  useGetTransactionQuery,
+  useUpdateTransactionStatusMutation,
+} from "../../../../app/services/transaction/transactionApiSlice";
 import styles from "./EngTransactionDetail.module.scss";
 import noImage from "../../../../assets/img/noimage.png";
+import { useTitle } from "../../../../hooks";
+import { Item, Transaction, TransactionForm, TRANSACTION_STATUS } from "../../../../types";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { toast } from "react-toastify";
+import { TextError } from "../../../../components/formik";
+import ErrorList from "../../../../components/toast/ErrorList";
+import * as Yup from "yup";
+import { useState } from "react";
 
 const EngTransactionDetail = () => {
+  useTitle("Spedi: Transaction Detail");
   const navigate = useNavigate();
   const { transactionId } = useParams();
+  const [modal, setmodal] = useState<boolean>(false);
 
   const {
     data: transaction,
@@ -18,7 +31,7 @@ const EngTransactionDetail = () => {
     refetchOnMountOrArgChange: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,
-      data: data?.entities[transactionId as string],
+      data: data?.entities[transactionId as string] as Transaction,
     }),
     skip: !transactionId,
   });
@@ -43,8 +56,6 @@ const EngTransactionDetail = () => {
   }
 
   if (isSuccess && transaction) {
-    console.log(transaction);
-
     content = (
       <>
         <div className={styles.top}>
@@ -69,10 +80,6 @@ const EngTransactionDetail = () => {
                 <span className={styles.itemValue}>{transaction.Item.unit}</span>
               </div>
               <div className={styles.detailItem}>
-                <span className={styles.itemKey}>Item Price:</span>
-                <span className={styles.itemValue}>{transaction.Item.price}</span>
-              </div>
-              <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Requested item(s):</span>
                 <span className={styles.itemValue}>{transaction.quantity}</span>
               </div>
@@ -83,46 +90,73 @@ const EngTransactionDetail = () => {
                   {transaction.Item.price * transaction.quantity}
                 </span>
               </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Material slip:</span>
+                <span className={styles.itemValue}>
+                  {transaction.materials_issuance_num || "N/A"}
+                </span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Release slip:</span>
+                <span className={styles.itemValue}>{transaction.release_slip_num || "N/A"}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Gate pass:</span>
+                <span className={styles.itemValue}>{transaction.gate_pass_num || "N/A"}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Remarks:</span>
+                <span className={styles.itemValue}>{transaction.remarks || "N/A"}</span>
+              </div>
+            </div>
+
+            <div
+              className={styles.viewButton}
+              onClick={() => navigate(`/me/items/${transaction.Item.id}`)}
+            >
+              view item
             </div>
           </div>
 
           {/* CENTER */}
-          <div className={styles.center}>
-            <div className={styles.title}>Send by</div>
-            <div className={styles.information}>
-              <img
-                className={styles.itemImg}
-                src={transaction.Sender.Profile.avatarUrl || noImage}
-                alt=""
-              />
+          {transaction.Sender ? (
+            <div className={styles.center}>
+              <div className={styles.title}>Sender</div>
+              <div className={styles.information}>
+                <img
+                  className={styles.itemImg}
+                  src={transaction.Sender.Profile.avatarUrl || noImage}
+                  alt=""
+                />
 
-              <h1 className={styles.itemTitle}>
-                {transaction.Sender.Profile.first_name} {transaction.Sender.Profile.last_name}
-              </h1>
-              <div className={styles.detailItem}>
-                <span className={styles.itemKey}>Email:</span>
-                <span className={styles.itemValue}>{transaction.Sender.email}</span>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.itemKey}>contact:</span>
-                <span className={styles.itemValue}>
-                  {transaction.Sender.Profile.contact || "N/A"}
-                </span>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.itemKey}>Address:</span>
-                <span className={styles.itemValue}>
-                  {transaction.Sender.Profile.address || "N/A"}
-                </span>
-              </div>
-              <div className={styles.detailItem}>
-                <span className={styles.itemKey}>Position:</span>
-                <span className={styles.itemValue}>
-                  {transaction.Sender.Profile.position || "N/A"}
-                </span>
+                <h1 className={styles.itemTitle}>
+                  {transaction.Sender.Profile.first_name} {transaction.Sender.Profile.last_name}
+                </h1>
+                <div className={styles.detailItem}>
+                  <span className={styles.itemKey}>Email:</span>
+                  <span className={styles.itemValue}>{transaction.Sender.email}</span>
+                </div>
+                <div className={styles.detailItem}>
+                  <span className={styles.itemKey}>contact:</span>
+                  <span className={styles.itemValue}>
+                    {transaction.Sender.Profile.contact || "N/A"}
+                  </span>
+                </div>
+                <div className={styles.detailItem}>
+                  <span className={styles.itemKey}>Address:</span>
+                  <span className={styles.itemValue}>
+                    {transaction.Sender.Profile.address || "N/A"}
+                  </span>
+                </div>
+                <div className={styles.detailItem}>
+                  <span className={styles.itemKey}>Position:</span>
+                  <span className={styles.itemValue}>
+                    {transaction.Sender.Profile.position || "N/A"}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
 
           {/* RIGHT */}
           <div className={styles.right}>
@@ -180,7 +214,7 @@ const EngTransactionDetail = () => {
           </div>
         </div>
         <div className={styles.bottom}>
-          <div className={styles.title}>Status {transaction.status}</div>
+          <div className={styles.title}>Status </div>
 
           <div className={styles.items}>
             <div
@@ -223,16 +257,21 @@ const EngTransactionDetail = () => {
               <div className={styles.value}>Cancelled</div>
             </div> */}
           </div>
+
+          {transaction.status === "ON_DELIVERY" && (
+            <div className={styles.updateCategoryButton} onClick={() => setmodal(true)}>
+              {transaction.status === "ON_DELIVERY" && "Confirm recieved item"}
+            </div>
+          )}
+          {transaction.status === "CONFIRMED_RECEIVED" && (
+            <div className={styles.updateCategoryButton} onClick={() => setmodal(true)}>
+              {transaction.status === "CONFIRMED_RECEIVED" && "Return item"}
+            </div>
+          )}
         </div>
         <div className={styles.backButton} onClick={() => navigate(-1)}>
           Back
         </div>
-        {/* <div
-          className={styles.editButton}
-          onClick={() => navigate(`/dash/transactions/edit/${transaction.id}`)}
-        >
-          Edit
-        </div> */}
       </>
     );
   }
@@ -240,7 +279,136 @@ const EngTransactionDetail = () => {
   return (
     <div className={styles.EngTransactionDetail}>
       <div className={styles.wrapper}>{content}</div>
+      {modal ? (
+        <ConfirmModal setmodal={setmodal} item={transaction.Item} transaction={transaction} />
+      ) : null}
     </div>
   );
 };
 export default EngTransactionDetail;
+
+export const initialValues: TransactionForm = {
+  status: TRANSACTION_STATUS.ON_DELIVERY,
+  remarks: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  status: Yup.string(),
+  remarks: Yup.string(),
+});
+
+type ConfirmModalProps = {
+  setmodal: React.Dispatch<React.SetStateAction<boolean>>;
+  item: Item;
+  transaction: Transaction;
+};
+
+// const TRANSACTION_STATUSs: {
+//   WAITING: "WAITING";
+//   ON_PROCESS: "ON_PROCESS";
+//   ON_DELIVERY: "ON_DELIVERY";
+//   CONFIRMED_RECEIVED: "CONFIRMED_RECEIVED";
+//   ON_RETURN: "ON_RETURN";
+//   CONFIRMED_RETURNED: "CONFIRMED_RETURNED";
+// };
+
+const ConfirmModal = ({ setmodal, item, transaction }: ConfirmModalProps) => {
+  const [useUpdateTransaction, { isLoading: isTransactionUpdating }] =
+    useUpdateTransactionStatusMutation();
+
+  const onSubmit = async (values: TransactionForm, submitProps: FormikHelpers<TransactionForm>) => {
+    let status = transaction.status;
+    if (status === TRANSACTION_STATUS.ON_DELIVERY) {
+      status = TRANSACTION_STATUS.CONFIRMED_RECEIVED;
+    } else if (status === TRANSACTION_STATUS.CONFIRMED_RECEIVED) {
+      status = TRANSACTION_STATUS.ON_RETURN;
+    }
+
+    try {
+      const res = await useUpdateTransaction({
+        id: transaction.id,
+        status: status,
+        remarks: values.remarks || undefined,
+      }).unwrap();
+      toast.success("Transaction updated successfully");
+      // console.log(res);
+      submitProps.resetForm();
+    } catch (err: any) {
+      if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
+      else toast.error("Something went wrong, our team is working on it");
+    }
+    submitProps.setSubmitting(false);
+    setmodal(false);
+  };
+
+  return (
+    <div
+      className={styles.modal}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) setmodal(false);
+      }}
+    >
+      <div className={styles.modalContent}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          enableReinitialize
+        >
+          {(formik) => {
+            return (
+              <Form>
+                <div className={styles.modalTitle}>Confirm recieve</div>
+                <div className={styles.modalBody}>
+                  <div className={styles.modalItem}>
+                    <span className={styles.modalKey}>Item:</span>
+                    <span className={styles.modalValue}>{item.name}</span>
+
+                    <div className={styles.group}>
+                      <span className={styles.modalKey}>Remarks:</span>
+                      <Field
+                        as="textarea"
+                        id="remarks"
+                        name="remarks"
+                        rows={3}
+                        className={styles.remarks}
+                      />
+                      <ErrorMessage
+                        name="remarks"
+                        component={(props) => (
+                          <TextError {...props} styles={styles["text-error"]} />
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.modalFooter}>
+                  <button
+                    type="submit"
+                    className={styles.modalButton}
+                    disabled={!formik.isValid || formik.isSubmitting}
+                  >
+                    Confirm
+                  </button>
+                  <div
+                    className={styles.modalButton}
+                    onClick={() => {
+                      formik.resetForm();
+                      setmodal(false);
+                    }}
+                  >
+                    No
+                  </div>
+                </div>
+                {/* DEBUGER */}
+                {/* {import.meta.env.VITE_NODE_ENV === "development" && (
+                  <DebugControl values={formik.values} />
+                )} */}
+              </Form>
+            );
+          }}
+        </Formik>
+      </div>
+    </div>
+  );
+};
