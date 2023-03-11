@@ -20,6 +20,22 @@ const initialState = projectsAdapter.getInitialState({});
 
 export const projectsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getMyProjects: builder.query<EntityState<Project>, string | void>({
+      query: () => ({
+        url: "/api/projects/my-projects",
+      }),
+      transformResponse: (response: Project[], meta, arg) => {
+        return projectsAdapter.setAll(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: "Project", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "Project" as const, id })),
+          ];
+        } else return [{ type: "Project", id: "LIST" }];
+      },
+    }),
     getProjects: builder.query<EntityState<Project>, string | void>({
       query: () => ({
         url: "/api/projects",
@@ -43,22 +59,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Project", id: "LIST" }];
       },
     }),
-    getMyProjects: builder.query<EntityState<Project>, string | void>({
-      query: () => ({
-        url: "/api/projects/my-projects",
-      }),
-      transformResponse: (response: Project[], meta, arg) => {
-        return projectsAdapter.setAll(initialState, response);
-      },
-      providesTags: (result, error, arg) => {
-        if (result?.ids) {
-          return [
-            { type: "Project", id: "LIST" },
-            ...result.ids.map((id) => ({ type: "Project" as const, id })),
-          ];
-        } else return [{ type: "Project", id: "LIST" }];
-      },
-    }),
+
     getProject: builder.query<EntityState<Project>, string>({
       query: (id) => ({
         url: `/api/projects/${id}`,

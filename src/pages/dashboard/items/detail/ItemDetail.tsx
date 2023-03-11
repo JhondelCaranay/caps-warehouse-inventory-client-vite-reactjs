@@ -32,7 +32,7 @@ const ItemDetail = () => {
       ...result,
       data: data?.entities[item?.categoryId as string],
     }),
-    skip: !item?.categoryId,
+    skip: !item,
   });
 
   const { data: brand } = useGetBrandQuery(item?.brandId as string, {
@@ -41,7 +41,7 @@ const ItemDetail = () => {
       ...result,
       data: data?.entities[item?.brandId as string],
     }),
-    skip: !item?.brandId,
+    skip: !item,
   });
 
   let content: JSX.Element = <></>;
@@ -64,8 +64,6 @@ const ItemDetail = () => {
   }
 
   if (isSuccess && item && category && brand) {
-    console.log(item);
-
     content = (
       <>
         <div className={styles.title}>Item</div>

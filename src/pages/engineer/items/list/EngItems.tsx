@@ -1,11 +1,63 @@
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetItemsByFiltersQuery } from "../../../../app/services/item/itemApiSlice";
+import { useTitle } from "../../../../hooks";
+import { Category, Item } from "../../../../types";
 import styles from "./EngItems.module.scss";
+import noImage from "../../../../assets/img/noimage.png";
+import ReactPaginate from "react-paginate";
+import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
+import { debounce } from "lodash";
 
 const EngItems = () => {
+  useTitle("Spedi: Item List");
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string[]>(["all"]);
+  // const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  const {
+    data: items,
+    error,
+    isLoading,
+    isSuccess,
+    isError,
+    refetch,
+  } = useGetItemsByFiltersQuery(`name=${searchInput}&category=${selectedCategory}`, {
+    pollingInterval: 60000,
+    refetchOnMountOrArgChange: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data?.ids.map((id) => data?.entities[id] as Item),
+    }),
+  });
+
+  const { data: categories } = useGetCategoriesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    selectFromResult: ({ data, ...result }) => ({
+      ...result,
+      data: data ? data.ids.map((id) => data.entities[id] as Category) : [],
+    }),
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSearchInputChange = debounce((value) => {
+    setSearchInput(value);
+  }, 2000);
+
+  const changePage = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
+
+  const PER_PAGE = 8;
+  const pagesVisited = currentPage * PER_PAGE;
+  const display = items?.slice(pagesVisited, pagesVisited + PER_PAGE) as Item[];
+  const pageCount = items ? Math.ceil(items.length / PER_PAGE) : 0;
 
   return (
     <div className={styles.engItems}>
@@ -14,7 +66,13 @@ const EngItems = () => {
         <div className={styles.left}>
           <div className={styles.group}>
             <div className={styles.title}>Name</div>
-            <input type="text" />
+            <input
+              className={styles.searchInput}
+              type="text"
+              // value={searchInput}
+              placeholder="Search"
+              onChange={(e) => handleSearchInputChange(e.target.value)}
+            />
           </div>
 
           {/* filter category checkbox */}
@@ -23,44 +81,31 @@ const EngItems = () => {
             <div className={styles.cbgroup}>
               <input
                 className={styles.checkbox}
-                type="checkbox"
-                id="categoryall"
-                name="categoryall"
-                value="all"
+                type="radio"
+                id="all"
+                value=""
+                checked={selectedCategory === ""}
+                onChange={handleChange}
               />
-              <label className={styles.label} htmlFor="categoryall">
+              <label className={styles.label} htmlFor="all">
                 All
               </label>
             </div>
-            <div className={styles.cbgroup}>
-              <input
-                className={styles.checkbox}
-                type="checkbox"
-                id="category1"
-                name="category1"
-                value="category1"
-              />
-              <label className={styles.label} htmlFor="category1">
-                category1
-              </label>
-            </div>
-
-            <div className={styles.cbgroup}>
-              <input
-                className={styles.checkbox}
-                type="checkbox"
-                id="category2"
-                name="category2"
-                value="category2"
-              />
-              <label className={styles.label} htmlFor="category2">
-                category2
-              </label>
-            </div>
-          </div>
-
-          <div className={styles.group}>
-            <button className={styles.search}>Search</button>
+            {categories?.map((category) => (
+              <div className={styles.cbgroup} key={category.id}>
+                <input
+                  className={styles.checkbox}
+                  type="radio"
+                  id={category.name}
+                  value={category.name}
+                  checked={selectedCategory === category.name}
+                  onChange={handleChange}
+                />
+                <label className={styles.label} htmlFor={category.name}>
+                  {category.name}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -71,38 +116,42 @@ const EngItems = () => {
           <h1 className={styles.title}>Items</h1>
           {/* ITEM */}
           <div className={styles.items}>
-            {[...Array(8)].map((_, i) => (
-              <div className={styles.item}>
-                <div className={styles.itemImg}>
-                  <img src="https://picsum.photos/200/300" alt="" className={styles.image} />
-
-                  <div className={styles.itemInfo}>
-                    <div className={styles.itemName}>Item Name</div>
-
-                    <div className={styles.itemBtns}>
-                      <button
-                        className={styles.itemBtn}
-                        onClick={() => navigate("/me/items/7d3ae941-af93-4755-8f69-bbcbc5df1a3f")}
-                      >
-                        View
-                      </button>
-                      {i % 2 == 0 ? <button className={styles.itemBtn}>Request</button> : null}
+            {display && display.length > 0 ? (
+              display.map((item) => (
+                <div className={styles.item} key={item.id}>
+                  <div className={styles.itemImg}>
+                    <img src={item.pictureUrl || noImage} alt="" className={styles.image} />
+                    <div className={styles.itemInfo}>
+                      <div className={styles.itemName}>{item.name}</div>
                     </div>
                   </div>
+                  {item.quantity === 0 ? (
+                    <div className={styles.outofstock}>Out of Stock</div>
+                  ) : null}
+                  <div
+                    className={styles.backButton}
+                    onClick={() => navigate(`/me/items/${item.id}`)}
+                  >
+                    view
+                  </div>
                 </div>
-                {i % 2 != 0 ? <div className={styles.outofstock}>Out of Stock</div> : null}
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className={styles.noItems}>No Items</div>
+            )}
           </div>
-
-          <div className={styles.pagination}>
-            <div className={styles.button}>
-              <NavigateBefore />
-            </div>
-            <div className={styles.button}>2</div>
-            <div className={styles.button}>
-              <NavigateNext />
-            </div>
+          <div className={styles.paginator}>
+            <ReactPaginate
+              previousLabel={<NavigateBefore />}
+              nextLabel={<NavigateNext />}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={styles.pagination}
+              previousLinkClassName={styles.previous_page}
+              nextLinkClassName={styles.next_page}
+              disabledClassName={styles.pagination__link__disabled}
+              activeClassName={styles.pagination__link__active}
+            />
           </div>
         </div>
       </div>
@@ -110,3 +159,26 @@ const EngItems = () => {
   );
 };
 export default EngItems;
+
+// {[...Array(1)].map((_, i) => (
+//   <div className={styles.item} key={i}>
+//     <div className={styles.itemImg}>
+//       <img src="https://picsum.photos/200/300" alt="" className={styles.image} />
+
+//       <div className={styles.itemInfo}>
+//         <div className={styles.itemName}>Item Name</div>
+
+//         <div className={styles.itemBtns}>
+//           {/* {i % 2 == 0 ? <button className={styles.itemBtn}>Request</button> : null} */}
+//           <button
+//             className={styles.itemBtn}
+//             onClick={() => navigate("/me/items/7d3ae941-af93-4755-8f69-bbcbc5df1a3f")}
+//           >
+//             View
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//     {i % 2 != 0 ? <div className={styles.outofstock}>Out of Stock</div> : null}
+//   </div>
+// ))}

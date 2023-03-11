@@ -8,7 +8,7 @@ import { Transaction } from "../../../../types";
 import styles from "./EngTransaction.module.scss";
 
 const EngTransactions = () => {
-  useTitle("Spedi: My Transaction List");
+  useTitle("Spedi: Transaction List");
 
   const {
     data: transactions,
@@ -24,7 +24,7 @@ const EngTransactions = () => {
     refetchOnReconnect: true,
     selectFromResult: ({ data, ...result }) => ({
       ...result,
-      data: data ? data.ids.map((id) => data.entities[id] as Transaction) : [],
+      data: data ? (data.ids.map((id) => data.entities[id]) as Transaction[]) : [],
     }),
   });
 

@@ -58,6 +58,11 @@
       }
 
       .details {
+        //   <div className={styles.detailItem}>
+        //   <span className={styles.itemKey}>Quantity:</span>
+        //   <span className={styles.itemValue}>{item.quantity}</span>
+        //   <span className={styles.outofstock}>out of stock</span>
+        // </div>
         .detailItem {
           margin-bottom: 10px;
           font-size: 14px;
@@ -71,13 +76,23 @@
           .itemValue {
             font-weight: 300;
           }
+
+          .outofstock {
+            background-color: red;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 10px;
+          }
         }
       }
     }
 
     .backButton {
       position: absolute;
-      width: 60px;
+      width: 70px;
       top: 0;
       right: 0;
       padding: 10px;
@@ -86,8 +101,9 @@
       color: #7451f8;
       background-color: #7551f818;
       cursor: pointer;
+      font-weight: bold;
       border-radius: 0px 0px 0px 5px;
-      z-index: 99;
+      z-index: 97;
       &:hover {
         background-color: #7551f830;
       }
@@ -95,7 +111,7 @@
 
     .editButton {
       position: absolute;
-      width: 60px;
+      width: 70px;
       top: 40px;
       right: 0;
       padding: 10px;
@@ -105,10 +121,201 @@
       color: #00b300;
       background-color: #00b30018;
       cursor: pointer;
+      font-weight: bold;
       border-radius: 0px 0px 0px 5px;
-      z-index: 99;
+      z-index: 97;
       &:hover {
         background-color: #00b30030;
+      }
+    }
+
+    .requestButton {
+      position: absolute;
+      width: 70px;
+      top: 40px;
+      right: 0;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      //  make it blue theme
+      color: #4586e9;
+      background-color: #4586e918;
+
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 0px 0px 0px 5px;
+      z-index: 97;
+      border: none;
+
+      &:hover {
+        background-color: #4586e930;
+      }
+
+      &:disabled {
+        background-color: #4586e930;
+        color: #4586e9;
+        cursor: not-allowed;
+
+        &:hover {
+          background-color: lightgrey;
+        }
+      }
+    }
+  }
+
+  // <div className={styles.itemDetail}>
+  //     <div className={styles.wrapper}>{content}</div>
+  //     <div className={styles.modal}>
+  //       <div className={styles.modalContent}>
+  //         <div className={styles.modalTitle}>Request Item</div>
+  //         <div className={styles.modalBody}>
+  //           <div className={styles.modalItem}>
+  //             <span className={styles.modalKey}>Item:</span>
+  //             <span className={styles.modalValue}>{item?.name}</span>
+
+  //             <div className={styles.group}>
+  //               <span className={styles.modalKey}>Quantity:</span>
+  //               <input
+  //                 type="number"
+  //                 className={styles.modalInput}
+  //                 min={1}
+  //                 max={item?.quantity}
+  //                 defaultValue={1}
+  //               />
+  //             </div>
+  //           </div>
+  //         </div>
+  //         <div className={styles.modalFooter}>
+  //           <button className={styles.modalButton}>Confirm</button>
+  //           <button className={styles.modalButton}>No</button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+
+  .modal {
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    .modalContent {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      border-radius: 5px;
+
+      .modalTitle {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .modalBody {
+        .modalItem {
+          margin-bottom: 10px;
+          font-size: 14px;
+
+          .modalKey {
+            font-weight: bold;
+            color: gray;
+            margin-right: 5px;
+          }
+
+          .modalValue {
+            font-weight: 300;
+          }
+
+          .group {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            .modalInput {
+              width: 100%;
+              height: 30px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              padding: 0px 5px;
+              outline: none;
+            }
+
+            .remarks {
+              width: 100%;
+              // height: 50px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              padding: 5px;
+              outline: none;
+            }
+
+            // @media (min-width: 640px) {
+            //   .modalInput {
+            //     width: 70%;
+            //   }
+
+            //   .remarks {
+            //     width: 70%;
+            //   }
+            // }
+
+            textarea {
+              resize: none;
+            }
+
+            .text-error {
+              color: red;
+              font-size: 12px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+
+      .modalFooter {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+        margin-bottom: 5px;
+
+        .modalButton {
+          padding: 5px 10px;
+          border: none;
+          border-radius: 5px;
+          background-color: #4586e9;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #4586e930;
+          }
+
+          &:disabled {
+            background-color: #4586e930;
+            color: #4586e9;
+            cursor: not-allowed;
+
+            &:hover {
+              background-color: lightgrey;
+            }
+          }
+        }
+      }
+    }
+
+    @media (min-width: 640px) {
+      .modalContent {
+        width: 400px;
       }
     }
   }

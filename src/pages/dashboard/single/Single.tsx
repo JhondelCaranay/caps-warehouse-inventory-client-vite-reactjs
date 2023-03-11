@@ -41,7 +41,7 @@ const Single = () => {
         </div>
         <div className={styles.bottom}>
           <h1 className={styles.title}>Last Transactions</h1>
-          <TransactionTable />
+          <TransactionTable transactions={[]} />
         </div>
       </div>
     </div>

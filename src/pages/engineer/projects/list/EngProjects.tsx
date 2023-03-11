@@ -8,7 +8,7 @@ import { Project } from "../../../../types";
 import styles from "./EngProjects.module.scss";
 
 const EngProjects = () => {
-  useTitle("Spedi: My Project List");
+  useTitle("Spedi: Project List");
 
   const {
     data: projects,

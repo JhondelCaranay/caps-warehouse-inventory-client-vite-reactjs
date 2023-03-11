@@ -98,7 +98,7 @@ export const {
 } = categoryApiSlice;
 
 // returns the query result object
-export const selectCategoryResult = categoryApiSlice.endpoints.getCategory.select();
+export const selectCategoryResult = categoryApiSlice.endpoints.getCategories.select();
 
 // create memoized selector
 const selectCategoryData = createSelector(

@@ -61,6 +61,32 @@
       flex-direction: column;
       gap: 20px;
 
+      .left,
+      .center,
+      .right {
+        flex: 1;
+        position: relative;
+      }
+
+      .viewButton {
+        text-align: center;
+        position: absolute;
+        width: 80px;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #7451f8;
+        background-color: #7551f818;
+        cursor: pointer;
+        border-radius: 0px 0px 0px 5px;
+        z-index: 99;
+        &:hover {
+          background-color: #7551f830;
+        }
+      }
+
       .itemImg {
         width: 100px;
         height: 100px;
@@ -108,6 +134,27 @@
       box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
       padding: 20px;
       width: 100%;
+      position: relative;
+
+      .updateCategoryButton {
+        position: absolute;
+        text-align: center;
+        width: 150px;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        //dark green theme
+        color: #00b300;
+        background-color: #00b30018;
+        cursor: pointer;
+        border-radius: 0px 0px 0px 5px;
+        z-index: 99;
+        &:hover {
+          background-color: #00b30030;
+        }
+      }
 
       .title {
         font-size: 16px;
@@ -266,6 +313,123 @@
       z-index: 99;
       &:hover {
         background-color: #00b30030;
+      }
+    }
+  }
+
+  .modal {
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    .modalContent {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      border-radius: 5px;
+
+      .modalTitle {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .modalBody {
+        .modalItem {
+          margin-bottom: 10px;
+          font-size: 14px;
+
+          .modalKey {
+            font-weight: bold;
+            color: gray;
+            margin-right: 5px;
+          }
+
+          .modalValue {
+            font-weight: 300;
+          }
+
+          .group {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            .modalInput {
+              width: 100%;
+              height: 30px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              padding: 0px 5px;
+              outline: none;
+            }
+
+            .remarks {
+              width: 100%;
+              // height: 50px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              padding: 5px;
+              outline: none;
+            }
+
+            textarea {
+              resize: none;
+            }
+
+            .text-error {
+              color: red;
+              font-size: 12px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+
+      .modalFooter {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+        margin-bottom: 5px;
+
+        .modalButton {
+          padding: 5px 10px;
+          border: none;
+          border-radius: 5px;
+          background-color: #4586e9;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #4586e930;
+          }
+
+          &:disabled {
+            background-color: #4586e930;
+            color: #4586e9;
+            cursor: not-allowed;
+
+            &:hover {
+              background-color: lightgrey;
+            }
+          }
+        }
+      }
+    }
+
+    @media (min-width: 640px) {
+      .modalContent {
+        width: 400px;
       }
     }
   }

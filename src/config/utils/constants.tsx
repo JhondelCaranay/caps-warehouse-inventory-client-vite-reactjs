@@ -5,11 +5,12 @@ import {
   Dashboard,
   Hardware,
   LocalShipping,
+  PeopleOutline,
   Warehouse,
 } from "@mui/icons-material";
 import { ROLES } from "../../types";
 
-export const ADMIN_CONTROLLER_ONLY = [ROLES.ADMIN, ROLES.SUPER_ADMIN, ROLES.WAREHOUSE_CONTROLLER];
+export const CONTROLLER_ONLY = [ROLES.WAREHOUSE_CONTROLLER];
 export const ADMINS_ONLY = [ROLES.ADMIN, ROLES.SUPER_ADMIN];
 export const SUPER_ADMIN_ONLY = [ROLES.SUPER_ADMIN];
 export const ENGINEER_ONLY = [ROLES.ENGINEER];
@@ -20,7 +21,20 @@ export const MainLinks = {
   text: "Dashboard",
 };
 
-export const ListLinks = [
+export const adminsLinks = [
+  {
+    to: "/dash/projects",
+    icon: <Construction />,
+    text: "Projects",
+  },
+  {
+    to: "/dash/users",
+    icon: <PeopleOutline />,
+    text: "Users",
+  },
+];
+
+export const controllerLinks = [
   {
     to: "/dash/transactions",
     icon: <LocalShipping />,
@@ -30,11 +44,6 @@ export const ListLinks = [
     to: "/dash/items",
     icon: <Warehouse />,
     text: "Items",
-  },
-  {
-    to: "/dash/projects",
-    icon: <Construction />,
-    text: "Projects",
   },
   {
     to: "/dash/category",
@@ -48,7 +57,7 @@ export const ListLinks = [
   },
 ];
 
-export const EngineeLinks = [
+export const EngineerLinks = [
   {
     to: "/me/items",
     icon: <Hardware />,
