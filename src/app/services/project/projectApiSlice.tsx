@@ -36,6 +36,22 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Project", id: "LIST" }];
       },
     }),
+    getProjectsByEngineerId: builder.query<EntityState<Project>, string | void>({
+      query: (engineerId) => ({
+        url: `/api/projects/engineer/${engineerId}`,
+      }),
+      transformResponse: (response: Project[], meta, arg) => {
+        return projectsAdapter.setAll(initialState, response);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: "Project", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "Project" as const, id })),
+          ];
+        } else return [{ type: "Project", id: "LIST" }];
+      },
+    }),
     getProjects: builder.query<EntityState<Project>, string | void>({
       query: () => ({
         url: "/api/projects",
@@ -108,6 +124,7 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetProjectsQuery,
   useGetMyProjectsQuery,
+  useGetProjectsByEngineerIdQuery,
   useGetProjectQuery,
   useAddNewProjectMutation,
   useUpdateProjectMutation,

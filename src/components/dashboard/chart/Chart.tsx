@@ -9,18 +9,24 @@ import {
   ResponsiveContainer,
   YAxis,
 } from "recharts";
-import { ChartProps } from "../../../types";
+import { ChartType } from "../../../app/services/stats/statChartApiSlice";
 
-const data = [
-  { name: "January", users: 10, items: 50, transactions: 100 },
-  { name: "February", users: 20, items: 55, transactions: 60 },
-  { name: "March", users: 30, items: 70, transactions: 90 },
-  { name: "April", users: 40, items: 100, transactions: 100 },
-  { name: "May", users: 30, items: 50, transactions: 50 },
-  { name: "June", users: 20, items: 90, transactions: 80 },
-];
+export type ChartProps = {
+  aspect: number;
+  title: string;
+  data: ChartType[];
+};
 
-const Chart = ({ aspect, title }: ChartProps) => {
+// const data = [
+//   { name: "January", users: 10, items: 50, transactions: 100 },
+//   { name: "February", users: 20, items: 55, transactions: 60 },
+//   { name: "March", users: 30, items: 70, transactions: 90 },
+//   { name: "April", users: 40, items: 100, transactions: 100 },
+//   { name: "May", users: 30, items: 50, transactions: 50 },
+//   { name: "June", users: 20, items: 90, transactions: 80 },
+// ];
+
+const Chart = ({ aspect, title, data }: ChartProps) => {
   return (
     <div className={styles.chart}>
       <div className={styles.title}>{title}</div>
@@ -45,7 +51,7 @@ const Chart = ({ aspect, title }: ChartProps) => {
               <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="name" stroke="gray" />
+          <XAxis dataKey="month" stroke="gray" />
           <YAxis />
           <CartesianGrid strokeDasharray="3 3" className={styles.chartGrid} />
           <Tooltip />

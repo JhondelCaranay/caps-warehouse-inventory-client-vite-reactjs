@@ -1,5 +1,4 @@
-import "./login.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LoginFormValues, ROLES } from "../../../types";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -13,7 +12,7 @@ import ErrorList from "../../../components/toast/ErrorList";
 import jwtDecode from "jwt-decode";
 import { UserAuth } from "../../../hooks/useAuth";
 import { useTitle } from "../../../hooks";
-
+import styles from "./Login.module.scss";
 const initialValues: LoginFormValues = {
   email: "",
   password: "",
@@ -62,7 +61,6 @@ const Login = () => {
       console.log("🚀 ~ file: Login.tsx ~ line 50 ~ Login ~ err", err);
 
       if (err?.data?.message) toast.error(<ErrorList messages={err?.data?.message} />);
-      else if (err.error) toast.error(err.error);
       else toast.error("Something went wrong, our team is working on it");
 
       submitProps.setFieldValue("password", "");
@@ -73,8 +71,8 @@ const Login = () => {
   };
 
   return (
-    <div className="Login">
-      <div className="wrapper">
+    <div className={styles.Login}>
+      <div className={styles.wrapper}>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -91,33 +89,39 @@ const Login = () => {
 
             return (
               <Form>
-                <h1 className="title">Login</h1>
-                <div className="formGroup">
+                <h1 className={styles.title}>Login</h1>
+                <div className={styles.formGroup}>
                   <Field
                     name="email"
                     type="text"
                     placeholder="Email"
-                    className={
-                      formik.touched.email && formik.errors.email ? "input error" : "input"
-                    }
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.email && formik.errors.email) ? styles.error : ""
+                    }`}
                     // autoComplete="off"
                   />
-                  <ErrorMessage name="email" component={(props) => <TextError {...props} />} />
+                  <ErrorMessage
+                    name="email"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
                 </div>
-                <div className="formGroup">
+                <div className={styles.formGroup}>
                   <Field
                     name="password"
                     type="password"
                     placeholder="Password"
-                    className={
-                      formik.touched.password && formik.errors.password ? "input error" : "input"
-                    }
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.password && formik.errors.password) ? styles.error : ""
+                    }`}
                   />
-                  <ErrorMessage name="password" component={(props) => <TextError {...props} />} />
+                  <ErrorMessage
+                    name="password"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
                 </div>
                 <button
                   type="submit"
-                  className="submit-btn"
+                  className={styles.submitBtn}
                   disabled={!formik.isValid || formik.isSubmitting}
                 >
                   {buttonText}
@@ -125,9 +129,9 @@ const Login = () => {
                 <p className="forgot" onClick={() => alert("This feature is not yet implemented.")}>
                   Forgot Password?
                 </p>
-                <p className="register">
+                {/* <p className="register">
                   Don't have an account? <Link to="/register">Register</Link>
-                </p>
+                </p> */}
               </Form>
             );
           }}
@@ -137,3 +141,20 @@ const Login = () => {
   );
 };
 export default Login;
+
+{
+  /* <Field
+id="address"
+name="address"
+as="textarea"
+rows="4"
+placeholder="Address"
+className={`${styles.input} ${
+  Boolean(formik.touched.address && formik.errors.address) ? styles.error : ""
+}`}
+/>
+<ErrorMessage
+name="address"
+component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+/> */
+}

@@ -83,13 +83,13 @@ const EngTransactionDetail = () => {
                 <span className={styles.itemKey}>Requested item(s):</span>
                 <span className={styles.itemValue}>{transaction.quantity}</span>
               </div>
-              <div className={styles.detailItem}>
+              {/* <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Total:</span>
                 <span className={styles.itemValue}>
                   {transaction.Item.price} X {transaction.quantity} ={" "}
                   {transaction.Item.price * transaction.quantity}
                 </span>
-              </div>
+              </div> */}
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Material slip:</span>
                 <span className={styles.itemValue}>
@@ -103,6 +103,10 @@ const EngTransactionDetail = () => {
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Gate pass:</span>
                 <span className={styles.itemValue}>{transaction.gate_pass_num || "N/A"}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Return slip:</span>
+                <span className={styles.itemValue}>{transaction.return_slip_num || "N/A"}</span>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Remarks:</span>

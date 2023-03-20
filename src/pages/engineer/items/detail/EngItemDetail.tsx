@@ -229,9 +229,9 @@ const Modal = ({ item, setmodal, user, projects }: ModalProps) => {
         projectId: values.projectId,
         receiverId: user.id,
         itemId: item.id,
-        remarks: values.remarks,
+        remarks: values.remarks || undefined,
       }).unwrap();
-      toast.success("Request sent successfullys");
+      toast.success("Request sent successfully");
       console.log("res is " + res.id);
 
       navigate(`/me/transactions/${res.id}`);

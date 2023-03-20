@@ -192,7 +192,7 @@ export const transactionColumns: GridColDef[] = [
   {
     field: "status",
     headerName: "Status",
-    width: 180,
+    width: 300,
     renderCell: (params: { row: Transaction }) => {
       const { status } = params.row;
       return (

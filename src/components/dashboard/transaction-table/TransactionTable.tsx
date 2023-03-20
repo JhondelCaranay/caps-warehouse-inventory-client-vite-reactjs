@@ -11,13 +11,16 @@ import { Transaction } from "../../../types";
 import styles from "./TransactionTable.module.scss";
 import noImage from "../../../assets/img/noimage.png";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { Capitalize } from "../../../config/utils/functions";
 
 type TransactionTableProps = {
   transactions: Transaction[];
 };
 
 const TransactionTable = ({ transactions }: TransactionTableProps) => {
+  const { pathname } = useLocation();
+
   return (
     <TableContainer component={Paper} className={styles.transactionTable}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -52,7 +55,7 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
                 </TableCell>
                 <TableCell className={styles.tableCell}>
                   <span className={`${styles.status} ${styles[transaction.status]}`}>
-                    {transaction.status}
+                    {Capitalize(transaction.status)}
                   </span>
                 </TableCell>
 
@@ -60,7 +63,9 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
                   <div className={styles.cellAction}>
                     <Link
                       className={styles.viewButton}
-                      to={`/me/transaction/${transaction.id}`}
+                      to={`/${pathname.startsWith("/dash") ? "dash" : "me"}/transactions/${
+                        transaction.id
+                      }`}
                       style={{ textDecoration: "none" }}
                     >
                       View

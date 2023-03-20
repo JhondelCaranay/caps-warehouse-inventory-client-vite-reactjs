@@ -1,25 +1,21 @@
 export type ComponentProps = {
-	[key: string]: any;
+  [key: string]: any;
 };
 
 export type SidebarToggleType = {
-	toggleSidebar: boolean;
-	setToggleSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSidebar: boolean;
+  setToggleSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type NavbarProps = SidebarToggleType & {
-	any?: any;
+  any?: any;
 };
 
 export type SidebarProps = SidebarToggleType & {};
 
-export type WidgetTypes = "user" | "product" | "project" | "transaction";
+export type WidgetTypes = "user" | "item" | "project" | "transaction";
 
 export type WidgetProps = {
-	type: WidgetTypes;
+  type: WidgetTypes;
 };
 
-export type ChartProps = {
-	aspect: number;
-	title: string;
-};

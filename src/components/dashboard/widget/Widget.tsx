@@ -8,20 +8,28 @@ import {
   PaidOutlined,
   PersonOutlined,
 } from "@mui/icons-material";
-import { WidgetDataTypes, WidgetProps, WidgetTypes } from "../../../types";
+import { useNavigate } from "react-router-dom";
+import { WidgetDataTypes, WidgetTypes } from "../../../types";
 import styles from "./Widget.module.scss";
 
-const Widget = ({ type }: WidgetProps) => {
+type WidgetProps = {
+  type: WidgetTypes;
+  amount: number;
+};
+
+const Widget = ({ type, amount }: WidgetProps) => {
+  const navigate = useNavigate();
   let data: WidgetDataTypes = {
     title: "",
     isMoney: false,
     link: "",
+    url: "",
     icon: <></>,
   };
 
   //temporary
-  const amount = 100;
-  const diff = 20;
+  // const amount = 100;
+  // const diff = 20;
 
   data = getWidgetData(data, type);
 
@@ -30,15 +38,18 @@ const Widget = ({ type }: WidgetProps) => {
       <div className={styles.left}>
         <span className={styles.title}>{data.title}</span>
         <span className={styles.counter}>
-          {data.isMoney && "$"} {amount}
+          {/* {data.isMoney && "$"} */}
+          {amount}
         </span>
-        <span className={styles.link}>{data.link}</span>
+        <span className={styles.link} onClick={() => navigate(data.url)}>
+          {data.link}
+        </span>
       </div>
       <div className={styles.right}>
-        <div className={`${styles.percentage} ${styles.positive}`}>
+        {/* <div className={`${styles.percentage} ${styles.positive}`}>
           <KeyboardArrowUp />
           {diff} %
-        </div>
+        </div> */}
         {data.icon}
       </div>
     </div>
@@ -53,6 +64,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         title: "USERS",
         isMoney: false,
         link: "See all users",
+        url: "/dash/users",
         icon: (
           <PersonOutlined
             className={`${styles.icon}`}
@@ -65,11 +77,12 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
       };
       break;
 
-    case "product":
+    case "item":
       data = {
-        title: "PRODUCTS",
+        title: "ITEMS",
         isMoney: false,
-        link: "see all products",
+        link: "see all items",
+        url: "/dash/items",
         icon: (
           <ConstructionOutlined
             className={`${styles.icon}`}
@@ -86,6 +99,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         title: "PROJECTS",
         isMoney: false,
         link: "see all projects",
+        url: "/dash/projects",
         icon: (
           <ListAltOutlined
             className={`${styles.icon}`}
@@ -102,6 +116,7 @@ const getWidgetData = (data: WidgetDataTypes, type: WidgetTypes): WidgetDataType
         title: "TRANSACTIONS",
         isMoney: false,
         link: "see all transactions",
+        url: "/dash/transactions",
         icon: (
           <PaidOutlined
             className={`${styles.icon}`}
