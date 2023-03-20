@@ -50,10 +50,10 @@ const Navbar = ({ toggleSidebar, setToggleSidebar }: NavbarProps) => {
             <ChatBubbleOutlineOutlined className={styles.icon} />
             <div className="counter">2</div>
           </div> */}
-          <div className={styles.item}>
+          {/* <div className={styles.item}>
             <NotificationsNoneOutlined className={styles.icon} />
             <div className="counter">1</div>
-          </div>
+          </div> */}
           {/* user avatar */}
           <div className={styles.item}>{email}</div>
           <div className={styles.item}>

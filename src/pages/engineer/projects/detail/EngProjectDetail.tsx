@@ -28,14 +28,15 @@ const EngProjectDetail = () => {
     skip: !projectId,
   });
 
-  const { data: transactions } = useGetTransactionsByProjectIdQuery(projectId as string, {
-    refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data ? (data.ids.map((id) => data.entities[id]) as Transaction[]) : [],
-    }),
-    skip: !projectId,
-  });
+  const { data: transactions, isLoading: isTransactionLoading } =
+    useGetTransactionsByProjectIdQuery(projectId as string, {
+      refetchOnMountOrArgChange: true,
+      selectFromResult: ({ data, ...result }) => ({
+        ...result,
+        data: data ? (data.ids.map((id) => data.entities[id]) as Transaction[]) : [],
+      }),
+      skip: !projectId,
+    });
 
   let content: JSX.Element = <></>;
 
@@ -73,6 +74,10 @@ const EngProjectDetail = () => {
             </span>
           </div>
           <div className={styles.detailItem}>
+            <span className={styles.itemKey}>Project Status</span>
+            <span className={`${styles.itemValue} ${styles["ONGOING"]}`}>{"Ongoing"}</span>
+          </div>
+          <div className={styles.detailItem}>
             <span className={styles.itemKey}>Created:</span>
             <span className={styles.itemValue}>
               {moment(project.createdAt).format("ddd YYYY-MM-DD hh:mm a")}
@@ -101,7 +106,14 @@ const EngProjectDetail = () => {
     <div className={styles.engProjectDetail}>
       <div className={styles.wrapper}>{content}</div>
       <div className={styles.transactionTable}>
-        {transactions && <TransactionTable transactions={transactions} />}
+        <h1 className={styles.title}>Transactions</h1>
+        {isTransactionLoading ? (
+          <div className={styles.loading}>
+            <PulseLoader color={"#4e90d2"} />
+          </div>
+        ) : (
+          <TransactionTable transactions={transactions} />
+        )}
       </div>
     </div>
   );

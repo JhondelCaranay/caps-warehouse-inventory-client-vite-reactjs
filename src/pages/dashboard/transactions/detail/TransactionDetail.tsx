@@ -6,16 +6,18 @@ import {
 } from "../../../../app/services/transaction/transactionApiSlice";
 import styles from "./TransactionDetail.module.scss";
 import noImage from "../../../../assets/img/noimage.png";
-import { Item, Transaction, TransactionForm, TRANSACTION_STATUS } from "../../../../types";
+import { Item, ROLES, Transaction, TransactionForm, TRANSACTION_STATUS } from "../../../../types";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { TextError } from "../../../../components/formik";
 import ErrorList from "../../../../components/toast/ErrorList";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useAuth } from "../../../../hooks";
 
 const TransactionDetail = () => {
   const navigate = useNavigate();
+  const { role } = useAuth();
   const { transactionId } = useParams();
   const [modal, setmodal] = useState<boolean>(false);
 
@@ -81,13 +83,13 @@ const TransactionDetail = () => {
                 <span className={styles.itemKey}>Requested item(s):</span>
                 <span className={styles.itemValue}>{transaction.quantity}</span>
               </div>
-              <div className={styles.detailItem}>
+              {/* <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Total:</span>
                 <span className={styles.itemValue}>
                   {transaction.Item.price} X {transaction.quantity} ={" "}
                   {transaction.Item.price * transaction.quantity}
                 </span>
-              </div>
+              </div> */}
 
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Material slip:</span>
@@ -102,6 +104,10 @@ const TransactionDetail = () => {
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Gate pass:</span>
                 <span className={styles.itemValue}>{transaction.gate_pass_num || "N/A"}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Return slip:</span>
+                <span className={styles.itemValue}>{transaction.return_slip_num || "N/A"}</span>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Remarks:</span>
@@ -155,7 +161,7 @@ const TransactionDetail = () => {
                 </div>
               </div>
 
-              <div className={styles.viewButton}>view</div>
+              {/* <div className={styles.viewButton}>view</div> */}
             </div>
           ) : null}
 
@@ -218,7 +224,7 @@ const TransactionDetail = () => {
                 <span className={styles.itemValue}>{transaction.Project.address}</span>
               </div>
             </div>
-            <div className={styles.viewButton}>view</div>
+            {/* <div className={styles.viewButton}>view</div> */}
           </div>
         </div>
         <div className={styles.bottom}>
@@ -266,12 +272,12 @@ const TransactionDetail = () => {
             </div> */}
           </div>
 
-          {transaction.status === "WAITING" && (
+          {role == ROLES.WAREHOUSE_CONTROLLER && transaction.status === "WAITING" && (
             <div className={styles.updateCategoryButton} onClick={() => setmodal(true)}>
               {transaction.status === "WAITING" && "Accept request"}
             </div>
           )}
-          {transaction.status === "ON_RETURN" && (
+          {role == ROLES.WAREHOUSE_CONTROLLER && transaction.status === "ON_RETURN" && (
             <div className={styles.updateCategoryButton} onClick={() => setmodal(true)}>
               {transaction.status === "ON_RETURN" && "Confirm returned item"}
             </div>

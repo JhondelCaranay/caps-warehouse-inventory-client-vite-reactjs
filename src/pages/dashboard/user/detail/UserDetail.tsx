@@ -5,6 +5,9 @@ import { Capitalize } from "../../../../config/utils/functions";
 import styles from "./UserDetail.module.scss";
 import moment from "moment";
 import noImage from "../../../../assets/img/noimage.png";
+import { ProjectTable } from "../../../../components";
+import { Project, ROLES } from "../../../../types";
+import { useGetProjectsByEngineerIdQuery } from "../../../../app/services/project/projectApiSlice";
 
 const UserDetail = () => {
   const navigate = useNavigate();
@@ -25,6 +28,19 @@ const UserDetail = () => {
     }),
     skip: !userId,
   });
+
+  // useGetProjectsByEngineerIdQuery
+  const { data: projects, isLoading: isProjectLoading } = useGetProjectsByEngineerIdQuery(
+    user?.id as string,
+    {
+      refetchOnMountOrArgChange: true,
+      selectFromResult: ({ data, ...result }) => ({
+        ...result,
+        data: data ? (data.ids.map((id) => data.entities[id]) as Project[]) : [],
+      }),
+      skip: !user?.id,
+    }
+  );
 
   let content: JSX.Element = <></>;
 
@@ -107,6 +123,18 @@ const UserDetail = () => {
   return (
     <div className={styles.userDetail}>
       <div className={styles.wrapper}>{content}</div>
+      {user?.role == ROLES.ENGINEER && (
+        <div className={styles.projectTable}>
+          <h1 className={styles.title}>Projects</h1>
+          {isProjectLoading ? (
+            <div className={styles.loading}>
+              <PulseLoader color={"#4e90d2"} />
+            </div>
+          ) : (
+            <ProjectTable projects={projects} />
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Project } from "../../../types";
 import "./projectTable.scss";
 
@@ -34,8 +35,8 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
             <TableCell className="tableCell">Project Name</TableCell>
             <TableCell className="tableCell md">Address</TableCell>
             <TableCell className="tableCell">Phase</TableCell>
-            <TableCell className="tableCell">Estimated material cost</TableCell>
-            <TableCell className="tableCell">Amount spend</TableCell>
+            {/* <TableCell className="tableCell">Estimated material cost</TableCell>
+            <TableCell className="tableCell">Amount spend</TableCell> */}
             <TableCell className="tableCell">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -43,17 +44,17 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
           {projects.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="tableCell">{row.name}</TableCell>
-              <TableCell className="tableCell md">
-                {row.address} Lorem ipsum dolor sit amet.
-              </TableCell>
+              <TableCell className="tableCell md">{row.address}</TableCell>
               <TableCell className="tableCell">
-                <span className={`status PLANNING`}>Planning</span>
+                <span className={`status ONGOING`}>Ongoing</span>
               </TableCell>
-              <TableCell className="tableCell">&#8369; 1,000,000</TableCell>
-              <TableCell className="tableCell">&#8369; 1,000,000</TableCell>
+              {/* <TableCell className="tableCell">&#8369; 1,000,000</TableCell>
+              <TableCell className="tableCell">&#8369; 1,000,000</TableCell> */}
 
               <TableCell className="tableCell">
-                <a className={`viewButton`}>View</a>
+                <Link to={`/dash/projects/${row.id}`} className={`viewButton`}>
+                  View
+                </Link>
               </TableCell>
             </TableRow>
           ))}

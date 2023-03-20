@@ -17,12 +17,12 @@ const Navbar = () => {
       </div>
       <div className={styles.right}>
         <ul>
-          <NavLink end to="/" className={navLinkStyles}>
+          {/* <NavLink end to="/" className={navLinkStyles}>
             <li>Home</li>
           </NavLink>
           <NavLink to="/login" className={navLinkStyles}>
             <li>Login</li>
-          </NavLink>
+          </NavLink> */}
 
           {/* <NavLink to="/register" className={navLinkStyles}>
 						<li>Register</li>

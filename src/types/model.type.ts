@@ -2,6 +2,7 @@ export type WidgetDataTypes = {
   title: string;
   isMoney: boolean;
   link: string;
+  url: string;
   icon: JSX.Element;
 };
 

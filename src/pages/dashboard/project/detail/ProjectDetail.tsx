@@ -2,6 +2,9 @@ import moment from "moment";
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetProjectQuery } from "../../../../app/services/project/projectApiSlice";
+import { useGetTransactionsByProjectIdQuery } from "../../../../app/services/transaction/transactionApiSlice";
+import { TransactionTable } from "../../../../components";
+import { Transaction } from "../../../../types";
 import styles from "./ProjectDetail.module.scss";
 
 const ProjectDetail = () => {
@@ -22,6 +25,16 @@ const ProjectDetail = () => {
     }),
     skip: !projectId,
   });
+
+  const { data: transactions, isLoading: isTransactionLoading } =
+    useGetTransactionsByProjectIdQuery(projectId as string, {
+      refetchOnMountOrArgChange: true,
+      selectFromResult: ({ data, ...result }) => ({
+        ...result,
+        data: data ? (data.ids.map((id) => data.entities[id]) as Transaction[]) : [],
+      }),
+      skip: !projectId,
+    });
 
   let content: JSX.Element = <></>;
 
@@ -59,6 +72,10 @@ const ProjectDetail = () => {
             </span>
           </div>
           <div className={styles.detailItem}>
+            <span className={styles.itemKey}>Project Status</span>
+            <span className={`${styles.itemValue} ${styles["ONGOING"]}`}>{"Ongoing"}</span>
+          </div>
+          <div className={styles.detailItem}>
             <span className={styles.itemKey}>Created:</span>
             <span className={styles.itemValue}>
               {moment(project.createdAt).format("ddd YYYY-MM-DD hh:mm a")}
@@ -86,6 +103,16 @@ const ProjectDetail = () => {
   return (
     <div className={styles.projectDetail}>
       <div className={styles.wrapper}>{content}</div>
+      <div className={styles.transactionTable}>
+        <h1 className={styles.title}>Transactions</h1>
+        {isTransactionLoading ? (
+          <div className={styles.loading}>
+            <PulseLoader color={"#4e90d2"} />
+          </div>
+        ) : (
+          <TransactionTable transactions={transactions} />
+        )}
+      </div>
     </div>
   );
 };

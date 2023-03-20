@@ -39,7 +39,7 @@ const UserDataTable = ({ users }: UserDataTableProps) => {
             >
               View
             </Link>
-            {
+            {/* {
               // if user is admin or user is editing his own profile
               role === ROLES.SUPER_ADMIN ? (
                 <Link to="/dash" className={styles.editButton} style={{ textDecoration: "none" }}>
@@ -48,7 +48,7 @@ const UserDataTable = ({ users }: UserDataTableProps) => {
               ) : (
                 <div className={`${styles.editButton} ${styles.disable}`}>Edit</div>
               )
-            }
+            } */}
           </div>
         );
       },

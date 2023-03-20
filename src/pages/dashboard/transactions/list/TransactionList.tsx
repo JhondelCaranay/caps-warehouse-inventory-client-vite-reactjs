@@ -52,11 +52,11 @@ const TransactionList = () => {
     <div className={styles.transactionList}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
         <Stack direction="row" spacing={1}>
-          <Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
+          {/* <Link to="/dash/transactions/new" style={{ textDecoration: "none" }}>
             <Button size="small" variant="outlined">
               Create Transaction
             </Button>
-          </Link>
+          </Link> */}
           <Button size="small" variant="outlined" onClick={refetch}>
             Refresh
           </Button>
