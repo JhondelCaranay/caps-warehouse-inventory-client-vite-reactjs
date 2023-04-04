@@ -1,17 +1,14 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
+import { useParams } from "react-router-dom";
 import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
 import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
-import { useGetItemsQuery } from "../../../../app/services/item/itemApiSlice";
-import { EditItemForm } from "../../../../components";
+import { useGetItemQuery } from "../../../../app/services/item/itemApiSlice";
+import { EditItemForm, ErrorMessage, Loading } from "../../../../components";
 import { useTitle } from "../../../../hooks";
-import { Brand, Category } from "../../../../types";
 import styles from "./ItemEdit.module.scss";
 
 const ItemEdit = () => {
   useTitle("Spedi: Item Edit");
   const { itemId } = useParams();
-  const navigate = useNavigate();
 
   const {
     data: item,
@@ -19,53 +16,31 @@ const ItemEdit = () => {
     isLoading,
     isSuccess,
     isError,
-  } = useGetItemsQuery(undefined, {
+  } = useGetItemQuery(itemId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data && itemId ? data.entities[itemId] : undefined,
-    }),
+    skip: !itemId,
   });
 
   const { data: brands } = useGetBrandsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data ? data.ids.map((id) => data.entities[id] as Brand) : [],
-    }),
   });
 
   const { data: categories } = useGetCategoriesQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data ? data.ids.map((id) => data.entities[id] as Category) : [],
-    }),
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
-  if (isSuccess && !item) {
-    content = (
-      <div className={styles.notFound}>
-        Project not found. <span onClick={() => navigate(-1)}>Please go back</span>
-      </div>
-    );
-  }
-
-  if (isSuccess && item) {
+  if (isSuccess && item && brands && categories) {
     content = <EditItemForm item={item} brands={brands} categories={categories} />;
   }
 

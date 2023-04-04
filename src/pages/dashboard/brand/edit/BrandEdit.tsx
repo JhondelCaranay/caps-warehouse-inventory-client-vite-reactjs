@@ -32,14 +32,6 @@ const BrandEdit = () => {
     content = <ErrorMessage message={"Failed to load data"} />;
   }
 
-  if (isSuccess && !brand) {
-    content = (
-      <div className={styles.notFound}>
-        Brand not found. <span onClick={() => navigate(-1)}>Please go back</span>
-      </div>
-    );
-  }
-
   if (isSuccess && brand) {
     content = <EditBrandForm brand={brand} />;
   }

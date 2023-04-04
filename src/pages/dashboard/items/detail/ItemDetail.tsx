@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import styles from "./ItemDetail.module.scss";
 import noImage from "../../../../assets/img/noimage.png";
 import { useGetItemQuery } from "../../../../app/services/item/itemApiSlice";
 import moment from "moment";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
 import { useGetBrandQuery } from "../../../../app/services/brand/brandApiSlice";
+import { ErrorMessage, Loading } from "../../../../components";
 
 const ItemDetail = () => {
   const navigate = useNavigate();
@@ -19,48 +19,28 @@ const ItemDetail = () => {
     isError,
   } = useGetItemQuery(itemId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[itemId as string],
-    }),
     skip: !itemId,
   });
 
   const { data: category } = useGetCategoryQuery(item?.categoryId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[item?.categoryId as string],
-    }),
-    skip: !item,
+    skip: !item?.categoryId,
   });
 
   const { data: brand } = useGetBrandQuery(item?.brandId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[item?.brandId as string],
-    }),
-    skip: !item,
+    skip: !item?.brandId,
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.errorMsg}>
-        Failed to load data. Please try again or <span onClick={() => navigate(-1)}>Go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && item && category && brand) {

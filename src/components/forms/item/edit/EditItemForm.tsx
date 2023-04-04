@@ -104,7 +104,7 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
         categoryId: values.categoryId,
       }).unwrap();
 
-      toast.success("Item edited successfully");
+      toast.success("Item updated successfully");
       submitProps.resetForm();
       navigate("/dash/items");
     } catch (err: any) {
@@ -125,7 +125,7 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
         {(formik) => {
           const buttonText =
             isItemUpdating || formik.isSubmitting ? (
-              <PulseLoader color={"black"} />
+              <PulseLoader color={"#1976d2"} />
             ) : (
               <span>Edit</span>
             );
@@ -141,7 +141,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                 <div className={styles.left}>
                   {/* ITEM NAME INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="name">Item Name</label>
+                    <label htmlFor="name">
+                      Item Name <small>(required)</small>
+                    </label>
                     <Field
                       id="name"
                       name="name"
@@ -163,7 +165,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                     <div className={styles.left}>
                       {/* PRICE INPUT */}
                       <div className={styles.formGroup}>
-                        <label htmlFor="price">Price</label>
+                        <label htmlFor="price">
+                          Price <small>(required)</small>
+                        </label>
                         <Field
                           id="price"
                           name="price"
@@ -184,7 +188,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                     <div className={styles.right}>
                       {/*  QUANTITY INPUT */}
                       <div className={styles.formGroup}>
-                        <label htmlFor="quantity">Quantity</label>
+                        <label htmlFor="quantity">
+                          Quantity <small>(required)</small>
+                        </label>
                         <Field
                           id="quantity"
                           name="quantity"
@@ -208,7 +214,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
 
                   {/* DESCRIPTION TEXT AREA */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description">
+                      Description <small>(optional)</small>
+                    </label>
                     <Field
                       id="description"
                       name="description"
@@ -229,7 +237,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
 
                   {/* ITEM MODEL INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="model">Model</label>
+                    <label htmlFor="model">
+                      Model <small>(optional)</small>
+                    </label>
                     <Field
                       id="model"
                       name="model"
@@ -247,7 +257,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
 
                   {/* SELECT ITEM UNIT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="unit">Unit</label>
+                    <label htmlFor="unit">
+                      Unit <small>(required)</small>
+                    </label>
                     <Field
                       id="unit"
                       name="unit"
@@ -256,7 +268,7 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                         Boolean(formik.touched.unit && formik.errors.unit) ? styles.error : ""
                       }`}
                     >
-                      <option value="">Select Unit</option>
+                      <option value="">Select Unit </option>
                       {Object.keys(UNIT).map((key) => (
                         <option key={key} value={key}>
                           {Capitalize(key)}
@@ -271,7 +283,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
 
                   {/* SELECT ITEM BRAND */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="brandId">Brand</label>
+                    <label htmlFor="brandId">
+                      Brand <small>(required)</small>
+                    </label>
                     <Field
                       id="brandId"
                       name="brandId"
@@ -295,7 +309,9 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
 
                   {/* SELECT ITEM CATEGORY */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="categoryId">Category</label>
+                    <label htmlFor="categoryId">
+                      Category <small>(required)</small>
+                    </label>
                     <Field
                       id="categoryId"
                       name="categoryId"
@@ -323,12 +339,12 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                 <div className={styles.right}>
                   {/* ITEM PICTURE FILE INPUT */}
                   <div className={styles.formGroup}>
-                    <p>
-                      Picture
+                    <label>
+                      Picture <small>(optional)</small>
                       {item?.pictureUrl && (
                         <span onClick={() => setViewImage(true)}>| Current Image</span>
                       )}
-                    </p>
+                    </label>
                     <div
                       className={`${styles["add-photo"]} ${
                         Boolean(formik.touched.pictureUrl && formik.errors.pictureUrl)
@@ -393,7 +409,7 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                   type="submit"
                   size="small"
                   variant="outlined"
-                  disabled={!formik.isValid || formik.isSubmitting}
+                  disabled={formik.isSubmitting}
                 >
                   {buttonText}
                 </Button>

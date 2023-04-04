@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  useGetProjectsByEngineerIdQuery,
-  useGetProjectsQuery,
-} from "../../../../app/services/project/projectApiSlice";
+import { useGetProjectsByEngineerIdQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetUserEngineersQuery } from "../../../../app/services/user/userApiSlice";
 import {
   CreateProjectForm,
@@ -12,7 +9,6 @@ import {
   ProjectTable,
 } from "../../../../components";
 import useTitle from "../../../../hooks/useTitle";
-import { Project } from "../../../../types";
 import styles from "./ProjectNew.module.scss";
 
 const ProjectNew = () => {
@@ -26,10 +22,6 @@ const ProjectNew = () => {
     isError,
     error,
   } = useGetUserEngineersQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
-
-  const { data: projects } = useGetProjectsQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 

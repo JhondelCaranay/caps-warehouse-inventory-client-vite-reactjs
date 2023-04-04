@@ -42,7 +42,7 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
         name: values.name,
       }).unwrap();
 
-      toast.success("Category edited successfully");
+      toast.success("Category updated successfully");
       submitProps.resetForm();
       navigate("/dash/category");
     } catch (err: any) {
@@ -77,7 +77,9 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
 
                 {/* CATEGORY NAME INPUT*/}
                 <div className={styles.formGroup}>
-                  <label htmlFor="name">Category Name</label>
+                  <label htmlFor="name">
+                    Category Name <small>(required)</small>
+                  </label>
                   <Field
                     id="name"
                     name="name"
@@ -98,7 +100,7 @@ const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
                     type="submit"
                     size="small"
                     variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
                     {buttonText}
                   </Button>

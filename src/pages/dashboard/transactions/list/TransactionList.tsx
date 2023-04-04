@@ -2,10 +2,7 @@ import styles from "./TransactionList.module.scss";
 import { ErrorMessage, Loading, TransactionDataTable } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 import { Button, Stack } from "@mui/material";
-import { Link } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import { useGetTransactionsQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import { Transaction } from "../../../../types";
 
 const TransactionList = () => {
   useTitle("Spedi: Transaction List");
