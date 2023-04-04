@@ -35,8 +35,7 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
             <TableCell className="tableCell">Project Name</TableCell>
             <TableCell className="tableCell md">Address</TableCell>
             <TableCell className="tableCell">Phase</TableCell>
-            {/* <TableCell className="tableCell">Estimated material cost</TableCell>
-            <TableCell className="tableCell">Amount spend</TableCell> */}
+
             <TableCell className="tableCell">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -48,9 +47,6 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
               <TableCell className="tableCell">
                 <span className={`status ONGOING`}>Ongoing</span>
               </TableCell>
-              {/* <TableCell className="tableCell">&#8369; 1,000,000</TableCell>
-              <TableCell className="tableCell">&#8369; 1,000,000</TableCell> */}
-
               <TableCell className="tableCell">
                 <Link to={`/dash/projects/${row.id}`} className={`viewButton`}>
                   View

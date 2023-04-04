@@ -1,18 +1,16 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import { useGetUserQuery } from "../../../../app/services/user/userApiSlice";
 import { Capitalize } from "../../../../config/utils/functions";
 import styles from "./UserDetail.module.scss";
 import moment from "moment";
 import noImage from "../../../../assets/img/noimage.png";
-import { ProjectTable } from "../../../../components";
-import { Project, ROLES } from "../../../../types";
+import { ErrorMessage, Loading, ProjectTable } from "../../../../components";
+import { ROLES } from "../../../../types";
 import { useGetProjectsByEngineerIdQuery } from "../../../../app/services/project/projectApiSlice";
 
 const UserDetail = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
-  // useGetUserQuery
 
   const {
     data: user,
@@ -22,10 +20,6 @@ const UserDetail = () => {
     isError,
   } = useGetUserQuery(userId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[userId as string],
-    }),
     skip: !userId,
   });
 
@@ -34,10 +28,6 @@ const UserDetail = () => {
     user?.id as string,
     {
       refetchOnMountOrArgChange: true,
-      selectFromResult: ({ data, ...result }) => ({
-        ...result,
-        data: data ? (data.ids.map((id) => data.entities[id]) as Project[]) : [],
-      }),
       skip: !user?.id,
     }
   );
@@ -45,25 +35,15 @@ const UserDetail = () => {
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.errorMsg}>
-        Failed to load data. Please try again or <span onClick={() => navigate(-1)}>Go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && user) {
-    console.log(user);
-
     content = (
       <>
         <div className={styles.title}>User</div>
@@ -126,13 +106,7 @@ const UserDetail = () => {
       {user?.role == ROLES.ENGINEER && (
         <div className={styles.projectTable}>
           <h1 className={styles.title}>Projects</h1>
-          {isProjectLoading ? (
-            <div className={styles.loading}>
-              <PulseLoader color={"#4e90d2"} />
-            </div>
-          ) : (
-            <ProjectTable projects={projects} />
-          )}
+          {isProjectLoading || !projects ? <Loading /> : <ProjectTable projects={projects} />}
         </div>
       )}
     </div>

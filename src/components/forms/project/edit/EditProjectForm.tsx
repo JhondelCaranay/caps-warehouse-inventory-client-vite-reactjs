@@ -46,7 +46,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
       }).unwrap();
       console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
-      toast.success("Project edited successfully");
+      toast.success("Project updated successfully");
       submitProps.resetForm();
       navigate("/dash/projects");
     } catch (err: any) {
@@ -79,7 +79,9 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
                 {/* INPUT PROJECT NAME */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="name">Project Name</label>
+                  <label htmlFor="name">
+                    Project Name <small>(required)</small>
+                  </label>
                   <Field
                     id="name"
                     name="name"
@@ -97,7 +99,9 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
                 {/* DESCRIPTION TEXT AREA */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="address">Address</label>
+                  <label htmlFor="address">
+                    Address <small>(required)</small>
+                  </label>
                   <Field
                     id="address"
                     name="address"
@@ -116,7 +120,9 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
                 {/* SELECT ASSIGN ENGINEER */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="userId">Assigned Engineer</label>
+                  <label htmlFor="userId">
+                    Assigned Engineer <small>(required)</small>
+                  </label>
                   <Field
                     disabled
                     id="userId"
@@ -144,7 +150,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
                     type="submit"
                     size="small"
                     variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
                     {buttonText}
                   </Button>

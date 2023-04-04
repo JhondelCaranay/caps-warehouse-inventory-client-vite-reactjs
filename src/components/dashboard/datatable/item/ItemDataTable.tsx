@@ -32,6 +32,7 @@ const ItemDataTable = ({ items }: ItemDataTableProps) => {
       field: "actions",
       headerName: "Actions",
       width: 150,
+      disableExport: true,
       renderCell: (params) => {
         return (
           <div className={styles.cellAction}>

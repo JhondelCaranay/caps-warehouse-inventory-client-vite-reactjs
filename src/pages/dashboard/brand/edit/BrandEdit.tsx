@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { useGetBrandsQuery } from "../../../../app/services/brand/brandApiSlice";
-import { EditBrandForm } from "../../../../components";
+import { useGetBrandQuery } from "../../../../app/services/brand/brandApiSlice";
+import { EditBrandForm, ErrorMessage, Loading } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 import styles from "./BrandEdit.module.scss";
 
@@ -12,31 +12,24 @@ const BrandEdit = () => {
 
   const {
     data: brand,
+    error,
     isLoading,
     isSuccess,
     isError,
-    error,
-  } = useGetBrandsQuery(undefined, {
+  } = useGetBrandQuery(brandId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data && brandId ? data.entities[brandId] : undefined,
-    }),
+    skip: !brandId,
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && !brand) {

@@ -1,5 +1,5 @@
 import styles from "./TransactionList.module.scss";
-import { TransactionDataTable } from "../../../../components";
+import { ErrorMessage, Loading, TransactionDataTable } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 import { Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -22,29 +22,18 @@ const TransactionList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data ? data.ids.map((id) => data.entities[id] as Transaction) : [],
-    }),
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  } else if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-        <h1 className={styles.error}>Failed to load data</h1>
-      </div>
-    );
-  } else if (isSuccess) {
+    content = <Loading />;
+  }
+  if (isError) {
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
+  }
+  if (isSuccess) {
     content = <TransactionDataTable transactions={transactions} />;
   }
 

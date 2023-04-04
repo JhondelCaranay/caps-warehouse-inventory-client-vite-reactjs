@@ -1,0 +1,14 @@
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  height: 50px;
+  // background-color: rgba(0, 0, 0, 0.1);
+  color: #ff4500;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 10px;
+}

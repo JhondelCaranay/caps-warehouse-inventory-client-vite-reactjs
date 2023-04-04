@@ -12,15 +12,6 @@
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 20px;
 
-    .loading {
-      background-color: white;
-    }
-
-    .errorMsg {
-      background-color: white;
-      color: red;
-    }
-
     .notFound {
       display: flex;
       align-items: center;
