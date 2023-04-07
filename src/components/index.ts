@@ -40,3 +40,8 @@ export { default as CreateBrandForm } from "./forms/brand/create/CreateBrandForm
 export { default as EditBrandForm } from "./forms/brand/edit/EditBrandForm";
 
 export { default as CreateUserForm } from "./forms/user/create/CreateUserForm";
+
+export { default as Loading } from "./loading/Loading";
+export { default as ErrorMessage } from "./error/ErrorMessage";
+
+export { default as ChangePassword } from "./changePassword/ChangePassword";

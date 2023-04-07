@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import {
   useGetTransactionQuery,
   useUpdateTransactionStatusMutation,
@@ -14,7 +13,8 @@ import ErrorList from "../../../../components/toast/ErrorList";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useAuth } from "../../../../hooks";
-
+import { ErrorMessage as ErrorMsg, Loading } from "../../../../components";
+import { PulseLoader } from "react-spinners";
 const TransactionDetail = () => {
   const navigate = useNavigate();
   const { role } = useAuth();
@@ -29,30 +29,18 @@ const TransactionDetail = () => {
     isError,
   } = useGetTransactionQuery(transactionId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[transactionId as string] as Transaction,
-    }),
     skip: !transactionId,
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.errorMsg}>
-        Failed to load data. Please try again or <span onClick={() => navigate(-1)}>Go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMsg message={"Failed to load data"} />;
   }
 
   if (isSuccess && transaction) {
@@ -300,7 +288,7 @@ const TransactionDetail = () => {
   return (
     <div className={styles.transactionDetail}>
       <div className={styles.wrapper}>{content}</div>
-      {modal ? (
+      {modal && transaction ? (
         <ConfirmModal setmodal={setmodal} item={transaction.Item} transaction={transaction} />
       ) : null}
     </div>
@@ -380,14 +368,22 @@ const ConfirmModal = ({ setmodal, item, transaction }: ConfirmModalProps) => {
           {(formik) => {
             return (
               <Form>
-                <div className={styles.modalTitle}>Confirm item</div>
+                <div className={styles.modalTitle}>
+                  {transaction.status === TRANSACTION_STATUS.WAITING
+                    ? "Confirm request"
+                    : transaction.status === TRANSACTION_STATUS.ON_RETURN
+                    ? "Confirm returned item"
+                    : null}
+                </div>
                 <div className={styles.modalBody}>
                   <div className={styles.modalItem}>
                     <span className={styles.modalKey}>Item:</span>
                     <span className={styles.modalValue}>{item.name}</span>
 
                     <div className={styles.group}>
-                      <span className={styles.modalKey}>Remarks:</span>
+                      <span className={styles.modalKey}>
+                        Remarks <small>(optional)</small>
+                      </span>
                       <Field
                         as="textarea"
                         id="remarks"
@@ -408,9 +404,13 @@ const ConfirmModal = ({ setmodal, item, transaction }: ConfirmModalProps) => {
                   <button
                     type="submit"
                     className={styles.modalButton}
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
-                    Confirm
+                    {isTransactionUpdating || formik.isSubmitting ? (
+                      <PulseLoader color={"#1976d2"} />
+                    ) : (
+                      <span>Create</span>
+                    )}
                   </button>
                   <div
                     className={styles.modalButton}

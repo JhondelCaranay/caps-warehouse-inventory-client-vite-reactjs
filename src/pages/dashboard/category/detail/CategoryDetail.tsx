@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
 import styles from "./CategoryDetail.module.scss";
+import { ErrorMessage, Loading } from "../../../../components";
 
 const CategoryDetail = () => {
   const navigate = useNavigate();
@@ -16,30 +17,18 @@ const CategoryDetail = () => {
     isError,
   } = useGetCategoryQuery(categoryId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[categoryId as string],
-    }),
     skip: !categoryId,
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.errorMsg}>
-        Failed to load data. Please try again or <span onClick={() => navigate(-1)}>Go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && category) {

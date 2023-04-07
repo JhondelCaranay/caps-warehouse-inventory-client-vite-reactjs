@@ -35,6 +35,7 @@ const CategoryDataTable = ({ categories }: BrandDataTableProps) => {
       field: "actions",
       headerName: "Actions",
       width: 150,
+      disableExport: true,
       renderCell: (params: { row: Category }) => {
         return (
           <div className={styles.cellAction}>

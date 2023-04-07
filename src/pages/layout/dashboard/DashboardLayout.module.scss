@@ -1,6 +1,7 @@
 .dashLayout {
   // mobile first approach
   display: flex;
+  position: relative;
 
   .sidebar {
     display: none;

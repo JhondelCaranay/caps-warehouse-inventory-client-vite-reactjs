@@ -105,10 +105,15 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
             )}
 
             <p className={styles.title}>USER</p>
-            <li className={styles.icon} onClick={sideBarToggle}>
-              <AccountCircleOutlined />
-              <span>Profile</span>
-            </li>
+            <NavLink
+              to={`/${role === ROLES.ENGINEER ? "me" : "dash"}/profile`}
+              className={navLinkStyles}
+            >
+              <li className={styles.icon}>
+                <AccountCircleOutlined />
+                <span>Profile</span>
+              </li>
+            </NavLink>
             <li onClick={handleLogout} className={styles.icon}>
               <ExitToApp />
               <span>Logout</span>

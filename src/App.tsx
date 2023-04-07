@@ -41,6 +41,7 @@ import {
   UserDetail,
   UserList,
   UserNew,
+  UserProfile,
 } from "./pages";
 
 import { AuthNotAllowed, Prefetch, RequireAuth } from "./guards";
@@ -116,6 +117,7 @@ function App() {
                       <Route path=":userId" element={<UserDetail />} />
                       <Route path="new" element={<UserNew />} />
                     </Route>
+                    <Route path="profile" element={<UserProfile />} />
                     <Route path="single" element={<Single />} />
                   </Route>
                 </Route>
@@ -138,6 +140,7 @@ function App() {
                       <Route index element={<EngProjects />} />
                       <Route path=":projectId" element={<EngProjectDetail />} />
                     </Route>
+                    <Route path="profile" element={<UserProfile />} />
                   </Route>
                 </Route>
               </Route>

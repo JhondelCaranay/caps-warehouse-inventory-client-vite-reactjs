@@ -110,27 +110,34 @@
           position: relative;
           -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
           box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+          border: 1px solid #ccc;
+
+          &:hover {
+            background-color: whitesmoke;
+          }
 
           .itemImg {
             position: relative;
             height: 250px;
 
             .image {
-              height: 100%;
               width: 100%;
+              margin: 0 auto;
+              height: 200px;
               object-fit: contain;
             }
 
             .itemInfo {
-              position: absolute;
-              bottom: 0;
-              left: 0;
+              // position: absolute;
+              // top: 0;
+              // left: 0;
+              border-radius: 5px;
               width: 100%;
-              padding: 10px;
+              padding: 5px;
               background-color: rgba(0, 0, 0, 0.5);
 
               .itemName {
-                font-size: 1rem;
+                font-size: 0.8rem;
                 font-weight: bold;
                 color: white;
                 text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
@@ -139,13 +146,18 @@
           }
 
           .outofstock {
+            // place on center
+            width: 100px;
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
             padding: 5px;
             height: 25px;
             background-color: #ff9800;
-            border-bottom-right-radius: 20px;
+            // border-bottom-right-radius: 20px;
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -154,22 +166,29 @@
             font-weight: 600;
           }
 
-          .backButton {
-            position: absolute;
+          .viewButton {
+            z-index: 999;
             width: 60px;
-            top: 0;
-            right: 0;
-            padding: 10px;
-            font-size: 12px;
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            padding: 5px;
+            font-size: 14px;
             font-weight: 600;
             color: #7451f8;
             background-color: #7551f818;
             cursor: pointer;
             font-weight: bold;
-            border-radius: 0px 0px 0px 5px;
+            border-radius: 5px 5px 5px 5px;
             z-index: 99;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
             &:hover {
-              background-color: #7551f830;
+              background-color: #7451f8;
+              color: white;
             }
           }
         }

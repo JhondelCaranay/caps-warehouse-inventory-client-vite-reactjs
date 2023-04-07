@@ -55,6 +55,7 @@ export type Project = {
   name: string;
   address: string;
   userId: string;
+  status: string;
   User: User;
 };
 
@@ -66,6 +67,7 @@ export type User = {
   status: string;
   role: string;
   profileId: string;
+  isNeedChangePassword: boolean;
   Profile: {
     id: string;
     first_name: string;

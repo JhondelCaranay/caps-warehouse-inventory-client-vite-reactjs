@@ -10,6 +10,7 @@ import { ProjectForm, User, Project } from "../../../../types";
 import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
 import { DebugControl, TextError } from "../../../formik";
+import { Capitalize } from "../../../../config/utils/functions";
 
 type EditProjectFormProps = {
   project: Project;
@@ -30,6 +31,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
         name: project.name,
         address: project.address,
         userId: project.userId,
+        status: project.status,
       }));
     }
   }, [project]);
@@ -43,10 +45,11 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
         name: values.name,
         address: values.address,
         userId: values.userId,
+        status: values.status,
       }).unwrap();
       console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
-      toast.success("Project edited successfully");
+      toast.success("Project updated successfully");
       submitProps.resetForm();
       navigate("/dash/projects");
     } catch (err: any) {
@@ -79,7 +82,9 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
                 {/* INPUT PROJECT NAME */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="name">Project Name</label>
+                  <label htmlFor="name">
+                    Project Name <small>(required)</small>
+                  </label>
                   <Field
                     id="name"
                     name="name"
@@ -97,7 +102,9 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
                 {/* DESCRIPTION TEXT AREA */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="address">Address</label>
+                  <label htmlFor="address">
+                    Address <small>(required)</small>
+                  </label>
                   <Field
                     id="address"
                     name="address"
@@ -116,7 +123,9 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 
                 {/* SELECT ASSIGN ENGINEER */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="userId">Assigned Engineer</label>
+                  <label htmlFor="userId">
+                    Assigned Engineer <small>(required)</small>
+                  </label>
                   <Field
                     disabled
                     id="userId"
@@ -139,12 +148,38 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
                   />
                 </div>
 
+                {/* SELECT Project status */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="status">
+                    Project status <small>(required)</small>
+                  </label>
+                  <Field
+                    id="status"
+                    name="status"
+                    as="select"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.status && formik.errors.status) ? styles.error : ""
+                    }`}
+                  >
+                    {/* <option value="">Select Status</option> */}
+                    {Object.values(PROJECT_STATUS).map((status) => (
+                      <option key={status} value={status}>
+                        {Capitalize(status)}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage
+                    name="status"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
+
                 <div className={styles.formGroup}>
                   <Button
                     type="submit"
                     size="small"
                     variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
                     {buttonText}
                   </Button>
@@ -164,14 +199,22 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 };
 export default EditProjectForm;
 
+export enum PROJECT_STATUS {
+  ONGOING = "ONGOING",
+  COMPLETED = "COMPLETED",
+  // CANCELLED = "CANCELLED",
+}
+
 export const initialValues: ProjectForm = {
   name: "",
   address: "",
   userId: "",
+  status: "",
 };
 
 export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   address: Yup.string().required("Required"),
   userId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+  status: Yup.string().required("Required"),
 });

@@ -1,50 +1,33 @@
 import styles from "./CategoryEdit.module.scss";
-import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
-import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
-import { EditCategoryForm } from "../../../../components";
+import { useParams } from "react-router-dom";
+import { useGetCategoryQuery } from "../../../../app/services/category/categoryApiSlice";
+import { EditCategoryForm, ErrorMessage, Loading } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 
 const CategoryEdit = () => {
   useTitle("Spedi: Category Edit");
   const { categoryId } = useParams();
-  const navigate = useNavigate();
 
   const {
     data: category,
+    error,
     isLoading,
     isSuccess,
     isError,
-    error,
-  } = useGetCategoriesQuery(undefined, {
+  } = useGetCategoryQuery(categoryId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data && categoryId ? data.entities[categoryId] : undefined,
-    }),
+    skip: !categoryId,
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
-  }
-
-  if (isSuccess && !category) {
-    content = (
-      <div className={styles.notFound}>
-        Category not found. <span onClick={() => navigate(-1)}>Please go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && category) {

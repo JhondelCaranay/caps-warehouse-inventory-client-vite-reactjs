@@ -15,7 +15,7 @@ type UserDataTableProps = {
 
 const UserDataTable = ({ users }: UserDataTableProps) => {
   const { windowSize } = useWindowSize();
-  const { role } = useAuth();
+  // const { role } = useAuth();
 
   const [columnVisible, setColumnVisible] = useState<GridColumnVisibilityModel>(USER_ALL_COLUMNS);
 
@@ -23,12 +23,14 @@ const UserDataTable = ({ users }: UserDataTableProps) => {
     const newColumns = windowSize > 640 ? USER_ALL_COLUMNS : USER_MOBILE_COLUMNS;
     setColumnVisible(newColumns);
   }, [windowSize]);
+
   // this column will be use by other data
   const actionColumn: GridColDef[] = [
     {
       field: "actions",
       headerName: "Actions",
       width: 150,
+      disableExport: true,
       renderCell: (params) => {
         return (
           <div className={styles.cellAction}>

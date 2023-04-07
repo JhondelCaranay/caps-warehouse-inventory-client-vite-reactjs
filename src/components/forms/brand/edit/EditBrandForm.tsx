@@ -41,7 +41,7 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
         name: values.name,
       }).unwrap();
 
-      toast.success("Brand created successfully");
+      toast.success("Brand updated successfully");
       submitProps.resetForm();
       navigate("/dash/brands");
     } catch (err: any) {
@@ -74,7 +74,9 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
 
                 {/* BRAND NAME INPUT*/}
                 <div className={styles.formGroup}>
-                  <label htmlFor="name">Brand Name</label>
+                  <label htmlFor="name">
+                    Brand Name <small>(required)</small>
+                  </label>
                   <Field
                     id="name"
                     name="name"
@@ -95,7 +97,7 @@ const EditBrandForm = ({ brand }: EditBrandFormProps) => {
                     type="submit"
                     size="small"
                     variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
                     {buttonText}
                   </Button>

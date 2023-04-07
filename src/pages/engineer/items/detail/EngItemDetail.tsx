@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import styles from "./EngItemDetail.module.scss";
 import noImage from "../../../../assets/img/noimage.png";
 import moment from "moment";
@@ -16,7 +15,8 @@ import { useGetMyProfileQuery } from "../../../../app/services/user/userApiSlice
 import { useGetMyProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import { DebugControl, TextError } from "../../../../components/formik";
+import { ErrorMessage as ErrorMsg, Loading } from "../../../../components";
+import { TextError } from "../../../../components/formik";
 
 const EngItemDetail = () => {
   useTitle("Spedi: Item Detail");
@@ -27,19 +27,11 @@ const EngItemDetail = () => {
 
   const { data: user } = useGetMyProfileQuery(id as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[id as string] as User,
-    }),
     skip: !id,
   });
 
   const { data: projects } = useGetMyProjectsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.ids.map((id) => data?.entities[id]) as Project[],
-    }),
   });
 
   const {
@@ -50,48 +42,28 @@ const EngItemDetail = () => {
     isError,
   } = useGetItemQuery(itemId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[itemId as string],
-    }),
     skip: !itemId,
   });
 
   const { data: category } = useGetCategoryQuery(item?.categoryId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[item?.categoryId as string],
-    }),
     skip: !item?.categoryId,
   });
 
   const { data: brand } = useGetBrandQuery(item?.brandId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[item?.brandId as string],
-    }),
     skip: !item?.brandId,
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.errorMsg}>
-        Failed to load data. Please try again or <span onClick={() => navigate(-1)}>Go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMsg message={"Failed to load data"} />;
   }
 
   if (isSuccess && item && category && brand) {
@@ -171,7 +143,7 @@ const EngItemDetail = () => {
   return (
     <div className={styles.itemDetail}>
       <div className={styles.wrapper}>{content}</div>
-      {modal && item && user ? (
+      {modal && item && user && projects ? (
         <Modal item={item} setmodal={setmodal} user={user} projects={projects} />
       ) : null}
     </div>
@@ -267,7 +239,9 @@ const Modal = ({ item, setmodal, user, projects }: ModalProps) => {
                     <span className={styles.modalValue}>{item?.name}</span>
 
                     <div className={styles.group}>
-                      <span className={styles.modalKey}>Quantity:</span>
+                      <span className={styles.modalKey}>
+                        Quantity <small>(required)</small>
+                      </span>
                       <Field
                         id="quantity"
                         name="quantity"
@@ -285,7 +259,9 @@ const Modal = ({ item, setmodal, user, projects }: ModalProps) => {
                     </div>
 
                     <div className={styles.group}>
-                      <span className={styles.modalKey}>My Projects:</span>
+                      <span className={styles.modalKey}>
+                        My Projects <small>(required)</small>
+                      </span>
                       <Field
                         id="projectId"
                         name="projectId"
@@ -307,7 +283,9 @@ const Modal = ({ item, setmodal, user, projects }: ModalProps) => {
                       />
                     </div>
                     <div className={styles.group}>
-                      <span className={styles.modalKey}>Remarks:</span>
+                      <span className={styles.modalKey}>
+                        Remarks <small>(optional)</small>
+                      </span>
                       <Field
                         as="textarea"
                         id="remarks"
@@ -328,7 +306,7 @@ const Modal = ({ item, setmodal, user, projects }: ModalProps) => {
                   <button
                     type="submit"
                     className={styles.modalButton}
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
                     Confirm
                   </button>

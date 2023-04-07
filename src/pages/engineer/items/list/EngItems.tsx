@@ -1,14 +1,15 @@
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetItemsByFiltersQuery } from "../../../../app/services/item/itemApiSlice";
 import { useTitle } from "../../../../hooks";
-import { Category, Item } from "../../../../types";
+import { Item } from "../../../../types";
 import styles from "./EngItems.module.scss";
 import noImage from "../../../../assets/img/noimage.png";
 import ReactPaginate from "react-paginate";
 import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
 import { debounce } from "lodash";
+import { ErrorMessage, Loading } from "../../../../components";
 
 const EngItems = () => {
   useTitle("Spedi: Item List");
@@ -24,22 +25,12 @@ const EngItems = () => {
     isLoading,
     isSuccess,
     isError,
-    refetch,
   } = useGetItemsByFiltersQuery(`name=${searchInput}&category=${selectedCategory}`, {
-    pollingInterval: 60000,
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.ids.map((id) => data?.entities[id] as Item),
-    }),
   });
 
   const { data: categories } = useGetCategoriesQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data ? data.ids.map((id) => data.entities[id] as Category) : [],
-    }),
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +49,59 @@ const EngItems = () => {
   const pagesVisited = currentPage * PER_PAGE;
   const display = items?.slice(pagesVisited, pagesVisited + PER_PAGE) as Item[];
   const pageCount = items ? Math.ceil(items.length / PER_PAGE) : 0;
+
+  let content: JSX.Element = <></>;
+
+  if (isLoading) {
+    content = <Loading />;
+  }
+  if (isError) {
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
+  }
+
+  if (isSuccess && items && categories) {
+    content = (
+      <>
+        {/* ITEMS */}
+        <h1 className={styles.title}>Items</h1>
+        {/* ITEM */}
+        <div className={styles.items}>
+          {display && display.length > 0 ? (
+            display.map((item) => (
+              <div className={styles.item} key={item.id}>
+                <div className={styles.itemImg}>
+                  <div className={styles.itemInfo}>
+                    <div className={styles.itemName}>{item.name}</div>
+                  </div>
+                  <img src={item.pictureUrl || noImage} alt="" className={styles.image} />
+                </div>
+                {item.quantity === 0 ? <div className={styles.outofstock}>Out of Stock</div> : null}
+                <div className={styles.viewButton} onClick={() => navigate(`/me/items/${item.id}`)}>
+                  view
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className={styles.noItems}>No Items</div>
+          )}
+        </div>
+        <div className={styles.paginator}>
+          <ReactPaginate
+            previousLabel={<NavigateBefore />}
+            nextLabel={<NavigateNext />}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={styles.pagination}
+            previousLinkClassName={styles.previous_page}
+            nextLinkClassName={styles.next_page}
+            disabledClassName={styles.pagination__link__disabled}
+            activeClassName={styles.pagination__link__active}
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className={styles.engItems}>
@@ -108,52 +152,8 @@ const EngItems = () => {
             ))}
           </div>
         </div>
-
         {/* RIGHT */}
-        <div className={styles.right}>
-          {/* ITEMS */}
-
-          <h1 className={styles.title}>Items</h1>
-          {/* ITEM */}
-          <div className={styles.items}>
-            {display && display.length > 0 ? (
-              display.map((item) => (
-                <div className={styles.item} key={item.id}>
-                  <div className={styles.itemImg}>
-                    <img src={item.pictureUrl || noImage} alt="" className={styles.image} />
-                    <div className={styles.itemInfo}>
-                      <div className={styles.itemName}>{item.name}</div>
-                    </div>
-                  </div>
-                  {item.quantity === 0 ? (
-                    <div className={styles.outofstock}>Out of Stock</div>
-                  ) : null}
-                  <div
-                    className={styles.backButton}
-                    onClick={() => navigate(`/me/items/${item.id}`)}
-                  >
-                    view
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className={styles.noItems}>No Items</div>
-            )}
-          </div>
-          <div className={styles.paginator}>
-            <ReactPaginate
-              previousLabel={<NavigateBefore />}
-              nextLabel={<NavigateNext />}
-              pageCount={pageCount}
-              onPageChange={changePage}
-              containerClassName={styles.pagination}
-              previousLinkClassName={styles.previous_page}
-              nextLinkClassName={styles.next_page}
-              disabledClassName={styles.pagination__link__disabled}
-              activeClassName={styles.pagination__link__active}
-            />
-          </div>
-        </div>
+        <div className={styles.right}>{content}</div>
       </div>
     </div>
   );

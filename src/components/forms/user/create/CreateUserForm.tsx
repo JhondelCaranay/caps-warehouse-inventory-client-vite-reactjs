@@ -22,17 +22,11 @@ const CreateUserForm = () => {
   const [addNewUser, { isLoading: isUserUpdating }] = useAddNewUserMutation();
 
   const onSubmit = async (values: UserCreateForm, submitProps: FormikHelpers<UserCreateForm>) => {
-    //sleep for 1 seconds
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // alert(JSON.stringify(values, null, 2));
 
     try {
       let url = "";
       if (values.avatarUrl) {
-        console.log(
-          "🚀 ~ file: CreateUserForm.tsx:35 ~ onSubmit ~ values.avatarUrl",
-          values.avatarUrl
-        );
         const file = values.avatarUrl;
         const storageRef = ref(storage, `caps/image/${file.name + v4()}`);
         const snapshot = await uploadBytes(storageRef, file);
@@ -50,7 +44,7 @@ const CreateUserForm = () => {
         address: values.address || null,
         avatarUrl: url || null,
       }).unwrap();
-      console.log("🚀 ~ file: CreateItemForm.tsx:49 ~ CreateItemForm ~ result", result);
+      console.log("🚀 ~ file: CreateUserForm.tsx:47 ~ onSubmit ~ result:", result);
 
       toast.success("User created successfully");
       submitProps.resetForm();
@@ -76,7 +70,7 @@ const CreateUserForm = () => {
         {(formik) => {
           const buttonText =
             isUserUpdating || formik.isSubmitting ? (
-              <PulseLoader color={"black"} />
+              <PulseLoader color={"#1976d2"} />
             ) : (
               <span>Create</span>
             );
@@ -90,7 +84,9 @@ const CreateUserForm = () => {
                 <div className={styles.left}>
                   {/* FIRSTNAME INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="first_name">First Name</label>
+                    <label htmlFor="first_name">
+                      First Name <small>(required)</small>
+                    </label>
                     <Field
                       id="first_name"
                       name="first_name"
@@ -110,7 +106,9 @@ const CreateUserForm = () => {
 
                   {/* LASTNAME INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="last_name">Last Name</label>
+                    <label htmlFor="last_name">
+                      Last Name <small>(required)</small>
+                    </label>
                     <Field
                       id="last_name"
                       name="last_name"
@@ -130,7 +128,9 @@ const CreateUserForm = () => {
 
                   {/* EMAIL INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">
+                      Email <small>(required)</small>
+                    </label>
                     <Field
                       id="email"
                       name="email"
@@ -148,7 +148,9 @@ const CreateUserForm = () => {
 
                   {/* EMAIL INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="position">Position</label>
+                    <label htmlFor="position">
+                      Position <small>(required)</small>
+                    </label>
                     <Field
                       id="position"
                       name="position"
@@ -168,7 +170,9 @@ const CreateUserForm = () => {
 
                   {/* SELECT USER ROLE */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="role">System Privilege</label>
+                    <label htmlFor="role">
+                      System Privilege <small>(required)</small>
+                    </label>
                     <Field
                       id="role"
                       name="role"
@@ -194,7 +198,9 @@ const CreateUserForm = () => {
 
                   {/* EMAIL INPUT */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="contact">Contact</label>
+                    <label htmlFor="contact">
+                      Contact <small>(optional)</small>
+                    </label>
                     <Field
                       id="contact"
                       name="contact"
@@ -215,7 +221,9 @@ const CreateUserForm = () => {
                 <div className={styles.right}>
                   {/* ADDRESS TEXT AREA */}
                   <div className={styles.formGroup}>
-                    <label htmlFor="address">Address</label>
+                    <label htmlFor="address">
+                      Address <small>(optional)</small>
+                    </label>
                     <Field
                       id="address"
                       name="address"
@@ -234,7 +242,9 @@ const CreateUserForm = () => {
 
                   {/* USER PROFILE PICTURE FILE INPUT */}
                   <div className={styles.formGroup}>
-                    <p>Picture</p>
+                    <label>
+                      Picture <small>(optional)</small>
+                    </label>
                     <div
                       className={`${styles["add-photo"]} ${
                         Boolean(formik.touched.avatarUrl && formik.errors.avatarUrl)
@@ -298,7 +308,7 @@ const CreateUserForm = () => {
                   type="submit"
                   size="small"
                   variant="outlined"
-                  disabled={!formik.isValid || formik.isSubmitting}
+                  disabled={formik.isSubmitting}
                 >
                   {buttonText}
                 </Button>

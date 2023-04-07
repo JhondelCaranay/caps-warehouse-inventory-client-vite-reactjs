@@ -64,7 +64,9 @@ const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => 
 
                 {/* INPUT PROJECT NAME */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="name">Project Name</label>
+                  <label htmlFor="name">
+                    Project Name <small>(required)</small>
+                  </label>
                   <Field
                     id="name"
                     name="name"
@@ -82,7 +84,9 @@ const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => 
 
                 {/* DESCRIPTION TEXT AREA */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="address">Address</label>
+                  <label htmlFor="address">
+                    Address <small>(required)</small>
+                  </label>
                   <Field
                     id="address"
                     name="address"
@@ -101,7 +105,9 @@ const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => 
 
                 {/* SELECT ASSIGN ENGINEER */}
                 <div className={styles.formGroup}>
-                  <label htmlFor="userId">Assigned Engineer</label>
+                  <label htmlFor="userId">
+                    Assigned Engineer <small>(required)</small>
+                  </label>
                   <Field
                     id="userId"
                     name="userId"
@@ -137,7 +143,7 @@ const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => 
                     type="submit"
                     size="small"
                     variant="outlined"
-                    disabled={!formik.isValid || formik.isSubmitting}
+                    disabled={formik.isSubmitting}
                   >
                     {buttonText}
                   </Button>

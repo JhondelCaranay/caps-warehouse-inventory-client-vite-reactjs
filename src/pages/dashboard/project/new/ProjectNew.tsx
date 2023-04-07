@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { PulseLoader } from "react-spinners";
-import { useGetProjectsQuery } from "../../../../app/services/project/projectApiSlice";
-import { useGetUsersQuery } from "../../../../app/services/user/userApiSlice";
-import { CreateProjectForm, EngineerProfile, ProjectTable } from "../../../../components";
-import { selectUserById } from "../../../../app/services/user/userApiSlice";
+import { useGetProjectsByEngineerIdQuery } from "../../../../app/services/project/projectApiSlice";
+import { useGetUserEngineersQuery } from "../../../../app/services/user/userApiSlice";
+import {
+  CreateProjectForm,
+  EngineerProfile,
+  ErrorMessage,
+  Loading,
+  ProjectTable,
+} from "../../../../components";
 import useTitle from "../../../../hooks/useTitle";
-import { Project, ROLES, User, USER_STATUS } from "../../../../types";
 import styles from "./ProjectNew.module.scss";
-import { RootState } from "../../../../app/store";
 
 const ProjectNew = () => {
   useTitle("Spedi: Project Create");
@@ -20,45 +21,26 @@ const ProjectNew = () => {
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery(undefined, {
+  } = useGetUserEngineersQuery(undefined, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data
-        ? data.ids
-            .map((id) => data.entities[id] as User)
-            .filter((user) => user.role === ROLES.ENGINEER && user.status === USER_STATUS.ACTIVE)
-        : [],
-    }),
   });
 
-  const { data: projects } = useGetProjectsQuery(undefined, {
+  const { data: previousProject } = useGetProjectsByEngineerIdQuery(selectedId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data
-        ? data.ids
-            .map((id) => data.entities[id] as Project)
-            .filter((project) => project.User.id === selectedId)
-        : [],
-    }),
+    skip: !selectedId,
   });
 
-  const selectedEngineer = useSelector((state: RootState) => selectUserById(state, selectedId));
+  const selectedEngineer = users?.find((user) => user.id === selectedId);
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = <div className={styles.errorMsg}>Failed to load data. Please try again</div>;
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && users) {
@@ -71,7 +53,7 @@ const ProjectNew = () => {
 
         <div className={styles.bottom}>
           <h1 className={styles.title}>Engineer Previous Projects</h1>
-          <ProjectTable projects={projects} />
+          {previousProject ? <ProjectTable projects={previousProject} /> : <Loading />}
         </div>
       </>
     );

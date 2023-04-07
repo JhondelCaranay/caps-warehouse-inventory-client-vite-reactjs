@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetProjectQuery } from "../../../../app/services/project/projectApiSlice";
 import { useGetTransactionsByProjectIdQuery } from "../../../../app/services/transaction/transactionApiSlice";
-import { TransactionTable } from "../../../../components";
+import { ErrorMessage, Loading, TransactionTable } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 import { Project, Transaction } from "../../../../types";
 import styles from "./EngProjectDetail.module.scss";
@@ -21,40 +21,24 @@ const EngProjectDetail = () => {
     isError,
   } = useGetProjectQuery(projectId as string, {
     refetchOnMountOrArgChange: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data?.entities[projectId as string] as Project,
-    }),
     skip: !projectId,
   });
 
   const { data: transactions, isLoading: isTransactionLoading } =
     useGetTransactionsByProjectIdQuery(projectId as string, {
       refetchOnMountOrArgChange: true,
-      selectFromResult: ({ data, ...result }) => ({
-        ...result,
-        data: data ? (data.ids.map((id) => data.entities[id]) as Transaction[]) : [],
-      }),
       skip: !projectId,
     });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#4e90d2"} />
-      </div>
-    );
+    content = <Loading />;
   }
 
   if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.errorMsg}>
-        Failed to load data. Please try again or <span onClick={() => navigate(-1)}>Go back</span>
-      </div>
-    );
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
   }
 
   if (isSuccess && project) {
@@ -107,13 +91,7 @@ const EngProjectDetail = () => {
       <div className={styles.wrapper}>{content}</div>
       <div className={styles.transactionTable}>
         <h1 className={styles.title}>Transactions</h1>
-        {isTransactionLoading ? (
-          <div className={styles.loading}>
-            <PulseLoader color={"#4e90d2"} />
-          </div>
-        ) : (
-          <TransactionTable transactions={transactions} />
-        )}
+        {transactions ? <TransactionTable transactions={transactions} /> : <Loading />}
       </div>
     </div>
   );

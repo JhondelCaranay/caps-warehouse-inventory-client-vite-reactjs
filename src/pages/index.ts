@@ -44,4 +44,6 @@ export { default as EngProjectDetail } from "./engineer/projects/detail/EngProje
 export { default as EngItems } from "./engineer/items/list/EngItems";
 export { default as EngItemDetail } from "./engineer/items/detail/EngItemDetail";
 
+export { default as UserProfile } from "./profile/UserProfile";
+
 export { default as Single } from "./dashboard/single/Single";

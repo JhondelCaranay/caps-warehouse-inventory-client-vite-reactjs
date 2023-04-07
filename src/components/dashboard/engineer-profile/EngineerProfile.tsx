@@ -2,6 +2,7 @@ import styles from "./EngineerProfile.module.scss";
 import { User } from "../../../types";
 import noImage from "./../../../assets/img/noimage.png";
 import useWindowSize from "../../../hooks/useWindowSize";
+import { useNavigate } from "react-router-dom";
 
 type EngineerProfileProps = {
   user: User | undefined;
@@ -9,6 +10,7 @@ type EngineerProfileProps = {
 
 const EngineerProfile = ({ user }: EngineerProfileProps) => {
   const { windowSize } = useWindowSize();
+  const navigate = useNavigate();
 
   let content: JSX.Element = <></>;
 
@@ -23,8 +25,10 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
   if (user) {
     content = (
       <>
-        <div className={styles.viewButton}>View</div>
-        <div className={styles.editButton}>Edit</div>
+        <div className={styles.viewButton} onClick={() => navigate(`/dash/users/${user.id}`)}>
+          View
+        </div>
+        {/* <div className={styles.editButton}>Edit</div> */}
         <div className={styles.item}>
           {windowSize > 768 && (
             <img
@@ -60,10 +64,6 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
                 {user.Profile.address ? "+" + user.Profile.address : "N/A"}
               </span>
             </div>
-            <div className={styles.detailItem}>
-              <span className={styles.itemKey}>Country:</span>
-              <span className={styles.itemValue}>USA</span>
-            </div>
             <hr />
 
             <div className={styles.detailItem}>
@@ -76,7 +76,7 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
               <span className={`itemValue ${user.status}`}>{user.status}</span>
             </div>
 
-            <div className={styles.detailItem}>
+            {/* <div className={styles.detailItem}>
               <span className={styles.itemKey}>Total Projects:</span>
               <span className={styles.itemValue}>10</span>
             </div>
@@ -84,7 +84,7 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
             <div className={styles.detailItem}>
               <span className={styles.itemKey}>Completed Projects:</span>
               <span className={styles.itemValue}>10</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </>

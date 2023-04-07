@@ -8,7 +8,6 @@ import {
 } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
 import useWindowSize from "../../../../hooks/useWindowSize";
 import { Brand } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
@@ -33,6 +32,7 @@ const BrandDataTable = ({ brands }: BrandDataTableProps) => {
       field: "actions",
       headerName: "Actions",
       width: 150,
+      disableExport: true,
       renderCell: (params: { row: Brand }) => {
         return (
           <div className={styles.cellAction}>

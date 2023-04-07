@@ -2,7 +2,7 @@ import { Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useGetCategoriesQuery } from "../../../../app/services/category/categoryApiSlice";
-import { CategoryDataTable } from "../../../../components";
+import { CategoryDataTable, ErrorMessage, Loading } from "../../../../components";
 import { useTitle } from "../../../../hooks";
 import { Category } from "../../../../types";
 import styles from "./CategoryList.module.scss";
@@ -22,29 +22,18 @@ const CategoryList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
-    selectFromResult: ({ data, ...result }) => ({
-      ...result,
-      data: data ? data.ids.map((id) => data.entities[id] as Category) : [],
-    }),
   });
 
   let content: JSX.Element = <></>;
 
   if (isLoading) {
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-      </div>
-    );
-  } else if (isError) {
-    console.log(error);
-    content = (
-      <div className={styles.loading}>
-        <PulseLoader color={"#1976d2"} />
-        <h1 className={styles.error}>Failed to load data</h1>
-      </div>
-    );
-  } else if (isSuccess) {
+    content = <Loading />;
+  }
+  if (isError) {
+    console.log("Error: ", error);
+    content = <ErrorMessage message={"Failed to load data"} />;
+  }
+  if (isSuccess) {
     content = <CategoryDataTable categories={categories} />;
   }
 
