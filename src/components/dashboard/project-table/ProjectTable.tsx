@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { Project } from "../../../types";
 import "./projectTable.scss";
+import { Capitalize } from "../../../config/utils/functions";
 
 type ProjectTableProps = {
   projects: Project[];
@@ -34,7 +35,7 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
           <TableRow>
             <TableCell className="tableCell">Project Name</TableCell>
             <TableCell className="tableCell md">Address</TableCell>
-            <TableCell className="tableCell">Phase</TableCell>
+            <TableCell className="tableCell">Status</TableCell>
 
             <TableCell className="tableCell">Action</TableCell>
           </TableRow>
@@ -45,7 +46,7 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
               <TableCell className="tableCell">{row.name}</TableCell>
               <TableCell className="tableCell md">{row.address}</TableCell>
               <TableCell className="tableCell">
-                <span className={`status ONGOING`}>Ongoing</span>
+                <span className={`${"status"} ${row.status}`}> {Capitalize(row.status)}</span>
               </TableCell>
               <TableCell className="tableCell">
                 <Link to={`/dash/projects/${row.id}`} className={`viewButton`}>

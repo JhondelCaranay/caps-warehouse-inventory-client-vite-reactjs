@@ -43,3 +43,5 @@ export { default as CreateUserForm } from "./forms/user/create/CreateUserForm";
 
 export { default as Loading } from "./loading/Loading";
 export { default as ErrorMessage } from "./error/ErrorMessage";
+
+export { default as ChangePassword } from "./changePassword/ChangePassword";

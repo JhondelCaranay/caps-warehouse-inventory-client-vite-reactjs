@@ -39,6 +39,7 @@ export type ProjectForm = {
   name: string;
   address: string;
   userId: string;
+  status?: string;
 };
 
 export type CategoryForm = {

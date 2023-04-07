@@ -37,12 +37,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return [{ type: "User", id: arg }];
       },
     }),
-    getMyProfile: builder.query<User, string>({
+    getMyProfile: builder.query<User, string | void>({
       query: () => ({
         url: `/api/users/me`,
       }),
       providesTags: (result, error, arg) => {
-        return [{ type: "User", id: arg }];
+        if (result) {
+          return [{ type: "User", id: result.id }];
+        } else return [{ type: "User", id: "LIST" }];
       },
     }),
     addNewUser: builder.mutation<User, UserCreateForm>({
@@ -55,6 +57,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
+    updateUserPassword: builder.mutation<User, { password: string }>({
+      query: (data) => ({
+        url: `/api/users/change-password`,
+        method: "PATCH",
+        body: {
+          password: data.password,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: "User", id: result?.id }];
+      },
+    }),
   }),
 });
 
@@ -64,6 +78,7 @@ export const {
   useGetUserQuery,
   useGetMyProfileQuery,
   useAddNewUserMutation,
+  useUpdateUserPasswordMutation,
 } = usersApiSlice;
 
 // const usersAdapter = createEntityAdapter<User>({

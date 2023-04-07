@@ -64,7 +64,6 @@ const EngItems = () => {
     content = (
       <>
         {/* ITEMS */}
-
         <h1 className={styles.title}>Items</h1>
         {/* ITEM */}
         <div className={styles.items}>
@@ -72,13 +71,13 @@ const EngItems = () => {
             display.map((item) => (
               <div className={styles.item} key={item.id}>
                 <div className={styles.itemImg}>
-                  <img src={item.pictureUrl || noImage} alt="" className={styles.image} />
                   <div className={styles.itemInfo}>
                     <div className={styles.itemName}>{item.name}</div>
                   </div>
+                  <img src={item.pictureUrl || noImage} alt="" className={styles.image} />
                 </div>
                 {item.quantity === 0 ? <div className={styles.outofstock}>Out of Stock</div> : null}
-                <div className={styles.backButton} onClick={() => navigate(`/me/items/${item.id}`)}>
+                <div className={styles.viewButton} onClick={() => navigate(`/me/items/${item.id}`)}>
                   view
                 </div>
               </div>

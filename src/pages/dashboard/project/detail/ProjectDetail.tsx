@@ -4,6 +4,7 @@ import { useGetProjectQuery } from "../../../../app/services/project/projectApiS
 import { useGetTransactionsByProjectIdQuery } from "../../../../app/services/transaction/transactionApiSlice";
 import { ErrorMessage, Loading, TransactionTable } from "../../../../components";
 import styles from "./ProjectDetail.module.scss";
+import { Capitalize } from "../../../../config/utils/functions";
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
@@ -54,7 +55,9 @@ const ProjectDetail = () => {
           </div>
           <div className={styles.detailItem}>
             <span className={styles.itemKey}>Project Status</span>
-            <span className={`${styles.itemValue} ${styles["ONGOING"]}`}>{"Ongoing"}</span>
+            <span className={`${styles.itemValue} ${styles[project.status]}`}>
+              {Capitalize(project.status)}
+            </span>
           </div>
           <div className={styles.detailItem}>
             <span className={styles.itemKey}>Created:</span>

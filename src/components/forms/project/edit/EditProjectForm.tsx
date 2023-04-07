@@ -10,6 +10,7 @@ import { ProjectForm, User, Project } from "../../../../types";
 import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
 import { DebugControl, TextError } from "../../../formik";
+import { Capitalize } from "../../../../config/utils/functions";
 
 type EditProjectFormProps = {
   project: Project;
@@ -30,6 +31,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
         name: project.name,
         address: project.address,
         userId: project.userId,
+        status: project.status,
       }));
     }
   }, [project]);
@@ -43,6 +45,7 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
         name: values.name,
         address: values.address,
         userId: values.userId,
+        status: values.status,
       }).unwrap();
       console.log("🚀 ~ file: EditItemForm.tsx:49 ~ EditItemForm ~ result", result);
 
@@ -145,6 +148,32 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
                   />
                 </div>
 
+                {/* SELECT Project status */}
+                <div className={styles.formGroup}>
+                  <label htmlFor="status">
+                    Project status <small>(required)</small>
+                  </label>
+                  <Field
+                    id="status"
+                    name="status"
+                    as="select"
+                    className={`${styles.input} ${
+                      Boolean(formik.touched.status && formik.errors.status) ? styles.error : ""
+                    }`}
+                  >
+                    {/* <option value="">Select Status</option> */}
+                    {Object.values(PROJECT_STATUS).map((status) => (
+                      <option key={status} value={status}>
+                        {Capitalize(status)}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage
+                    name="status"
+                    component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                  />
+                </div>
+
                 <div className={styles.formGroup}>
                   <Button
                     type="submit"
@@ -170,14 +199,22 @@ const EditProjectForm = ({ project, users }: EditProjectFormProps) => {
 };
 export default EditProjectForm;
 
+export enum PROJECT_STATUS {
+  ONGOING = "ONGOING",
+  COMPLETED = "COMPLETED",
+  // CANCELLED = "CANCELLED",
+}
+
 export const initialValues: ProjectForm = {
   name: "",
   address: "",
   userId: "",
+  status: "",
 };
 
 export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   address: Yup.string().required("Required"),
   userId: Yup.string().required("Required").uuid("Must be a valid UUID"),
+  status: Yup.string().required("Required"),
 });

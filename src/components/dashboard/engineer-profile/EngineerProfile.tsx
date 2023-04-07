@@ -76,7 +76,7 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
               <span className={`itemValue ${user.status}`}>{user.status}</span>
             </div>
 
-            <div className={styles.detailItem}>
+            {/* <div className={styles.detailItem}>
               <span className={styles.itemKey}>Total Projects:</span>
               <span className={styles.itemValue}>10</span>
             </div>
@@ -84,7 +84,7 @@ const EngineerProfile = ({ user }: EngineerProfileProps) => {
             <div className={styles.detailItem}>
               <span className={styles.itemKey}>Completed Projects:</span>
               <span className={styles.itemValue}>10</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </>
