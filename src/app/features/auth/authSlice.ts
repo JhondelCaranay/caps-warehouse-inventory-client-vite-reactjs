@@ -24,7 +24,6 @@ const authSlice = createSlice({
           secure: true,
           expires: 1,
           sameSite: "Strict",
-          
         });
       if (refresh_token)
         Cookie.set("refresh_token", refresh_token, {

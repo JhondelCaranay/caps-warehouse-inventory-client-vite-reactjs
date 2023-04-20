@@ -1,4 +1,4 @@
-.Login {
+.resetCode {
   width: 100%;
   height: calc(100vh - 51px);
 
@@ -49,6 +49,44 @@
           font-size: 0.8rem;
           letter-spacing: 1px;
         }
+
+        .reset {
+          display: flex;
+          gap: 10px;
+
+          .sendcodeBtn {
+            width: 150px;
+            border: none;
+            outline: none;
+            background-color: teal;
+            color: white;
+            border: 1px solid teal;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: white;
+              color: teal;
+              border: 1px solid teal;
+            }
+
+            &:active {
+              background-color: teal;
+              color: white;
+              border: 1px solid teal;
+            }
+
+            &:disabled {
+              background-color: gray;
+              color: white;
+              border: 1px solid gray;
+              cursor: not-allowed;
+            }
+          }
+        }
       }
 
       .submitBtn {
@@ -86,20 +124,13 @@
         }
       }
 
-      .forgot {
-        text-align: right;
-        align-self: flex-end;
-        color: teal;
-        cursor: pointer;
-        font-weight: bold;
-      }
-
-      .register {
-        text-align: center;
-        color: teal;
-
-        a {
-          text-decoration: none;
+      .navGroup {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        .forgot {
+          align-self: flex-end;
           color: teal;
           cursor: pointer;
           font-weight: bold;

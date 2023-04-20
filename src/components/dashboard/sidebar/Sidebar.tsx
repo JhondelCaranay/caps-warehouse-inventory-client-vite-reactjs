@@ -113,7 +113,7 @@ const Sidebar = () => {
       </div>
 
       {/* bottom */}
-      <div className={styles.bottom}>
+      {/* <div className={styles.bottom}>
         <div
           className={styles.colorOption}
           // onClick={() => dispatch({ type: "LIGHT" })}
@@ -122,7 +122,7 @@ const Sidebar = () => {
           className={styles.colorOption}
           // onClick={() => dispatch({ type: "DARK" })}
         ></div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -122,7 +122,7 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
         </div>
 
         {/* bottom */}
-        <div className={styles.bottom}>
+        {/* <div className={styles.bottom}>
           <div
             className={styles.colorOption}
             // onClick={() => dispatch({ type: "LIGHT" })}
@@ -131,7 +131,7 @@ const SidebarMobile = ({ toggleSidebar, setToggleSidebar }: SidebarProps) => {
             className={styles.colorOption}
             // onClick={() => dispatch({ type: "DARK" })}
           ></div>
-        </div>
+        </div> */}
       </div>
       <div
         className={toggleSidebar ? `${styles.modalBackdrop}` : ""}
