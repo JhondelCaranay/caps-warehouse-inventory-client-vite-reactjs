@@ -118,14 +118,15 @@
 
           .itemImg {
             position: relative;
-            height: 250px;
+            // height: 250px;
 
             .image {
               width: 100%;
-              margin: 0 auto;
               height: 200px;
-              object-fit: cover;
-              border-radius: 50%;
+              object-fit: fill;
+              // margin: 0 auto;
+              // border-radius: 50%;
+              border-radius: 10px;
               border: 1px solid #ccc;
             }
 
@@ -172,9 +173,9 @@
           .viewButton {
             z-index: 999;
             width: 60px;
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
+            // position: absolute;
+            // bottom: 5px;
+            // right: 5px;
             padding: 5px;
             font-size: 14px;
             font-weight: 600;
@@ -204,9 +205,9 @@
       }
 
       .paginator {
-        position: absolute;
-        bottom: 5px;
-        left: 0;
+        // position: absolute;
+        // bottom: 5px;
+        // left: 0;
         width: 100%;
 
         .pagination {
