@@ -22,6 +22,7 @@ import {
   EngProjects,
   EngTransactionDetail,
   EngTransactions,
+  ForgotPassword,
   ItemDetail,
   ItemEdit,
   ItemList,
@@ -33,6 +34,7 @@ import {
   ProjectList,
   ProjectNew,
   PublicLayout,
+  ResetCode,
   Single,
   TransactionDetail,
   TransactionEdit,
@@ -58,6 +60,8 @@ function App() {
                 {/* <Route index element={<Homepage />} /> */}
                 <Route index element={<Login />} />
                 <Route path="login" element={<Login />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="reset-code" element={<ResetCode />} />
                 {/* <Route path="register" element={<Register />} /> */}
               </Route>
             </Route>

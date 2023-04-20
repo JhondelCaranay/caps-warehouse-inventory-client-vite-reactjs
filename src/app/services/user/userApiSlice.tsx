@@ -1,4 +1,4 @@
-import { User, UserCreateForm } from "../../../types";
+import { Tokens, User, UserCreateForm } from "../../../types";
 import { apiSlice } from "../../api/apiSlice";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
@@ -69,6 +69,25 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return [{ type: "User", id: result?.id }];
       },
     }),
+    forGotPassword: builder.mutation<User, { email: string }>({
+      query: (data) => ({
+        url: `/api/auth/forgot-password`,
+        method: "POST",
+        body: {
+          email: data.email,
+        },
+      }),
+    }),
+    resetCode: builder.mutation<Tokens, { email: string; code: string }>({
+      query: (data) => ({
+        url: `/api/auth/reset-code`,
+        method: "POST",
+        body: {
+          email: data.email,
+          code: data.code,
+        },
+      }),
+    }),
   }),
 });
 
@@ -79,6 +98,8 @@ export const {
   useGetMyProfileQuery,
   useAddNewUserMutation,
   useUpdateUserPasswordMutation,
+  useForGotPasswordMutation,
+  useResetCodeMutation,
 } = usersApiSlice;
 
 // const usersAdapter = createEntityAdapter<User>({

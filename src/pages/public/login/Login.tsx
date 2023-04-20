@@ -126,9 +126,9 @@ const Login = () => {
                 >
                   {buttonText}
                 </button>
-                <p className="forgot" onClick={() => alert("This feature is not yet implemented.")}>
+                <span className={styles.forgot} onClick={() => navigate("/forgot-password")}>
                   Forgot Password?
-                </p>
+                </span>
                 {/* <p className="register">
                   Don't have an account? <Link to="/register">Register</Link>
                 </p> */}

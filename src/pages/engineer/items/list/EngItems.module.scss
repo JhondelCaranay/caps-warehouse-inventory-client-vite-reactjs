@@ -124,7 +124,9 @@
               width: 100%;
               margin: 0 auto;
               height: 200px;
-              object-fit: contain;
+              object-fit: cover;
+              border-radius: 50%;
+              border: 1px solid #ccc;
             }
 
             .itemInfo {
@@ -135,6 +137,7 @@
               width: 100%;
               padding: 5px;
               background-color: rgba(0, 0, 0, 0.5);
+              margin-bottom: 5px;
 
               .itemName {
                 font-size: 0.8rem;

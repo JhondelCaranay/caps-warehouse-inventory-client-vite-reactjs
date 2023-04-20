@@ -3,6 +3,8 @@ export { default as PublicLayout } from "./layout/public/PublicLayout";
 export { default as NotFound } from "./public/404/Page404";
 export { default as Homepage } from "./public/homepage/Homepage";
 export { default as Login } from "./public/login/Login";
+export { default as ForgotPassword } from "./public/forgotpassword/ForgotPassword";
+export { default as ResetCode } from "./public/forgotpassword/ResetCode";
 
 // dashboard
 export { default as DashboardLayout } from "./layout/dashboard/DashboardLayout";
