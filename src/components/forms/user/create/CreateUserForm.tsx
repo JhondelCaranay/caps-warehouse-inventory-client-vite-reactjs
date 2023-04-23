@@ -15,9 +15,11 @@ import TextError from "../../../formik/TextError";
 import ErrorList from "../../../toast/ErrorList";
 import * as Yup from "yup";
 import { DebugControl } from "../../../formik";
+import { useAuth } from "../../../../hooks";
 
 const CreateUserForm = () => {
   const navigate = useNavigate();
+  const { role: currentUserRole } = useAuth();
 
   const [addNewUser, { isLoading: isUserUpdating }] = useAddNewUserMutation();
 
@@ -182,9 +184,25 @@ const CreateUserForm = () => {
                       }`}
                     >
                       <option value="">Select Role</option>
-                      {Object.keys(ROLES)
+                      {/* {Object.keys(ROLES)
                         .filter((key) => key !== ROLES.SUPER_ADMIN)
                         .map((key) => (
+                          <option key={key} value={key}>
+                            {Capitalize(key)}
+                          </option>
+                        ))} */}
+
+                      {/* if super admin show all roles */}
+                      {currentUserRole === ROLES.SUPER_ADMIN &&
+                        Object.keys(ROLES).map((key) => (
+                          <option key={key} value={key}>
+                            {Capitalize(key)}
+                          </option>
+                        ))}
+
+                      {/* if admin show controller and engineer */}
+                      {currentUserRole === ROLES.ADMIN &&
+                        [ROLES.WAREHOUSE_CONTROLLER, ROLES.ENGINEER].map((key) => (
                           <option key={key} value={key}>
                             {Capitalize(key)}
                           </option>

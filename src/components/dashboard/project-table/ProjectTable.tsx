@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Project } from "../../../types";
 import "./projectTable.scss";
 import { Capitalize } from "../../../config/utils/functions";
@@ -17,6 +17,7 @@ type ProjectTableProps = {
 };
 
 const ProjectTable = ({ projects }: ProjectTableProps) => {
+  const { pathname } = useLocation();
   // sort the rows by id and status , put approved below
   // const sortedRows = projects.sort((a, b) => {
   //   if (a.status === "Approved" && b.status !== "Approved") {
@@ -49,9 +50,22 @@ const ProjectTable = ({ projects }: ProjectTableProps) => {
                 <span className={`${"status"} ${row.status}`}> {Capitalize(row.status)}</span>
               </TableCell>
               <TableCell className="tableCell">
-                <Link to={`/dash/projects/${row.id}`} className={`viewButton`}>
+                <Link
+                  to={`/${pathname.startsWith("/dash") ? "dash" : "me"}/projects/${row.id}`}
+                  // to={`/dash/projects/${row.id}`}
+                  className={`viewButton`}
+                >
                   View
                 </Link>
+                {/* <Link
+                      className={styles.viewButton}
+                      to={`/${pathname.startsWith("/dash") ? "dash" : "me"}/transactions/${
+                        transaction.id
+                      }`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      View
+                    </Link> */}
               </TableCell>
             </TableRow>
           ))}
