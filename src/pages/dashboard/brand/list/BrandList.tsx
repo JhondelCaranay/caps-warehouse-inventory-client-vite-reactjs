@@ -41,7 +41,7 @@ const BrandList = () => {
         <Stack direction="row" spacing={1}>
           <Link to="/dash/brands/new" style={{ textDecoration: "none" }}>
             <Button size="small" variant="outlined">
-              Create Item
+              Create Brand
             </Button>
           </Link>
           <Button size="small" variant="outlined" onClick={refetch}>

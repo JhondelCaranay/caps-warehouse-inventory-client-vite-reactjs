@@ -71,7 +71,7 @@ const CreateProjectForm = ({ users, setSelectedId }: CreateProjectFormProps) => 
                     id="name"
                     name="name"
                     type="text"
-                    placeholder="Item name"
+                    placeholder="Project name"
                     className={`${styles.input} ${
                       Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
                     }`}
