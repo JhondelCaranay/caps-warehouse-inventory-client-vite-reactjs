@@ -195,7 +195,7 @@ const CreateUserForm = () => {
                       {/* if super admin show all roles */}
                       {currentUserRole === ROLES.SUPER_ADMIN &&
                         Object.keys(ROLES)
-                          .filter((key) => key !== ROLES.SUPER_ADMIN)
+                          // .filter((key) => key !== ROLES.SUPER_ADMIN)
                           .map((key) => (
                             <option key={key} value={key}>
                               {Capitalize(key)}

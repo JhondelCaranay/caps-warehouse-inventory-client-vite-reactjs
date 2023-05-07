@@ -28,6 +28,11 @@ export const adminsLinks = [
     text: "Transactions",
   },
   {
+    to: "/dash/items",
+    icon: <Warehouse />,
+    text: "Items",
+  },
+  {
     to: "/dash/projects",
     icon: <Construction />,
     text: "Projects",
