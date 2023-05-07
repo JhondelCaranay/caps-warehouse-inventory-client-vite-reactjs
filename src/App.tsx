@@ -23,6 +23,7 @@ import {
   EngTransactionDetail,
   EngTransactions,
   ForgotPassword,
+  Homepage,
   ItemDetail,
   ItemEdit,
   ItemList,
@@ -57,8 +58,8 @@ function App() {
           <Route path="/">
             <Route element={<AuthNotAllowed />}>
               <Route element={<PublicLayout />}>
-                {/* <Route index element={<Homepage />} /> */}
-                <Route index element={<Login />} />
+                <Route index element={<Homepage />} />
+                {/* <Route index element={<Login />} /> */}
                 <Route path="login" element={<Login />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
                 <Route path="reset-code" element={<ResetCode />} />
