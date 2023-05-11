@@ -21,7 +21,7 @@ const Homepage = () => {
   return (
     <div id="home" className={styles.homepage}>
       {/* links */}
-      <div className={styles.links}>
+      <div className={styles.navlinks}>
         <a href="#home">Home</a>
         <a href="#about">About Us</a>
         <a href="#service">Services</a>
