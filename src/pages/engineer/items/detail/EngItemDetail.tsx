@@ -7,15 +7,22 @@ import { useGetBrandQuery } from "../../../../app/services/brand/brandApiSlice";
 import { useGetItemQuery } from "../../../../app/services/item/itemApiSlice";
 import { useAuth, useTitle } from "../../../../hooks";
 import { useEffect, useState } from "react";
-import { Item, Project, TransactionForm, TRANSACTION_STATUS, User } from "../../../../types";
-import { useAddNewTransactionMutation } from "../../../../app/services/transaction/transactionApiSlice";
+import {
+  Item,
+  Project,
+  TransactionForm,
+  TRANSACTION_STATUS,
+  User,
+  PROJECT_STATUS,
+} from "../../../../types";
+import { useAddNewTransactionMutation, useGetTransactionsByItemIdQuery } from "../../../../app/services/transaction/transactionApiSlice";
 import ErrorList from "../../../../components/toast/ErrorList";
 import { toast } from "react-toastify";
 import { useGetMyProfileQuery } from "../../../../app/services/user/userApiSlice";
 import { useGetMyProjectsQuery } from "../../../../app/services/project/projectApiSlice";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import { ErrorMessage as ErrorMsg, Loading } from "../../../../components";
+import { ErrorMessage as ErrorMsg, ItemTransactionHistoryTable, Loading } from "../../../../components";
 import { TextError } from "../../../../components/formik";
 
 const EngItemDetail = () => {
@@ -55,6 +62,11 @@ const EngItemDetail = () => {
     skip: !item?.brandId,
   });
 
+  const { data: transactions } = useGetTransactionsByItemIdQuery(itemId as string, {
+    refetchOnMountOrArgChange: true,
+    skip: !itemId,
+  });
+
   let content: JSX.Element = <></>;
 
   if (isLoading) {
@@ -76,6 +88,14 @@ const EngItemDetail = () => {
 
           <div className={styles.details}>
             <h1 className={styles.itemTitle}>{item.name}</h1>
+            <div className={styles.detailItem}>
+              <span className={styles.itemKey}>Referral code :</span>
+              <span className={styles.itemValue}>{item.referalId}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.itemKey}>status :</span>
+              <span className={styles.itemValue}>{item.status}</span>
+            </div>
             <div className={styles.detailItem}>
               <span className={styles.itemKey}>Price:</span>
               <span className={styles.itemValue}>{item.price || "N/A"}</span>
@@ -143,6 +163,10 @@ const EngItemDetail = () => {
   return (
     <div className={styles.itemDetail}>
       <div className={styles.wrapper}>{content}</div>
+      <div className={styles.itemHistory}>
+        <h1 className={styles.title}>Item Transaction History</h1>
+        {transactions ? <ItemTransactionHistoryTable transactions={transactions} /> : <Loading />}
+      </div>
       {modal && item && user && projects ? (
         <Modal item={item} setmodal={setmodal} user={user} projects={projects} />
       ) : null}
@@ -269,11 +293,18 @@ const Modal = ({ item, setmodal, user, projects }: ModalProps) => {
                         className={styles.modalInput}
                       >
                         <option value="">Select Item</option>
-                        {projects?.map((project) => (
+                        {projects
+                          .filter((project) => project.status === PROJECT_STATUS.ONGOING)
+                          .map((project) => (
+                            <option key={project.id} value={project.id}>
+                              {project.name}
+                            </option>
+                          ))}
+                        {/* {projects?.map((project) => (
                           <option key={project.id} value={project.id}>
                             {project.name}
                           </option>
-                        ))}
+                        ))} */}
                       </Field>
                       <ErrorMessage
                         name="projectId"

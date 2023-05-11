@@ -3,10 +3,11 @@ import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar } from "@m
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useWindowSize from "../../../../hooks/useWindowSize";
-import { Item } from "../../../../types";
+import { Item, ROLES } from "../../../../types";
 import { CustomPagination } from "../../../datagrid-pagination/CustomPagination";
 import noImage from "../../../../assets/img/noimage.png";
 import { Capitalize } from "../../../../config/utils/functions";
+import { useAuth } from "../../../../hooks";
 
 type ItemDataTableProps = {
   items: Item[];
@@ -15,6 +16,7 @@ type ItemDataTableProps = {
 const ItemDataTable = ({ items }: ItemDataTableProps) => {
   const { windowSize } = useWindowSize();
   const navigate = useNavigate();
+  const { role } = useAuth();
 
   const handleEdit = (id: string) => {
     navigate(`/dash/items/edit/${id}`);
@@ -39,9 +41,11 @@ const ItemDataTable = ({ items }: ItemDataTableProps) => {
             <Link to={`/dash/items/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className={styles.viewButton}>View</div>
             </Link>
-            <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>
-              Edit
-            </div>
+            {role === ROLES.WAREHOUSE_CONTROLLER && (
+              <div className={styles.editButton} onClick={() => handleEdit(params.row.id)}>
+                Edit
+              </div>
+            )}
           </div>
         );
       },
@@ -89,6 +93,8 @@ export const ITEM_MOBILE_COLUMNS = {
   unit: false,
   quantity: false,
   description: false,
+  referalId: false,
+  status: false,
 };
 
 export const ITEM_ALL_COLUMNS = {
@@ -98,7 +104,9 @@ export const ITEM_ALL_COLUMNS = {
   Category: true,
   Brand: false,
   unit: true,
-  quantity: true,
+  quantity: false,
+  referalId: true,
+  status: true,
 };
 
 export const itemColumns: GridColDef[] = [
@@ -126,7 +134,7 @@ export const itemColumns: GridColDef[] = [
   {
     field: "Category",
     headerName: "Category",
-    width: 300,
+    width: 250,
     renderCell: (params: { row: Item }) => {
       const { name } = params.row.Category;
       const category = Capitalize(name);
@@ -154,5 +162,7 @@ export const itemColumns: GridColDef[] = [
     },
   },
   { field: "unit", headerName: "Unit", width: 150, type: "string" },
+  { field: "referalId", headerName: "Referral code", width: 150, type: "string" },
+  { field: "status", headerName: "Status", width: 150, type: "string" },
   { field: "quantity", headerName: "Quantity", width: 150, type: "number" },
 ];

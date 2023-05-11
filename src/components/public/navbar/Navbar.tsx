@@ -20,7 +20,7 @@ const Navbar = () => {
           <NavLink end to="/" className={navLinkStyles}>
             <li>Home</li>
           </NavLink>
-          <a href="#about">
+          {/* <a href="#about">
             <li>About Us</li>
           </a>
           <a href="#service">
@@ -28,7 +28,10 @@ const Navbar = () => {
           </a>
           <a href="#contact">
             <li>Contact Us</li>
-          </a>
+          </a> */}
+          {/* <NavLink end to="#contact">
+            <li>Contact Us</li>
+          </NavLink> */}
           <NavLink to="/login" className={navLinkStyles}>
             <li>Login</li>
           </NavLink>

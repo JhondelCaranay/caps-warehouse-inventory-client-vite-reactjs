@@ -17,11 +17,23 @@ export enum ROLES {
 export enum UNIT {
   UNIT = "UNIT",
   PCS = "PCS",
-  SETS = "SETS",
-  ROLL = "ROLL",
+  // SETS = "SETS",
+  // ROLL = "ROLL",
 }
 
 export enum USER_STATUS {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
+}
+
+export enum PROJECT_STATUS {
+  ONGOING = "ONGOING",
+  COMPLETED = "COMPLETED",
+  // CANCELLED = "CANCELLED",
+}
+
+export enum ITEM_STATUS {
+  AVAILABLE = "AVAILABLE",
+  BORROWED = "BORROWED",
+  DEFECTIVE = "DEFECTIVE",
 }

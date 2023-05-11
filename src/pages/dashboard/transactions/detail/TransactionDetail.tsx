@@ -56,12 +56,24 @@ const TransactionDetail = () => {
 
               <h1 className={styles.itemTitle}>{transaction.Item.name}</h1>
               <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Referral code :</span>
+                <span className={styles.itemValue}>{transaction.Item.referalId}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>status :</span>
+                <span className={styles.itemValue}>{transaction.Item.status}</span>
+              </div>
+              <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Category:</span>
                 <span className={styles.itemValue}>{transaction.Item.Category.name}</span>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Brand:</span>
                 <span className={styles.itemValue}>{transaction.Item.Brand.name}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Model:</span>
+                <span className={styles.itemValue}>{transaction.Item.model}</span>
               </div>
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Unit:</span>
@@ -216,7 +228,7 @@ const TransactionDetail = () => {
           </div>
         </div>
         <div className={styles.bottom}>
-          <div className={styles.title}>Status</div>
+          <div className={styles.title}>Transaction Status</div>
 
           <div className={styles.items}>
             <div
@@ -409,7 +421,7 @@ const ConfirmModal = ({ setmodal, item, transaction }: ConfirmModalProps) => {
                     {isTransactionUpdating || formik.isSubmitting ? (
                       <PulseLoader color={"#1976d2"} />
                     ) : (
-                      <span>Create</span>
+                      <span>Confirm</span>
                     )}
                   </button>
                   <div

@@ -139,6 +139,21 @@ export const projectColumns: GridColDef[] = [
     },
   },
   {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+    renderCell: (params: { row: Project }) => {
+      const { status } = params.row;
+      return (
+        <div className={`${styles.cellWithStatus} ${styles[status]}`}>{Capitalize(status)}</div>
+      );
+    },
+    valueGetter: (params: { row: Project }) => {
+      const { status } = params.row;
+      return Capitalize(status);
+    },
+  },
+  {
     field: "createdAt",
     headerName: "Created",
     width: 300,

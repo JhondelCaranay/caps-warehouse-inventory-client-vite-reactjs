@@ -36,6 +36,8 @@ export type Item = {
   createdAt: string;
   updatedAt: string;
   name: string;
+  referalId: string;
+  status: string;
   description: string;
   model: string;
   unit: string;

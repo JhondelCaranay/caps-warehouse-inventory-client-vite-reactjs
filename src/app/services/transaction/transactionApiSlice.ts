@@ -43,6 +43,19 @@ export const transactionsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "Transaction", id: "LIST" }];
       },
     }),
+    getTransactionsByItemId: builder.query<Transaction[], string | void>({
+      query: (id) => ({
+        url: `/api/transactions/item/${id}`,
+      }),
+      providesTags: (result, error, arg) => {
+        if (result) {
+          return [
+            { type: "Transaction", id: "LIST" },
+            ...result.map(({ id }) => ({ type: "Transaction" as const, id })),
+          ];
+        } else return [{ type: "Transaction", id: "LIST" }];
+      },
+    }),
     getTransaction: builder.query<Transaction, string>({
       query: (id) => ({
         url: `/api/transactions/${id}`,
@@ -92,6 +105,7 @@ export const {
   useGetTransactionsQuery,
   useGetMyTransactionsQuery,
   useGetTransactionsByProjectIdQuery,
+  useGetTransactionsByItemIdQuery,
   useGetTransactionQuery,
   useAddNewTransactionMutation,
   useUpdateTransactionMutation,

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetItemsByFiltersQuery } from "../../../../app/services/item/itemApiSlice";
 import { useTitle } from "../../../../hooks";
-import { Item } from "../../../../types";
+import { ITEM_STATUS, Item } from "../../../../types";
 import styles from "./EngItems.module.scss";
 import noImage from "../../../../assets/img/noimage.png";
 import ReactPaginate from "react-paginate";
@@ -25,9 +25,12 @@ const EngItems = () => {
     isLoading,
     isSuccess,
     isError,
-  } = useGetItemsByFiltersQuery(`name=${searchInput}&category=${selectedCategory}`, {
-    refetchOnMountOrArgChange: true,
-  });
+  } = useGetItemsByFiltersQuery(
+    `name=${searchInput}&category=${selectedCategory}&status=AVAILABLE`,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const { data: categories } = useGetCategoriesQuery(undefined, {
     refetchOnMountOrArgChange: true,
@@ -73,6 +76,7 @@ const EngItems = () => {
                 <div className={styles.itemImg}>
                   <div className={styles.itemInfo}>
                     <div className={styles.itemName}>{item.name}</div>
+                    <div className={styles.itemName}>#{item.referalId}</div>
                   </div>
                   <img src={item.pictureUrl || noImage} alt="" className={styles.image} />
                 </div>

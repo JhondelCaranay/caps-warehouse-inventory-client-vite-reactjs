@@ -18,23 +18,25 @@ import { DebugControl } from "../../../formik";
 
 export const initialValues: ItemForm = {
   name: "",
+  referalId: "",
   description: "",
   model: "",
   unit: "",
-  quantity: 0,
+  quantity: 1,
   price: 0,
   pictureUrl: "",
   brandId: "",
   categoryId: "",
 };
 
-export const validationSchema = Yup.object({
+export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
+  referalId: Yup.string().required("Required"),
   description: Yup.string(),
   model: Yup.string(),
   unit: Yup.string().required("Required"),
   quantity: Yup.number()
-    .required("Required")
+    // .required("Required")
     .integer("Must be an integer")
     .min(1, "Must be a positive number"),
   price: Yup.number().required("Required").min(1, "Must be a positive number"),
@@ -73,6 +75,7 @@ const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
       }
       await addNewItem({
         name: values.name,
+        referalId: values.referalId.toUpperCase(),
         description: values.description || null,
         model: values.model || null,
         unit: values.unit,
@@ -109,6 +112,10 @@ const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
               <span>Create</span>
             );
 
+          if (formik.values.unit === UNIT.UNIT) {
+            formik.values.quantity = 1;
+          }
+
           return (
             <Form>
               <h1 className={styles.title}>Create Item</h1>
@@ -135,6 +142,28 @@ const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
                       component={(props) => <TextError {...props} styles={styles["text-error"]} />}
                     />
                   </div>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="name">
+                      Item Referral Code <small>(required)</small>
+                    </label>
+                    <Field
+                      id="referalId"
+                      name="referalId"
+                      type="text"
+                      placeholder="Referral code"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.referalId && formik.errors.referalId)
+                          ? styles.error
+                          : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+
                   {/* CHILD ROW */}
                   <div className={styles.row}>
                     {/* LEFT */}
@@ -165,18 +194,20 @@ const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
                       {/*  QUANTITY INPUT */}
                       <div className={styles.formGroup}>
                         <label htmlFor="quantity">
-                          Quantity <small>(required)</small>
+                          Quantity <small>(optional)</small>
                         </label>
                         <Field
                           id="quantity"
                           name="quantity"
                           type="number"
-                          max="50"
+                          max="99"
+                          min="1"
                           className={`${styles.input} ${
                             Boolean(formik.touched.quantity && formik.errors.quantity)
                               ? styles.error
                               : ""
                           }`}
+                          disabled={formik.values.unit === UNIT.UNIT}
                         />
                         <ErrorMessage
                           name="quantity"
@@ -243,6 +274,12 @@ const CreateItemForm = ({ brands, categories }: CreateItemFormProps) => {
                       className={`${styles.input} ${
                         Boolean(formik.touched.unit && formik.errors.unit) ? styles.error : ""
                       }`}
+                      // onChange={(e: any) => {
+                      //   formik.setFieldValue("unit", e.target.value);
+                      //   if (formik.values.unit === UNIT.UNIT) {
+                      //     formik.setFieldValue("quantity", 1);
+                      //   }
+                      // }}
                     >
                       <option value="">Select Unit</option>
                       {Object.keys(UNIT).map((key) => (
