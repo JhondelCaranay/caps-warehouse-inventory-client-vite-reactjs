@@ -20,6 +20,7 @@ export { default as CategoryDataTable } from "./dashboard/datatable/category/Cat
 export { default as BrandDataTable } from "./dashboard/datatable/brand/BrandDataTable";
 export { default as UserDataTable } from "./dashboard/datatable/user/UserDataTable";
 
+export { default as ItemTransactionHistoryTable } from "./dashboard/item_transaction_history_table/ItemTransactionHistoryTable";
 export { default as MyTransactionDataTable } from "./dashboard/datatable/my-transactions/MyTransactionDataTable";
 export { default as MyProjectDataTable } from "./dashboard/datatable/my-projects/MyProjectDataTable";
 

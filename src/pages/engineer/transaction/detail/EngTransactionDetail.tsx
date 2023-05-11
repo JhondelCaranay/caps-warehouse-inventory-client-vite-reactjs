@@ -56,6 +56,16 @@ const EngTransactionDetail = () => {
               <img className={styles.itemImg} src={transaction.Item.pictureUrl || noImage} alt="" />
 
               <h1 className={styles.itemTitle}>{transaction.Item.name}</h1>
+
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>status :</span>
+                <span className={styles.itemValue}>{transaction.Item.status}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.itemKey}>Category:</span>
+                <span className={styles.itemValue}>{transaction.Item.Category.name}</span>
+              </div>
+
               <div className={styles.detailItem}>
                 <span className={styles.itemKey}>Category:</span>
                 <span className={styles.itemValue}>{transaction.Item.Category.name}</span>
@@ -69,7 +79,7 @@ const EngTransactionDetail = () => {
                 <span className={styles.itemValue}>{transaction.Item.unit}</span>
               </div>
               <div className={styles.detailItem}>
-                <span className={styles.itemKey}>Requested item(s):</span>
+                <span className={styles.itemKey}>Requested quantity:</span>
                 <span className={styles.itemValue}>{transaction.quantity}</span>
               </div>
               {/* <div className={styles.detailItem}>
@@ -207,7 +217,7 @@ const EngTransactionDetail = () => {
           </div>
         </div>
         <div className={styles.bottom}>
-          <div className={styles.title}>Status </div>
+          <div className={styles.title}>Transaction Status</div>
 
           <div className={styles.items}>
             <div
@@ -390,7 +400,7 @@ const ConfirmModal = ({ setmodal, item, transaction }: ConfirmModalProps) => {
                     {isTransactionUpdating || formik.isSubmitting ? (
                       <PulseLoader color={"#1976d2"} />
                     ) : (
-                      <span>Create</span>
+                      <span>Confirm</span>
                     )}
                   </button>
                   <div

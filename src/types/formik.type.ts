@@ -22,6 +22,7 @@ export type TransactionForm = {
 export type ItemForm = {
   id?: string;
   name: string;
+  referalId: string;
   description: string | null;
   model: string | null;
   unit: UNIT | string;

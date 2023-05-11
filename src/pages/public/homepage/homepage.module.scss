@@ -5,6 +5,39 @@
   gap: 20px;
   scroll-behavior: smooth;
 
+  //   <div className={styles.links}>
+  //   <a href="#home">Home</a>
+  //   <a href="#about">About Us</a>
+  //   <a href="#service">Services</a>
+  //   <a href="#contact">Contact Us</a>
+  // </div>
+  //  place it on a section
+  .links {
+    margin: 0 auto;
+    width: 80%;
+    background-color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    z-index: 1;
+
+    border-bottom: 1px solid #125067;
+    a {
+      text-decoration: none;
+      color: #125067;
+      font-size: 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
   .heroBanner {
     display: flex;
     justify-content: space-between;

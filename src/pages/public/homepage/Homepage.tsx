@@ -20,8 +20,15 @@ const Homepage = () => {
 
   return (
     <div id="home" className={styles.homepage}>
-      {/* hero banner */}
+      {/* links */}
+      <div className={styles.links}>
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#service">Services</a>
+        <a href="#contact">Contact Us</a>
+      </div>
 
+      {/* hero banner */}
       <div className={styles.heroBanner}>
         <div className={styles.left}>
           <h1 className={styles.title}>SPEDI inc.</h1>

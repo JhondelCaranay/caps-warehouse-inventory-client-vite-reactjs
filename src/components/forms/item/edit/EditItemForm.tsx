@@ -19,6 +19,7 @@ import { DebugControl } from "../../../formik";
 
 export const initialValues: ItemForm = {
   name: "",
+  referalId: "",
   description: "",
   model: "",
   unit: "",
@@ -31,6 +32,7 @@ export const initialValues: ItemForm = {
 
 export const validationSchema = Yup.object({
   name: Yup.string().required("Required"),
+  referalId: Yup.string().required("Required"),
   description: Yup.string(),
   model: Yup.string(),
   unit: Yup.string().required("Required"),
@@ -69,6 +71,7 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
         id: item.id,
         pictureUrlTemp: item.pictureUrl,
         name: item.name,
+        referalId: item.referalId,
         description: item.description || "",
         model: item.model || "",
         unit: item.unit,
@@ -94,6 +97,7 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
       await updateItem({
         id: values.id,
         name: values.name,
+        referalId: values.referalId,
         description: values.description || null,
         model: values.model || null,
         unit: values.unit,
@@ -130,6 +134,10 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
               <span>Edit</span>
             );
 
+          if (formik.values.unit === UNIT.UNIT) {
+            formik.values.quantity = 1;
+          }
+
           return (
             <Form>
               <h1 className={styles.title}>Edit Item</h1>
@@ -151,6 +159,27 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                       placeholder="Item name"
                       className={`${styles.input} ${
                         Boolean(formik.touched.name && formik.errors.name) ? styles.error : ""
+                      }`}
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component={(props) => <TextError {...props} styles={styles["text-error"]} />}
+                    />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="name">
+                      Item Referral Code <small>(required)</small>
+                    </label>
+                    <Field
+                      id="referalId"
+                      name="referalId"
+                      type="text"
+                      placeholder="Referral code"
+                      className={`${styles.input} ${
+                        Boolean(formik.touched.referalId && formik.errors.referalId)
+                          ? styles.error
+                          : ""
                       }`}
                     />
                     <ErrorMessage
@@ -195,12 +224,14 @@ const EditItemForm = ({ item, brands, categories }: EditItemFormProps) => {
                           id="quantity"
                           name="quantity"
                           type="number"
-                          max="50"
+                          max="99"
+                          min="1"
                           className={`${styles.input} ${
                             Boolean(formik.touched.quantity && formik.errors.quantity)
                               ? styles.error
                               : ""
                           }`}
+                          disabled={formik.values.unit === UNIT.UNIT}
                         />
                         <ErrorMessage
                           name="quantity"
